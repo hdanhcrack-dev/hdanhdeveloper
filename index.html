@@ -315,7 +315,6 @@
 </head>
 <body>
 
-    <!-- HEADER -->
     <div class="top-header">
         <div style="display:flex; align-items:center; gap:12px;">
             <div class="logo">HD</div>
@@ -327,10 +326,8 @@
         </div>
     </div>
 
-    <!-- TOAST -->
     <div id="toast" class="toast"><span id="toastMsg"></span></div>
 
-    <!-- SETTINGS MODAL -->
     <div id="settings-modal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('settings-modal')">Đóng</button>
@@ -349,7 +346,6 @@
         </div>
     </div>
 
-    <!-- AUTH MODAL -->
     <div id="auth-modal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('auth-modal')">x</button>
@@ -388,7 +384,6 @@
         </div>
     </div>
 
-    <!-- ACCOUNT MODAL -->
     <div id="account-modal" class="modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('account-modal')">x</button>
@@ -402,7 +397,6 @@
         </div>
     </div>
 
-    <!-- STATUS MODAL -->
     <div id="status-modal" class="modal">
         <div class="modal-content" style="border-radius:28px; margin:20px;">
             <h3 id="statusTitle" style="margin-bottom:8px;">Thông báo</h3>
@@ -411,7 +405,6 @@
         </div>
     </div>
 
-    <!-- TABS -->
     <div class="tabs">
         <button class="tab active" onclick="switchTab('files')">Tệp tin</button>
         <button class="tab" onclick="switchTab('verified')">Đã xác minh</button>
@@ -419,10 +412,8 @@
         <button class="tab" id="adminTab" style="display:none;" onclick="switchTab('admin')">Quản trị</button>
     </div>
 
-    <!-- MAIN CONTENT -->
     <div class="container">
         
-        <!-- ABOUT -->
         <div class="card">
             <p class="section-title">About Us</p>
             <div class="about-box">
@@ -445,7 +436,6 @@
             </div>
         </div>
 
-        <!-- TAB FILES -->
         <div id="tab-files" class="tab-content active">
             <div class="card">
                 <p class="section-title">Danh sách tệp tin</p>
@@ -453,7 +443,6 @@
             </div>
         </div>
 
-        <!-- TAB VERIFIED -->
         <div id="tab-verified" class="tab-content">
             <div class="card">
                 <p class="section-title">Tệp tin an toàn</p>
@@ -461,7 +450,6 @@
             </div>
         </div>
 
-        <!-- TAB ANNOUNCEMENTS -->
         <div id="tab-announcements" class="tab-content">
             <div class="card">
                 <p class="section-title">Bảng tin hệ thống</p>
@@ -471,7 +459,6 @@
             </div>
         </div>
 
-        <!-- TAB ADMIN -->
         <div id="tab-admin" class="tab-content">
             <div class="card">
                 <p class="section-title">Đăng thông báo</p>
@@ -490,7 +477,6 @@
     </div>
 
     <script>
-        // Firebase config
         var firebaseConfig = {
             apiKey: "AIzaSyA1jVOVPHECGp27Qgi4U4r71fiKm_a3biM",
             authDomain: "netking-b0ad0.firebaseapp.com",
@@ -504,12 +490,10 @@
         firebase.initializeApp(firebaseConfig);
         var db = firebase.database();
 
-        // Cache users để login nhanh hơn
         var userCache = {};
         var currentUser = localStorage.getItem("hd_user") || "guest";
         var notices = [];
 
-        // Load user cache từ Firebase 1 lần duy nhất
         function loadUserCache() {
             db.ref("users").once("value", function(snap) {
                 userCache = snap.val() || {};
@@ -571,17 +555,17 @@
                     var b = f.badges[j];
                     if (b === "insanity") badgeHtml += "<span class='badge badge-insanity'>INSANITY</span>";
                     if (b === "hot") badgeHtml += "<span class='badge badge-hot'>HOT</span>";
-                    if (b === "safe") badgeHtml += "<span class='badge badge-safe'>An toan</span>";
-                    if (b === "risk") badgeHtml += "<span class='badge badge-risk'>Chua xac minh</span>";
+                    if (b === "safe") badgeHtml += "<span class='badge badge-safe'>An toàn</span>";
+                    if (b === "risk") badgeHtml += "<span class='badge badge-risk'>Chưa xác minh</span>";
                 }
                 html += "<div class='file-item'>";
                 html += "<div class='file-name'>" + f.name + "<span style='display:flex; gap:4px;'>" + badgeHtml + "</span></div>";
                 html += "<div class='file-desc'>" + f.desc + "</div>";
-                html += "<div class='file-version'>Phien ban: " + f.version + "</div>";
+                html += "<div class='file-version'>Phiên bản: " + f.version + "</div>";
                 html += "<div class='file-actions'>";
-                html += "<button class='btn-download" + (f.isRisk ? " risk" : "") + "' onclick=\"downloadFile('" + f.url + "'," + (f.isRisk || false) + ")\">" + (f.isRisk ? "Tai file rui ro" : "Tai tap tin") + "</button>";
+                html += "<button class='btn-download" + (f.isRisk ? " risk" : "") + "' onclick=\"downloadFile('" + f.url + "'," + (f.isRisk || false) + ")\">" + (f.isRisk ? "Tải file rủi ro" : "Tải tập tin") + "</button>";
                 if (f.keyUrl) {
-                    html += "<button class='btn-download' style='flex:0.5; background:var(--tab-bg); color:var(--muted);' onclick=\"window.open('" + f.keyUrl + "','_blank')\">Lay Key</button>";
+                    html += "<button class='btn-download' style='flex:0.5; background:var(--tab-bg); color:var(--muted);' onclick=\"window.open('" + f.keyUrl + "','_blank')\">Lấy Key</button>";
                 }
                 html += "</div></div>";
             }
@@ -594,10 +578,10 @@
                 var f = files[i];
                 if (!f.isRisk) {
                     html += "<div class='file-item'>";
-                    html += "<div class='file-name'>" + f.name + " <span class='badge badge-safe'>An toan</span></div>";
+                    html += "<div class='file-name'>" + f.name + " <span class='badge badge-safe'>An toàn</span></div>";
                     html += "<div class='file-desc'>" + f.desc + "</div>";
-                    html += "<div class='file-version'>Phien ban: " + f.version + "</div>";
-                    html += "<button class='btn-download' onclick=\"downloadFile('" + f.url + "',false)\">Tai tap tin</button>";
+                    html += "<div class='file-version'>Phiên bản: " + f.version + "</div>";
+                    html += "<button class='btn-download' onclick=\"downloadFile('" + f.url + "',false)\">Tải tập tin</button>";
                     html += "</div>";
                 }
             }
@@ -606,12 +590,12 @@
 
         function downloadFile(url, isRisk) {
             if (currentUser === "guest") {
-                showStatus("Yeu cau", "Vui long dang nhap de tai file!");
+                showStatus("Yêu cầu", "Vui lòng đăng nhập để tải file!");
                 openModal("auth-modal");
                 return;
             }
             window.open(url, "_blank");
-            showToast("Dang tai xuong...");
+            showToast("Đang tải xuống...");
         }
 
         function loadAnnouncements() {
@@ -625,7 +609,7 @@
         function renderAnnouncements() {
             var container = document.getElementById("announcementsList");
             if (notices.length === 0) {
-                container.innerHTML = "<p style='color:var(--muted); text-align:center; padding:25px;'>Chua co thong bao nao.</p>";
+                container.innerHTML = "<p style='color:var(--muted); text-align:center; padding:25px;'>Chưa có thông báo nào.</p>";
                 return;
             }
             var html = "";
@@ -634,7 +618,7 @@
                 html += "<div class='notice-item'>";
                 html += "<h4>" + n.title + " <span class='badge badge-admin'>Admin</span></h4>";
                 html += "<p>" + n.content + "</p>";
-                html += "<div class='notice-footer'>Dang boi: " + n.author + " | " + n.date + "</div>";
+                html += "<div class='notice-footer'>Đăng bởi: " + n.author + " | " + n.date + "</div>";
                 html += "</div>";
             }
             container.innerHTML = html;
@@ -645,8 +629,8 @@
             var content = document.getElementById("noticeContent").value.trim();
             var username = localStorage.getItem("hd_username") || "guest";
             
-            if (username.toLowerCase() !== "xine3d") return showStatus("Loi", "Quyen han khong hop le!");
-            if (!title || !content) return showStatus("Loi", "Vui long dien du thong tin!");
+            if (username.toLowerCase() !== "xine3d") return showStatus("Lỗi", "Quyền hạn không hợp lệ!");
+            if (!title || !content) return showStatus("Lỗi", "Vui lòng điền đủ thông tin!");
 
             var now = new Date();
             db.ref("announcements").push({
@@ -657,86 +641,76 @@
             }).then(function() {
                 document.getElementById("noticeTitle").value = "";
                 document.getElementById("noticeContent").value = "";
-                showStatus("Thanh cong", "Thong bao da duoc phat hanh!");
+                showStatus("Thành công", "Thông báo đã được phát hành!");
                 switchTab("announcements");
             }).catch(function() {
-                showStatus("Loi", "Khong the dang thong bao!");
+                showStatus("Lỗi", "Không thể đăng thông báo!");
             });
         }
 
-        // === ĐĂNG KÝ NHANH - Dùng cache ===
         function handleRegister() {
             var user = document.getElementById("regUser").value.trim();
             var pass = document.getElementById("regPass").value.trim();
             
-            if (!user || !pass) return showStatus("Loi", "Vui long dien day du thong tin!");
-            if (user.length < 3 || pass.length < 4) return showStatus("Loi", "Tai khoan it nhat 3 ki tu, mat khau it nhat 4 ki tu!");
-            if (user.length > 10 || pass.length > 20) return showStatus("Loi", "Tai khoan toi da 10, mat khau toi da 20 ki tu!");
+            if (!user || !pass) return showStatus("Lỗi", "Vui lòng điền đầy đủ thông tin!");
+            if (user.length < 3 || pass.length < 4) return showStatus("Lỗi", "Tài khoản ít nhất 3 kí tự, mật khẩu ít nhất 4 kí tự!");
+            if (user.length > 10 || pass.length > 20) return showStatus("Lỗi", "Tài khoản tối đa 10, mật khẩu tối đa 20 kí tự!");
 
-            // Kiểm tra cache trước
             if (userCache[user.toLowerCase()]) {
-                return showStatus("Loi", "Tai khoan da ton tai!");
+                return showStatus("Lỗi", "Tài khoản đã tồn tại!");
             }
 
-            // Lưu nhanh vào cache
             userCache[user.toLowerCase()] = { username: user, password: pass };
             
-            // Lưu vào Firebase
             db.ref("users/" + user.toLowerCase()).set({
                 username: user,
                 password: pass,
                 createdAt: new Date().toISOString()
             });
 
-            // Login ngay lập tức - không chờ Firebase
             loginSuccess(user, pass, "member");
             closeModal("auth-modal");
-            showToast("Chao mung " + user + "!");
+            showToast("Chào mừng " + user + "!");
             document.getElementById("regUser").value = "";
             document.getElementById("regPass").value = "";
         }
 
-        // === ĐĂNG NHẬP SIÊU NHANH ===
         function handleLogin() {
             var user = document.getElementById("loginUser").value.trim();
             var pass = document.getElementById("loginPass").value.trim();
             
-            if (!user || !pass) return showStatus("Loi", "Vui long dien du thong tin!");
+            if (!user || !pass) return showStatus("Lỗi", "Vui lòng điền đủ thông tin!");
 
-            // Admin check cứng - nhanh nhất
-            if (user === "hdanh" && pass === "211") {
-                loginSuccess("hdanh", "211", "admin");
+            if (user === "xine3d" && pass === "Thinh_2012") {
+                loginSuccess("xine3d", "Thinh_2012", "admin");
                 closeModal("auth-modal");
-                showToast("Chao Admin hdanh login");
+                showToast("Chào Admin!");
                 document.getElementById("loginUser").value = "";
                 document.getElementById("loginPass").value = "";
                 return;
             }
 
-            // Kiểm tra cache trước - nhanh
             var cachedUser = userCache[user.toLowerCase()];
             if (cachedUser && cachedUser.password === pass) {
                 loginSuccess(cachedUser.username, pass, "member");
                 closeModal("auth-modal");
-                showToast("Chao " + cachedUser.username + "!");
+                showToast("Chào " + cachedUser.username + "!");
                 document.getElementById("loginUser").value = "";
                 document.getElementById("loginPass").value = "";
                 return;
             }
 
-            // Nếu không có trong cache, mới query Firebase
             db.ref("users/" + user.toLowerCase()).once("value", function(snap) {
                 var data = snap.val();
                 if (data && data.password === pass) {
-                    // Cập nhật cache
                     userCache[user.toLowerCase()] = data;
                     loginSuccess(data.username, pass, "member");
                     closeModal("auth-modal");
-                    showToast("Chao " + data.username + "!");
+                    showToast("Chào " + data.username + "!");
                     document.getElementById("loginUser").value = "";
                     document.getElementById("loginPass").value = "";
                 } else {
-                    showStatus("Loi", "Sai tai khoan hoac mat khau!");
+                    showStatus("Lỗi", "Sai tài khoản hoặc mật khẩu!");
                 }
             });
         }
@@ -757,16 +731,16 @@
             localStorage.removeItem("hd_password");
             updateHeaderUI();
             switchTab("files");
-            showToast("Da dang xuat!");
+            showToast("Đã đăng xuất!");
         }
 
         function updateHeaderUI() {
             var btn = document.getElementById("headerAuthBtn");
             var adminTab = document.getElementById("adminTab");
-            var username = localStorage.getItem("hd_username") || "Tai khoan";
+            var username = localStorage.getItem("hd_username") || "Tài khoản";
 
             if (currentUser === "guest") {
-                btn.textContent = "Dang nhap";
+                btn.textContent = "Đăng nhập";
                 btn.className = "btn-header btn-login";
                 adminTab.style.display = "none";
             } else {
@@ -817,6 +791,28 @@
 
         function openModal(id) {
             document.getElementById(id).classList.add("show");
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove("show");
+        }
+
+        function showStatus(title, msg) {
+            document.getElementById("statusTitle").innerText = title;
+            document.getElementById("statusDesc").innerText = msg;
+            openModal("status-modal");
+        }
+
+        function showToast(msg) {
+            document.getElementById("toastMsg").innerText = msg;
+            document.getElementById("toast").classList.add("show");
+            setTimeout(function() {
+                document.getElementById("toast").classList.remove("show");
+            }, 2000);
+        }
+    </script>
+</body>
+</html>ment.getElementById(id).classList.add("show");
         }
 
         function closeModal(id) {
