@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HDanhTech Files - Premium Blue</title>
     
-    <!-- Icon tab trình duyệt -->
     <link rel="icon" type="image/png" href="https://via.placeholder.com/150/0381fe/ffffff?text=HD">
 
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -82,7 +81,6 @@
         }
         .header-brand { display: flex; align-items: center; gap: 12px; }
         
-        /* CSS Logo Fallback - Tránh lỗi giống ảnh 7142.jpg */
         .tech-logo-fallback {
             width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
             background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white;
@@ -139,7 +137,6 @@
         .pulse-dot { width: 8px; height: 8px; background-color: #10b981; border-radius: 50%; display: inline-block; margin-right: 6px; animation: pulse 1.6s infinite; vertical-align: middle; }
         @keyframes pulse { 0%, 100% { transform: scale(0.9); opacity: 0.6; } 50% { transform: scale(1.2); opacity: 1; } }
 
-        /* PHẦN ĐƯỢC TỐI ƯU ĐẸP HƠN THEO ẢNH 7142.JPG */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.3);
             z-index: 9999; display: flex; justify-content: center; align-items: flex-end;
@@ -235,7 +232,6 @@
         <div class="glow-circle glow-2"></div>
     </div>
 
-    <!-- TOP HEADER -->
     <div class="top-header">
         <div class="header-brand">
             <div class="tech-logo-fallback">HD</div>
@@ -249,7 +245,6 @@
 
     <div id="loading-frame"><div class="spinner"></div></div>
 
-    <!-- SETTINGS MODAL -->
     <div id="settings-modal" class="modal-overlay">
         <div class="modal-box">
             <button onclick="closeSettingsModal()" class="modal-close-btn">Đóng</button>
@@ -268,7 +263,6 @@
         </div>
     </div>
 
-    <!-- STATUS MODAL -->
     <div id="status-modal" class="modal-overlay">
         <div class="modal-box" style="border-radius: 28px; margin: 20px; margin-top: auto; padding: 24px;">
             <h3 id="status-title" style="font-size: 1.15rem; margin-bottom: 8px; font-weight: 700;">Thông báo</h3>
@@ -277,12 +271,10 @@
         </div>
     </div>
 
-    <!-- MÀN HÌNH CHÀO MỪNG ĐÃ SỬA ĐẸP HƠN THEO ẢNH 7142.JPG -->
     <div id="welcome-modal" class="modal-overlay">
         <div class="modal-box">
             <button id="close-welcome-btn" class="modal-close-btn" disabled>3s</button>
             
-            <!-- Logo công nghệ CSS không lo bị lỗi link hình -->
             <div class="tech-logo-fallback large">HD</div>
             
             <h2 class="welcome-title">Chào mừng đến với HDanhTech Files</h2>
@@ -298,7 +290,6 @@
         </div>
     </div>
 
-    <!-- AUTH MODAL -->
     <div id="auth-modal" class="modal-overlay">
         <div class="modal-box">
             <button onclick="closeAuthModal()" class="modal-close-btn">×</button>
@@ -321,7 +312,6 @@
         </div>
     </div>
 
-    <!-- ACCOUNT INFO MODAL -->
     <div id="account-info-modal" class="modal-overlay">
         <div class="modal-box">
             <button onclick="closeAccountInfoModal()" class="modal-close-btn">×</button>
@@ -335,7 +325,6 @@
         </div>
     </div>
 
-    <!-- NAVIGATION TABS -->
     <div class="tabs-container">
         <button class="tab-btn active" onclick="switchTab('tab-files')">Tệp tin</button>
         <button class="tab-btn" onclick="switchTab('tab-verified')">Đã xác minh</button>
@@ -343,10 +332,8 @@
         <button class="tab-btn" id="tab-btn-admin-panel" onclick="switchTab('tab-admin-panel')">Quản trị</button>
     </div>
 
-    <!-- CONTAINER CONTENT -->
     <div class="container">
         
-        <!-- ABOUT CARD -->
         <div class="oneui-card">
             <p class="section-title">About Us</p>
             <div class="about-team-box">
@@ -370,12 +357,10 @@
             </div>
         </div>
 
-        <!-- TAB 1: TẤT CẢ TỆP TIN -->
         <div id="tab-files" class="tab-content active">
             <div class="oneui-card">
                 <p class="section-title">Danh sách hoạt động (6 Tệp)</p>
                 <div id="files-container">
-                    <!-- File Items giữ nguyên cấu trúc logic cũ của bạn -->
                     <div class="file-item">
                         <h4>HDanhTech Launcher <span style="display: flex; gap: 4px;"><span class="badge-insanity">INSANITY!!</span><span class="badge-hot">HOT 🔥</span><span class="badge-verified">An toàn</span></span></h4>
                         <p class="file-desc">Finding good launcher apk? NL will give you best enjoy. Hide your apps from others people to find it.</p>
@@ -419,7 +404,6 @@
             </div>
         </div>
 
-        <!-- TAB 2: ĐÃ XÁC MINH -->
         <div id="tab-verified" class="tab-content">
             <div class="oneui-card">
                 <p class="section-title">✓ Chỉ hiện tệp tin an toàn</p>
@@ -427,7 +411,6 @@
             </div>
         </div>
 
-        <!-- TAB 3: THÔNG BÁO -->
         <div id="tab-announcements" class="tab-content">
             <div class="oneui-card">
                 <p class="section-title">📢 Bảng tin hệ thống</p>
@@ -435,7 +418,6 @@
             </div>
         </div>
 
-        <!-- TAB 4: QUẢN TRỊ -->
         <div id="tab-admin-panel" class="tab-content">
             <div class="oneui-card">
                 <p class="section-title">⚙️ Đăng thông báo toàn server</p>
@@ -666,14 +648,28 @@
             if (action === 'register') {
                 const user = document.getElementById("reg-user").value.trim();
                 const pass = document.getElementById("reg-pass").value.trim();
+                
+                if (!user || !pass) return showStatusModal("Lỗi", "Vui lòng điền đầy đủ thông tin tài khoản và mật khẩu!");
                 if (user.length > 10 || pass.length > 20) return showStatusModal("Lỗi", "Tài khoản tối đa 10 kí tự, mật khẩu tối đa 20 kí tự!");
-                db.ref("users/" + user.toLowerCase()).set({ username: user, password: pass });
-                showStatusModal("Đăng ký", "Tạo tài khoản thành công! Mời ông đăng nhập.");
-                toggleAuthForm('login');
+                
+                db.ref("users/" + user.toLowerCase()).set({ username: user, password: pass }).then(() => {
+                    // TỰ ĐỘNG ĐĂNG NHẬP VÀO LUÔN NGAY SAU KHI ĐĂNG KÝ
+                    currentUser = "member";
+                    localStorage.setItem("hdantech_current_user", "member"); 
+                    localStorage.setItem("hdantech_session_username", user);
+                    localStorage.setItem("hdantech_session_password", pass);
+                    
+                    nextActionFlow = "login_success_clear"; 
+                    updateHeaderAuthButtonUI();
+                    
+                    showStatusModal("Đăng ký thành công", `Chào mừng ${user}! Hệ thống đã tự động kích hoạt phiên đăng nhập cho ông.`);
+                }).catch(() => {
+                    showStatusModal("Lỗi kết nối", "Không thể ghi dữ liệu, vui lòng thử lại sau.");
+                });
             } else {
                 const userInput = document.getElementById("login-user").value.trim();
                 const passInput = document.getElementById("login-pass").value.trim();
-                if(!userInput || !passInput) return alert("Vui lòng điền đủ thông tin!");
+                if(!userInput || !passInput) return showStatusModal("Lỗi", "Vui lòng điền đủ thông tin!");
                 
                 if (userInput.toLowerCase() === "xine3d" && passInput === "Thinh_2012") {
                     currentUser = "admin";
@@ -712,11 +708,7 @@
     </script>
 </body>
 </html>
-   }, 300);
-        }
-
-        function renderServerAnnouncements() {
-            const container = document.getElementById("announcements-container");
+nt.getElementById("announcements-container");
             container.innerHTML = "";
             if (databaseNotices.length === 0) {
                 container.innerHTML = `<p style="color:#9aa0a6; font-size:0.85rem; padding:15px; text-align:center;">Chưa có thông báo nào từ ban quản trị.</p>`;
