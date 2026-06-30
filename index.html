@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HDanh Developer - Premium Android Apps</title>
+    <title>HDanh Developer - Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-family/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
@@ -14,457 +14,221 @@
             --primary-blue: #0066ff;
             --text-color: #ffffff;
             --text-muted: #8fa0c0;
-            --neon-glow: 0 0 20px rgba(0, 102, 255, 0.4);
             --border-color: rgba(255, 255, 255, 0.05);
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            /* Bạn có thể thay background-image bằng ảnh nền anime nếu có */
-            background-image: linear-gradient(to bottom, rgba(3, 8, 22, 0.7), #030816), url('https://via.placeholder.com/1920x1080');
-            background-size: cover;
-            background-position: top center;
-            background-repeat: no-repeat;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* --- HEADER & NAV --- */
-        header {
-            border-bottom: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 70px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); padding-bottom: 50px; }
+        a { text-decoration: none; color: inherit; }
         
-        .logo img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
 
-        .nav-menu {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
+        /* --- HEADER --- */
+        header { border-bottom: 1px solid var(--border-color); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; height: 70px; }
+        .logo { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.5px; }
+        .logo span { color: var(--primary-blue); }
+        .nav-menu { display: flex; gap: 25px; list-style: none; font-size: 0.9rem; color: var(--text-muted); }
+        .nav-menu a:hover, .nav-menu .active { color: #fff; }
+        .btn-login { background: var(--primary-blue); padding: 8px 18px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; }
 
-        .nav-menu a:hover, .nav-menu .active {
-            color: var(--primary-blue);
-        }
+        /* --- SUB MENU (Rút gọn từ các nút thô sơ) --- */
+        .sub-nav { display: flex; gap: 10px; margin: 25px 0; background: rgba(255,255,255,0.02); padding: 6px; border-radius: 8px; border: 1px solid var(--border-color); width: fit-content; }
+        .sub-nav-btn { padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; transition: 0.2s; }
+        .sub-nav-btn.active, .sub-nav-btn:hover { background: rgba(0, 102, 255, 0.15); color: #38bdf8; }
 
-        .btn-login {
-            background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc);
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
+        /* --- PROFILE / ABOUT US --- */
+        .profile-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 25px; display: flex; gap: 25px; align-items: center; margin-bottom: 35px; }
+        .avatar-wrapper { position: relative; }
+        .avatar { width: 110px; height: 110px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); }
+        .profile-info h3 { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+        .profile-info h2 { font-size: 1.3rem; margin-bottom: 8px; }
+        .profile-info p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin-bottom: 12px; }
+        .profile-stats { display: flex; gap: 20px; font-size: 0.8rem; color: var(--text-muted); }
+        .profile-stats span strong { color: #fff; }
 
-        /* --- HERO SECTION --- */
-        .hero {
-            padding: 80px 0 40px 0;
-        }
+        /* --- FILE LIST --- */
+        .section-header { font-size: 1.1rem; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .file-grid { display: flex; flex-direction: column; gap: 15px; }
+        .file-item { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 20px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+        .file-item:hover { border-color: rgba(0, 102, 255, 0.2); background: rgba(6, 14, 38, 0.8); }
+        
+        .file-details { flex: 1; padding-right: 20px; }
+        .file-title-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+        .file-name { font-weight: 600; font-size: 1rem; }
+        .badge { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; text-transform: uppercase; }
+        .badge.hot { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        .badge.safe { background: rgba(16, 185, 129, 0.15); color: var(--success-color); }
+        .badge.risk { background: rgba(245, 158, 11, 0.15); color: var(--warning-color); }
+        
+        .file-desc { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px; line-height: 1.4; }
+        .file-meta { font-size: 0.8rem; display: flex; gap: 15px; }
+        .verified-text { color: #38bdf8; }
+        .unverified-text { color: var(--warning-color); }
+        .version-text { color: var(--text-muted); }
 
-        .badge {
-            background: rgba(0, 102, 255, 0.1);
-            color: var(--primary-blue);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            line-height: 1.1;
-        }
-
-        .hero h1 span {
-            color: #38bdf8;
-            display: block;
-            text-shadow: var(--neon-glow);
-        }
-
-        .hero p {
-            color: var(--text-muted);
-            margin: 20px 0 30px 0;
-            max-width: 500px;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .hero-btns {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn-discord {
-            background-color: #5865F2;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-
-        .btn-apps {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-
-        /* --- STATS & NOTIFICATION --- */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 20px;
-            margin-top: 40px;
-        }
-
-        .card-panel {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 25px;
-            backdrop-filter: blur(5px);
-        }
-
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .panel-title {
-            font-size: 0.9rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .view-all {
-            color: var(--primary-blue);
-            font-size: 0.85rem;
-        }
-
-        .notif-content {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        .notif-date {
-            font-size: 0.8rem;
-            margin-bottom: 5px;
-        }
-
-        .stats-counter {
-            display: flex;
-            justify-content: space-around;
-            text-align: center;
-            align-items: center;
-            height: 100%;
-        }
-
-        .stat-item h3 {
-            font-size: 1.8rem;
-            margin: 10px 0 5px 0;
-        }
-
-        .stat-item p {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-        }
-
-        /* --- FEATURED APPS --- */
-        .section-title {
-            margin: 50px 0 25px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-
-        .app-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 25px 20px;
-            text-align: center;
-            transition: transform 0.3s;
-        }
-
-        .app-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(0, 102, 255, 0.3);
-            box-shadow: var(--neon-glow);
-        }
-
-        .app-icon {
-            width: 70px;
-            height: 70px;
-            background: #111c3a;
-            border-radius: 20px;
-            margin: 0 auto 15px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.2);
-        }
-
-        .app-card h4 {
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-        }
-
-        .app-version {
-            background: rgba(255,255,255,0.05);
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            color: var(--primary-blue);
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-
-        .app-desc {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            min-height: 45px;
-            line-height: 1.5;
-            margin-bottom: 20px;
-        }
-
-        .app-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .download-count {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .btn-download {
-            background: var(--primary-blue);
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        /* --- PREMIUM BANNER --- */
-        .premium-banner {
-            background: linear-gradient(90deg, rgba(6,14,38,1) 0%, rgba(0,66,170,0.3) 100%);
-            border: 1px solid rgba(0, 102, 255, 0.2);
-            border-radius: 12px;
-            padding: 30px;
-            margin: 40px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .premium-text h3 {
-            font-size: 1.3rem;
-            margin-bottom: 5px;
-        }
-
-        .premium-text p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .btn-upgrade {
-            background: var(--primary-blue);
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-weight: 600;
-            box-shadow: var(--neon-glow);
-        }
-
-        /* --- FOOTER --- */
-        footer {
-            background: #020612;
-            padding: 50px 0 20px 0;
-            border-top: 1px solid var(--border-color);
-            margin-top: 60px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr;
-            gap: 40px;
-            padding-bottom: 40px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .footer-brand p {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin: 15px 0;
-            line-height: 1.6;
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .social-icons a {
-            width: 35px;
-            height: 35px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-        }
-
-        .footer-links h4, .footer-stats h4 {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            letter-spacing: 0.5px;
-        }
-
-        .footer-links ul {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            margin-bottom: 12px;
-            color: var(--text-muted);
-        }
-
-        .stat-row span:last-child {
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .online-dot {
-            color: #10b981;
-        }
-
-        .copyright {
-            display: flex;
-            justify-content: space-between;
-            padding-top: 20px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
+        .file-actions { display: flex; gap: 10px; }
+        .btn-action { padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-download { background: var(--primary-blue); color: #fff; }
+        .btn-download.btn-risk { background: #df4747; }
+        .btn-key { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
     </style>
 </head>
 <body>
 
     <header>
         <div class="container nav-container">
-            <div class="logo">
-                <div style="width:35px; height:35px; background:#0066ff; border-radius:50%"></div>
-                HDANH DEVELOPER
-            </div>
+            <div class="logo">HDANH <span>DEVELOPER</span></div>
             <ul class="nav-menu">
-                <li><a href="#" class="active">Trang chủ</a></li>
+                <li><a href="#">Trang chủ</a></li>
                 <li><a href="#">Tải xuống</a></li>
                 <li><a href="#">Thông báo</a></li>
-                <li><a href="#">Bảng điều khiển</a></li>
+                <li><a href="#" class="active">Bảng điều khiển</a></li>
             </ul>
-            <a href="#" class="btn-login"><i class="fa-solid fa-user"></i> Đăng nhập</a>
+            <a href="#" class="btn-login">Đăng nhập</a>
         </div>
     </header>
 
     <div class="container">
-        <section class="hero">
-            <span class="badge">Welcome to my website</span>
-            <h1>HDanh<br><span>Developer</span></h1>
-            <p>Premium Android Apps • Secure Downloads</p>
-            <p style="margin-top: -15px;">Chia sẻ những ứng dụng & game Android chất lượng, miễn phí và được kiểm duyệt kỹ lưỡng.</p>
-            <div class="hero-btns">
-                <a href="#" class="btn-discord"><i class="fa-brands fa-discord"></i> Discord</a>
-                <a href="#" class="btn-apps">Xem ứng dụng <i class="fa-solid fa-arrow-down"></i></a>
+        <div class="sub-nav">
+            <div class="sub-nav-btn active">Tập tin</div>
+            <div class="sub-nav-btn">Đã xác minh</div>
+            <div class="sub-nav-btn">Thông báo</div>
+            <div class="sub-nav-btn">Quản trị</div>
+        </div>
+
+        <div class="profile-card">
+            <div class="avatar-wrapper">
+                <img src="https://via.placeholder.com/110" alt="Avatar" class="avatar">
+            </div>
+            <div class="profile-info">
+                <h3>About Us</h3>
+                <h2>Team NetKing Official</h2>
+                <p>Hệ thống cung cấp, crack và phân phối các tệp tin ứng dụng di động an toàn, tối ưu hóa trải nghiệm người dùng cao cấp.<br>➔ Tham gia Discord của nhóm để cập nhật thông tin.</p>
+                <div class="profile-stats">
+                    <span>Lượt truy cập: <strong>0</strong></span>
+                    <span>Trực tuyến: <strong>0</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <section>
+            <div class="section-header">
+                <div>Danh sách hoạt động (6 Tệp)</div>
+                <div style="font-size: 0.8rem; color: var(--success-color);"><i class="fa-solid fa-check"></i> Chỉ hiện tệp tin an toàn</div>
+            </div>
+
+            <div class="file-grid">
+                <div class="file-item">
+                    <div class="file-details">
+                        <div class="file-title-row">
+                            <span class="file-name">Netking Launcher</span>
+                            <span class="badge hot">INSANITY!! HOT</span>
+                            <span class="badge safe"><i class="fa-solid fa-shield"></i> An toàn</span>
+                        </div>
+                        <div class="file-desc">Finding good launcher apk? NL will give you best enjoy. Hide your apps from others people to find it, NL can help you!</div>
+                        <div class="file-meta">
+                            <span class="verified-text"><i class="fa-solid fa-circle-check"></i> Verified by netking team and fishisred</span>
+                            <span class="version-text">Phiên bản: V1</span>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="btn-action btn-download">Tải tập tin</button>
+                    </div>
+                </div>
+
+                <div class="file-item">
+                    <div class="file-details">
+                        <div class="file-title-row">
+                            <span class="file-name">NetPlus</span>
+                            <span class="badge hot">HOT</span>
+                            <span class="badge safe"><i class="fa-solid fa-shield"></i> An toàn</span>
+                        </div>
+                        <div class="file-desc">2 option antiband 88% - 90%: 1. Freeze | 2. Ghost</div>
+                        <div class="file-meta">
+                            <span class="verified-text"><i class="fa-solid fa-circle-check"></i> This app got verified by shin mod, davisk tech and netking team</span>
+                            <span class="version-text">Phiên bản: V18</span>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="btn-action btn-download">Tải tập tin</button>
+                        <button class="btn-action btn-key">Lấy Key</button>
+                    </div>
+                </div>
+
+                <div class="file-item">
+                    <div class="file-details">
+                        <div class="file-title-row">
+                            <span class="file-name">Netking Fake Lag An toàn</span>
+                            <span class="badge safe"><i class="fa-solid fa-shield"></i> An toàn</span>
+                        </div>
+                        <div class="file-desc">Fake Lag Modern, 3 Options: 1. Freeze Infinity | 2. Invisible | 3. Teleporter</div>
+                        <div class="file-meta">
+                            <span class="version-text">Phiên bản: v1.0.1</span>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="btn-action btn-download">Tải tập tin</button>
+                    </div>
+                </div>
+
+                <div class="file-item">
+                    <div class="file-details">
+                        <div class="file-title-row">
+                            <span class="file-name">NetKing Fake Lag OG Version An toàn</span>
+                            <span class="badge safe"><i class="fa-solid fa-shield"></i> An toàn</span>
+                        </div>
+                        <div class="file-desc">Using OG VPN Service, Never getting BlackListed But Just Own 1 Options: Freeze The Game For 2s Have About 1.5s To Shoot</div>
+                        <div class="file-meta">
+                            <span class="version-text">Phiên bản: v1.0.2</span>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="btn-action btn-download">Tải tập tin</button>
+                    </div>
+                </div>
+
+                <div class="file-item">
+                    <div class="file-details">
+                        <div class="file-title-row">
+                            <span class="file-name">Netking Modern Chưa xác minh</span>
+                            <span class="badge risk"><i class="fa-solid fa-triangle-exclamation"></i> Nguy cơ</span>
+                        </div>
+                        <div class="file-desc" style="color: var(--warning-color);">This app got cracked by Netking team, not made by Netking team. Can be risk!</div>
+                        <div class="file-meta">
+                            <span class="unverified-text">Chưa xác minh</span>
+                            <span class="version-text">Phiên bản: V2.0.0</span>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="btn-action btn-download btn-risk">Tải tập tin rủi ro</button>
+                    </div>
+                </div>
+
+                <div class="file-item">
+                    <div class="file-details">
+                        <div class="file-title-row">
+                            <span class="file-name">Sky Ping An toàn</span>
+                            <span class="badge safe"><i class="fa-solid fa-shield"></i> An toàn</span>
+                        </div>
+                        <div class="file-desc">Safe App, made by tunmod the frames and UIs look very cool and all free. The key for the app is... join our server discord for key <3</div>
+                        <div class="file-meta">
+                            <span class="version-text">Phiên bản: V4</span>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="btn-action btn-download">Tải tập tin</button>
+                    </div>
+                </div>
             </div>
         </section>
+    </div>
 
-        <div class="dashboard-grid">
-            <div class="card-panel">
-                <div class="panel-header">
-                    <div class="panel-title" style="color: #38bdf8;"><i class="fa-solid fa-bullhorn"></i> Thông báo mới nhất</div>
-                    <a href="#" class="view-all">Xem tất cả <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
-                <div class="notif-content">
-                    <div class="notif-date"><i class="fa-solid fa-bolt" style="color:#eab308"></i> 15/05/2025</div>
-                    <strong>Chào mừng đến với HDanh Developer!</strong> Website mới chính thức hoạt động. Cảm ơn mọi người đã ủng hộ!
-                </div>
-            </div>
-            <div class="card-panel">
-                <div class="stats-counter">
-                    <div class="stat-item">
-                        <i class="fa-solid fa-users" style="color:#38bdf8"></i>
-                        <h3>1,248</h3>
-                        <p>Tổng người dùng</p>
-                    </div>
-                    <div class="stat-item">
-                        <i class="fa-solid fa-download" style="color:#38bdf8"></i>
-                        <h3>3,652</h3>
+</body>
+</html>
+             <h3>3,652</h3>
                         <p>Lượt tải xuống</p>
                     </div>
                     <div class="stat-item">
