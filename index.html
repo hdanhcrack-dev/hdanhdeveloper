@@ -1,613 +1,317 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HDanh Developer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HDanhTech Files - One UI 8.5 Edition</title>
+    
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow.png">
+    <link class="apple-touch-icon" href="https://raw.githubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow.png">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
-<style>
-:root {
-    --primary-color: #008cff;
-    --primary-glow: #00aaff;
-    --bg-dark: #05070d;
-    --card-bg: rgba(255, 255, 255, 0.03);
-    --card-border: rgba(0, 170, 255, 0.2);
-    --text-muted: #a0aec0;
-}
+    <style>
+        :root {
+            --bg-color: #f4f6fa;
+            --text-color: #1a1a1a;
+            --text-muted: #5f6368;
+            --text-title: #7a7e85;
+            --card-bg: #ffffff;
+            --card-border: rgba(255, 255, 255, 0.8);
+            --item-bg: #f8f9fa;
+            --header-bg: rgba(244, 246, 250, 0.82);
+            --header-border: rgba(0, 0, 0, 0.04);
+            --tab-container-bg: #e3e5ee;
+            --tab-btn-active: #ffffff;
+            --input-bg: #f2f3f8;
+            --glow-op: 0.45;
+            --glow-1: #8ca5ff;
+            --glow-2: #ffb6c1;
+            --glow-3: #c3a6ff;
+            --insanity-gradient: linear-gradient(135deg, #8ca5ff, #c3a6ff, #ffb6c1);
+        }
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    scroll-behavior: smooth;
-}
+        [data-theme="dark"] {
+            --bg-color: #0a0a0c;
+            --text-color: #f5f5f7;
+            --text-muted: #a1a1a9;
+            --text-title: #8e8e93;
+            --card-bg: #16161a;
+            --card-border: rgba(255, 255, 255, 0.05);
+            --item-bg: #1f1f24;
+            --header-bg: rgba(10, 10, 12, 0.82);
+            --header-border: rgba(255, 255, 255, 0.06);
+            --tab-container-bg: #222227;
+            --tab-btn-active: #2c2c35;
+            --input-bg: #25252b;
+            --glow-op: 0.25;
+            --glow-1: #3b5998;
+            --glow-2: #5c3a41;
+            --glow-3: #4a3475;
+            --insanity-gradient: linear-gradient(135deg, #3b5998, #4a3475, #5c3a41);
+        }
 
-body{
-    background: var(--bg-dark);
-    color: white;
-    overflow-x: hidden;
-}
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 16px;
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-body::before{
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-    radial-gradient(circle at 10% 20%, rgba(0, 140, 255, 0.15), transparent 45%),
-    radial-gradient(circle at 90% 80%, rgba(0, 234, 255, 0.1), transparent 45%);
-    z-index: -2;
-    pointer-events: none;
-}
+        .ambient-glow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none; background: var(--bg-color);
+        }
+        .glow-circle { position: absolute; border-radius: 50%; filter: blur(80px); opacity: var(--glow-op); transition: background 0.5s ease; }
+        .glow-1 { top: -10%; left: -10%; width: 350px; height: 350px; background: var(--glow-1); }
+        .glow-2 { top: 5%; right: -5%; width: 280px; height: 280px; background: var(--glow-2); }
+        .glow-3 { top: -20%; left: 40%; width: 400px; height: 400px; background: var(--glow-3); }
 
-header{
-    position: fixed;
-    top: 0;
-    width: 100%;
-    padding: 15px 10%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    background: rgba(5, 7, 13, 0.75);
-    border-bottom: 1px solid rgba(0, 170, 255, 0.25);
-    z-index: 999;
-}
+        .top-header {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: var(--header-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            padding: 14px 20px; display: flex; align-items: center; justify-content: space-between;
+            z-index: 100; border-bottom: 1px solid var(--header-border);
+        }
+        .header-brand { display: flex; align-items: center; gap: 10px; }
+        .top-header img { width: 28px; height: 28px; object-fit: contain; border-radius: 8px; }
+        .top-header h1 { font-size: 1.1rem; font-weight: 600; color: var(--text-color); letter-spacing: -0.3px; }
+        .header-actions { display: flex; align-items: center; gap: 8px; }
 
-.logo{
-    font-size: 28px;
-    font-weight: 800;
-    color: #fff;
-    text-decoration: none;
-}
+        .btn-setting-toggle {
+            background: var(--input-bg); border: none; width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-color);
+        }
 
-.logo span{
-    color: var(--primary-glow);
-    text-shadow: 0 0 15px var(--primary-glow);
-}
+        .header-auth-btn {
+            padding: 6px 16px; font-size: 0.8rem; font-weight: 600; border-radius: 18px; cursor: pointer; border: none;
+        }
+        .auth-state-signin { background: #0381fe; color: #fff; }
+        .auth-state-signin:hover { background: #0266cb; }
+        .auth-state-logged { background: var(--tab-container-bg); color: var(--text-muted); }
 
-nav {
-    display: flex;
-    align-items: center;
-}
+        .tabs-container { 
+            display: flex; gap: 6px; margin-bottom: 16px; width: 100%; max-width: 540px; 
+            z-index: 5; background: var(--tab-container-bg); padding: 4px; border-radius: 24px;
+        }
+        .tab-btn {
+            flex: 1; padding: 10px 4px; background: transparent; border: none;
+            color: var(--text-muted); font-weight: 600; cursor: pointer; border-radius: 20px; 
+            text-align: center; font-size: 0.85rem;
+        }
+        .tab-btn.active { background: var(--tab-btn-active); color: #0381fe; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        #tab-btn-admin-panel { display: none; color: #e91e63; }
+        #tab-btn-admin-panel.active { background: var(--tab-btn-active); color: #e91e63; }
 
-nav a{
-    color: white;
-    text-decoration: none;
-    margin-left: 35px;
-    font-size: 15px;
-    font-weight: 500;
-    transition: .3s ease;
-    position: relative;
-}
+        .container { width: 100%; max-width: 540px; z-index: 5; }
+        
+        .tab-content { 
+            display: none; 
+            opacity: 0;
+            transform: translateY(8px);
+            filter: blur(4px);
+            transition: opacity 0.3s cubic-bezier(0.1, 0.9, 0.2, 1), transform 0.3s cubic-bezier(0.1, 0.9, 0.2, 1), filter 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
+        }
+        .tab-content.active { 
+            display: block; 
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
 
-nav a::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--primary-glow);
-    transition: width 0.3s ease;
-}
+        .oneui-card {
+            background: var(--card-bg); border-radius: 24px; padding: 20px; margin-bottom: 14px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.02); border: 1px solid var(--card-border);
+        }
+        .section-title { font-size: 0.9rem; font-weight: 700; color: var(--text-title); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-nav a:hover{
-    color: var(--primary-glow);
-}
+        .about-team-box { display: flex; align-items: center; gap: 14px; background: var(--item-bg); border-radius: 18px; padding: 14px; border: 1px solid rgba(0,0,0,0.01); }
+        .about-team-logo { width: 44px; height: 44px; object-fit: contain; border-radius: 12px; background: #000; }
+        .about-team-info h5 { font-size: 0.95rem; font-weight: 600; color: var(--text-color); margin-bottom: 2px; }
+        .about-team-info p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 4px; }
+        
+        .counter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+        .counter-box { background: var(--input-bg); padding: 12px; border-radius: 16px; text-align: center; }
+        .counter-box p { font-size: 0.78rem; font-weight: 700; color: var(--text-title); text-transform: uppercase; margin-bottom: 4px; }
+        .counter-box h4 { font-size: 1.15rem; font-weight: 700; color: var(--text-color); }
+        .pulse-dot { width: 8px; height: 8px; background-color: #2ecc71; border-radius: 50%; display: inline-block; margin-right: 6px; animation: pulse 1.6s infinite; vertical-align: middle; }
+        @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.6; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.6; } }
 
-nav a:hover::after {
-    width: 100%;
-}
+        .discord-blue-link { display: inline-flex; align-items: center; color: #0381fe; text-decoration: none; font-size: 0.82rem; font-weight: 600; }
+        .discord-blue-link:hover { opacity: 0.8; text-decoration: underline; }
 
-.menu-toggle {
-    display: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-}
+        .form-group { margin-bottom: 14px; }
+        label { display: block; margin-bottom: 6px; color: var(--text-color); font-weight: 600; font-size: 0.82rem; padding-left: 4px; }
+        input[type="text"], input[type="password"], textarea {
+            width: 100%; padding: 14px; background: var(--input-bg); border: 1px solid transparent;
+            border-radius: 16px; color: var(--text-color); outline: none; font-size: 0.9rem;
+        }
+        input:focus, textarea:focus { background: var(--card-bg); border-color: #0381fe; box-shadow: 0 0 0 3px rgba(3,129,254,0.15); }
 
-.hero{
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 140px 10% 80px;
-    gap: 60px;
-}
+        .btn-submit {
+            width: 100%; padding: 14px; color: white; font-weight: 600; cursor: pointer; font-size: 0.9rem;
+            display: block; text-align: center; border-radius: 18px; border: none;
+        }
 
-.text{
-    flex: 1.2;
-}
+        .file-item, .notice-item { background: var(--item-bg); border-radius: 20px; padding: 16px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; border: 1px solid rgba(0,0,0,0.01); }
+        .file-item h4, .notice-item h4 { font-size: 1rem; font-weight: 600; color: var(--text-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+        
+        .badge-verified { background: rgba(3,129,254,0.1); color: #0381fe; padding: 3px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
+        .badge-risk { background: rgba(255,152,0,0.1); color: #ff9800; padding: 3px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
+        .badge-admin { background: rgba(233,30,99,0.1); color: #e91e63; padding: 3px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
+        .badge-hot { background: rgba(244,67,54,0.1); color: #f44336; padding: 3px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; animation: blink 1.2s infinite; }
+        .badge-insanity { background: var(--insanity-gradient); color: #fff; padding: 3px 8px; border-radius: 8px; font-size: 0.7rem; font-800; text-shadow: 0 1px 2px rgba(0,0,0,0.2); animation: blink 1.2s infinite; }
+        
+        @keyframes blink { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
 
-.text h1{
-    font-size: 65px;
-    line-height: 1.1;
-    font-weight: 800;
-}
+        .file-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.45; }
+        .file-meta { font-size: 0.75rem; color: #9aa0a6; font-weight: 500; }
 
-.text h1 span{
-    color: var(--primary-glow);
-    background: linear-gradient(45deg, #008cff, #00eaff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+        .file-actions-row { display: flex; gap: 8px; margin-top: 4px; }
+        .btn-view {
+            flex: 1; text-align: center; padding: 10px; border-radius: 14px; font-weight: 600; 
+            cursor: pointer; text-decoration: none; font-size: 0.85rem; display: block;
+            background: #e8f0fe; color: #1a73e8; border: none;
+        }
+        .btn-view:hover { background: #1a73e8; color: #fff; }
+        .btn-view.risk-btn { background: #fff3e0; color: #e65100; }
+        .btn-view.risk-btn:hover { background: #e65100; color: #fff; }
+        .btn-key { background: var(--tab-container-bg); color: var(--text-muted); }
+        .btn-key:hover { background: var(--input-bg); color: var(--text-color); }
 
-.text p{
-    margin: 25px 0 35px;
-    color: var(--text-muted);
-    line-height: 1.8;
-    font-size: 16px;
-    max-width: 550px;
-}
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4);
+            z-index: 9999; display: flex; justify-content: center; align-items: flex-end;
+            opacity: 0; pointer-events: none; backdrop-filter: blur(0px);
+            transition: opacity 0.28s ease, backdrop-filter 0.28s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; backdrop-filter: blur(6px); }
 
-.buttons{
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
+        .modal-box { 
+            padding: 24px; max-width: 540px; width: 100%; position: relative; 
+            background: var(--card-bg); border-radius: 28px 28px 0 0;
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.1);
+            transform: translateY(100%); 
+            transition: transform 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
+        }
+        .modal-overlay.active .modal-box { transform: translateY(0); }
+        
+        .modal-close-btn { 
+            position: absolute; top: 16px; right: 20px; background: var(--input-bg); border: none; 
+            color: var(--text-muted); font-weight: bold; cursor: pointer; font-size: 1.1rem;
+            width: 32px; height: 32px; border-radius: 50%; text-align: center; line-height: 32px;
+        }
+        .auth-links a { color: #0381fe; font-weight: 600; text-decoration: none; margin: 0 6px; cursor: pointer;}
 
-.btn{
-    padding: 14px 32px;
-    border-radius: 12px;
-    text-decoration: none;
-    transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 15px;
-}
+        .setting-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 4px; border-bottom: 1px solid var(--header-border); }
+        .setting-info h5 { font-size: 0.95rem; font-weight: 600; color: var(--text-color); }
+        .setting-info p { font-size: 0.78rem; color: var(--text-muted); }
+        
+        .switch { position: relative; display: inline-block; width: 46px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #bdc3c7; transition: .3s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+        input:checked + .slider { background-color: #0381fe; }
+        input:checked + .slider:before { transform: translateX(20px); }
 
-.primary{
-    background: linear-gradient(135deg, #008cff, #0066cc);
-    color: white;
-    box-shadow: 0 4px 20px rgba(0, 140, 255, 0.4);
-}
+        #loading-frame {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(244, 246, 250, 0.9);
+            z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+        }
+        body[data-theme="dark"] #loading-frame { background: rgba(10, 10, 12, 0.9); }
+        #loading-frame.active { opacity: 1; pointer-events: auto; }
+        .spinner { width: 36px; height: 36px; border: 3.5px solid var(--tab-container-bg); border-left-color: #0381fe; border-radius: 50%; animation: spin 0.8s infinite linear; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-.primary:hover{
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 140, 255, 0.6);
-}
-
-.secondary{
-    border: 2px solid var(--primary-glow);
-    color: var(--primary-glow);
-    background: rgba(0, 170, 255, 0.03);
-}
-
-.secondary:hover{
-    background: var(--primary-glow);
-    color: #05070d;
-    box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
-    transform: translateY(-5px);
-}
-
-.hero-img-container {
-    flex: 0.8;
-    display: flex;
-    justify-content: center;
-}
-
-.hero img{
-    width: 380px;
-    max-width: 100%;
-    border-radius: 24px;
-    border: 1px solid rgba(0, 170, 255, 0.3);
-    box-shadow: 0 10px 50px rgba(0, 140, 255, 0.3);
-}
-
-.stats{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 30px;
-    padding: 0 10% 100px;
-}
-
-.card{
-    background: var(--card-bg);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--card-border);
-    padding: 40px 30px;
-    border-radius: 20px;
-    text-align: center;
-    transition: all .4s ease;
-}
-
-.card:hover{
-    transform: translateY(-8px);
-    border-color: var(--primary-glow);
-    box-shadow: 0 12px 40px rgba(0, 140, 255, 0.25);
-}
-
-.card h2{
-    color: var(--primary-glow);
-    font-size: 48px;
-    font-weight: 800;
-}
-
-.card p {
-    color: var(--text-muted);
-}
-
-.apps{
-    padding: 0 10% 120px;
-}
-
-.title{
-    text-align: center;
-    font-size: 40px;
-    font-weight: 800;
-    margin-bottom: 60px;
-    position: relative;
-}
-
-.title::after {
-    content: '';
-    position: absolute;
-    bottom: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 70px;
-    height: 4px;
-    background: var(--primary-glow);
-    border-radius: 2px;
-}
-
-.app-grid{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 35px;
-}
-
-.app{
-    background: #0b111c;
-    border: 1px solid rgba(0, 170, 255, 0.15);
-    border-radius: 24px;
-    padding: 40px 30px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: all .4s ease;
-}
-
-.app:hover{
-    transform: translateY(-10px);
-    border-color: var(--primary-glow);
-    box-shadow: 0 15px 45px rgba(0, 140, 255, 0.2);
-}
-
-.app img{
-    width: 90px;
-    height: 90px;
-    object-fit: contain;
-    margin-bottom: 25px;
-}
-
-.app h3{
-    font-size: 22px;
-    margin-bottom: 12px;
-}
-
-.app p{
-    color: var(--text-muted);
-    font-size: 14.5px;
-    line-height: 1.6;
-    flex-grow: 1;
-    margin-bottom: 25px;
-}
-
-.download{
-    width: 100%;
-    text-align: center;
-    background: linear-gradient(135deg, #008cff, #0055b3);
-    color: white;
-    padding: 14px 0;
-    border-radius: 14px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.download:hover {
-    background: linear-gradient(135deg, #00aaff, #008cff);
-    transform: translateY(-2px);
-}
-
-/* Nút rủi ro cho các bản crack chưa xác minh */
-.download.risk {
-    background: linear-gradient(135deg, #e65100, #b71c1c);
-}
-.download.risk:hover {
-    background: linear-gradient(135deg, #ff9100, #ff3d00);
-}
-
-footer{
-    padding: 40px 10%;
-    text-align: center;
-    border-top: 1px solid rgba(0, 170, 255, 0.2);
-    color: var(--text-muted);
-    background: #03050a;
-}
-
-@media(max-width: 992px){
-    .hero{
-        flex-direction: column-reverse;
-        text-align: center;
-        padding-top: 120px;
-    }
-    .text h1{ font-size: 48px; }
-    .text p { margin: 20px auto 30px; }
-    .buttons{ justify-content: center; }
-    .hero img{ width: 300px; }
-}
-
-@media(max-width: 768px){
-    header { padding: 15px 5%; }
-    .menu-toggle { display: block; }
-    nav {
-        position: absolute;
-        top: 100%;
-        left: -100%;
-        width: 100%;
-        height: calc(100vh - 100%);
-        background: rgba(5, 7, 13, 0.95);
-        backdrop-filter: blur(20px);
-        flex-direction: column;
-        padding-top: 50px;
-        transition: 0.4s ease;
-    }
-    nav.active { left: 0; }
-    nav a { margin: 20px 0; font-size: 18px; }
-}
-</style>
+        .info-row { display: flex; justify-content: space-between; padding: 12px 4px; border-bottom: 1px solid var(--header-border); font-size: 0.9rem; }
+        .info-row span { color: var(--text-muted); }
+        .info-row strong { color: var(--text-color); font-weight: 600; }
+    </style>
 </head>
 <body>
 
-<header>
-    <a href="#" class="logo">H<span>Danh</span></a>
-    
-    <div class="menu-toggle" onclick="toggleMenu()">
-        <i class="fa-solid fa-bars" id="menu-icon"></i>
+    <div class="ambient-glow">
+        <div class="glow-circle glow-1"></div>
+        <div class="glow-circle glow-2"></div>
+        <div class="glow-circle glow-3"></div>
     </div>
 
-    <nav id="nav-menu">
-        <a href="#" onclick="toggleMenu()">Trang Chủ</a>
-        <a href="#apps-section" onclick="toggleMenu()">Ứng Dụng</a>
-        <a href="#" onclick="toggleMenu()">Discord</a>
-        <a href="#" onclick="toggleMenu()">Liên Hệ</a>
-    </nav>
-</header>
-
-<section class="hero">
-    <div class="text">
-        <h1>HDanh <br><span>Developer</span></h1>
-        <p>
-            Chào mừng đến với không gian phát triển của HDanh. Nơi chia sẻ các ứng dụng hệ thống Android tối ưu, bộ công cụ hữu ích cùng các nội dung chất lượng cao hoàn toàn miễn phí.
-        </p>
-        <div class="buttons">
-            <a href="#" class="btn primary">
-                <i class="fa-brands fa-discord"></i> Tham Gia Discord
-            </a>
-            <a href="#apps-section" class="btn secondary">
-                <i class="fa-solid fa-layer-group"></i> Khám Phá App
-            </a>
+    <div class="top-header">
+        <div class="header-brand">
+            <img src="https://raw.githubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow.png" alt="Logo">
+            <h1>HDanhTech Files</h1>
+        </div>
+        <div class="header-actions">
+            <button class="btn-setting-toggle" onclick="openSettingsModal()" title="Cài đặt giao diện">
+                ⚙️
+            </button>
+            <button id="header-auth-action" class="header-auth-btn auth-state-signin" onclick="handleHeaderAuthClick()">
+                Đăng nhập
+            </button>
         </div>
     </div>
-    <div class="hero-img-container">
-        <img src="https://i.imgur.com/PoK4n8M.jpeg" alt="HDanh Developer">
+
+    <div id="loading-frame">
+        <div class="spinner"></div>
+        <div style="margin-top: 14px; color: #0381fe; font-weight: 600; font-size: 0.85rem;">Đang tải...</div>
     </div>
-</section>
 
-<section class="stats">
-    <div class="card">
-        <h2>1.2K+</h2>
-        <p>Người dùng tin cậy</p>
-    </div>
-    <div class="card">
-        <h2>3.6K+</h2>
-        <p>Lượt tải an toàn</p>
-    </div>
-    <div class="card">
-        <h2>12K+</h2>
-        <p>Lượt truy cập hệ thống</p>
-    </div>
-</section>
-
-<section class="apps" id="apps-section">
-    <h1 class="title">Ứng Dụng Nổi Bật</h1>
-    <div class="app-grid">
-        
-        <div class="app">
-            <img src="https://cdn-icons-png.flaticon.com/512/906/906175.png" alt="Netking Launcher">
-            <h3>Netking Launcher</h3>
-            <p>Ẩn ứng dụng của bạn khỏi tầm mắt người khác, đem lại trải nghiệm tốt nhất cho thiết bị.</p>
-            <a href="https://www.mediafire.com/file/zmd786crhxyv6no/NLauncher_1.0.apk/file" target="_blank" class="download"><i class="fa-solid fa-arrow-down-to-line"></i> Tải V1 (An toàn)</a>
-        </div>
-
-        <div class="app">
-            <img src="https://cdn-icons-png.flaticon.com/512/906/906175.png" alt="NetPlus">
-            <h3>NetPlus</h3>
-            <p>Hỗ trợ 2 tùy chọn chống khóa tài khoản (Antiband 88% - 90%) bao gồm Freeze và Ghost.</p>
-            <a href="https://www.mediafire.com/file/c5rjolz3ezd8yun/NetPlusV18.apk/file?dkey=hl9pz305lxt&r=1774" target="_blank" class="download"><i class="fa-solid fa-arrow-down-to-line"></i> Tải V18 (An toàn)</a>
-        </div>
-
-        <div class="app">
-            <img src="https://cdn-icons-png.flaticon.com/512/1048/1048941.png" alt="Netking Fake Lag">
-            <h3>Netking Fake Lag</h3>
-            <p>Công cụ giảm/giả lập lag hiện đại với 3 chế độ: Freeze Infinity, Invisible và Teleporter.</p>
-            <a href="https://www.mediafire.com/file/b566kfjwhsewl98/Netking_%25281%2529.apk/file" target="_blank" class="download"><i class="fa-solid fa-arrow-down-to-line"></i> Tải V1.0.1 (An toàn)</a>
-        </div>
-
-        <div class="app">
-            <img src="https://cdn-icons-png.flaticon.com/512/1048/1048941.png" alt="Netking Fake Lag OG">
-            <h3>Netking Fake Lag OG</h3>
-            <p>Phiên bản OG sử dụng dịch vụ VPN nguyên bản, chống lọt vào danh sách đen cực kì hiệu quả.</p>
-            <a href="https://www.mediafire.com/file/k37z83abw7ckrzo/Netking.apk/file" target="_blank" class="download"><i class="fa-solid fa-arrow-down-to-line"></i> Tải V1.0.2 (An toàn)</a>
-        </div>
-
-        <div class="app">
-            <img src="https://cdn-icons-png.flaticon.com/512/731/731985.png" alt="Netking Modern">
-            <h3>Netking Modern</h3>
-            <p style="color: #e65100;">Bản bẻ khóa (cracked) bởi bên thứ ba, không phải gốc nên có thể có rủi ro.</p>
-            <a href="https://www.mediafire.com/file/e72t7fqxcis9hp0/Netking+Modern.apk/file" target="_blank" class="download risk"><i class="fa-solid fa-triangle-exclamation"></i> Tải V2.0.0 (Rủi ro)</a>
-        </div>
-
-        <div class="app">
-            <img src="https://cdn-icons-png.flaticon.com/512/731/731985.png" alt="Sky Ping">
-            <h3>Sky Ping</h3>
-            <p>Sản phẩm thiết kế giao diện cực chất từ Tunmod, hoàn toàn miễn phí mã kích hoạt.</p>
-            <a href="https://www.mediafire.com/file/2ddgnsos7d2ee7d/SKY_PING_VIPV4.apk/file" target="_blank" class="download"><i class="fa-solid fa-arrow-down-to-line"></i> Tải V4 (An toàn)</a>
-        </div>
-
-    </div>
-</section>
-
-<footer>
-    © 2026 HDanh Developer - All Rights Reserved.
-</footer>
-
-<script>
-function toggleMenu() {
-    const nav = document.getElementById('nav-menu');
-    const icon = document.getElementById('menu-icon');
-    if(window.innerWidth <= 768) {
-        nav.classList.toggle('active');
-        if(nav.classList.contains('active')) {
-            icon.classList.remove('fa-bars');
-            icon.classList.add('fa-xmark');
-        } else {
-            icon.classList.remove('fa-xmark');
-            icon.classList.add('fa-bars');
-        }
-    }
-}
-</script>
-
-</body>
-</html>
-             <span class="file-title">Netking Fake Lag</span>
-                            <span class="mini-tag safe">SECURE</span>
-                        </div>
-                        <p class="file-description">Fake Lag Modern, tích hợp 3 tùy chọn nạp dữ liệu sâu: 1. Freeze Infinity | 2. Invisible | 3. Teleporter.</p>
-                        <div class="file-build">BUILD_VER: v1.0.1 <span>|</span> HASH: SHA-256_PASSED</div>
-                    </div>
-                    <div class="action-cluster">
-                        <a href="LINK_TAI_CUA_BAN_3" target="_blank" class="action-btn"><i class="fa-solid fa-terminal"></i> FETCH_FILE</a>
-                    </div>
+    <div id="settings-modal" class="modal-overlay">
+        <div class="modal-box">
+            <button onclick="closeSettingsModal()" class="modal-close-btn">×</button>
+            <h3 style="margin-bottom: 18px; font-size: 1.1rem; font-weight:600;">Cài đặt bảng điều khiển</h3>
+            
+            <div class="setting-row">
+                <div class="setting-info">
+                    <h5>Chế độ tối (Dark Mode)</h5>
+                    <p>Bảo vệ mắt, tối ưu năng lượng thiết bị</p>
                 </div>
-
-                <!-- File 4 -->
-                <div class="file-card-row">
-                    <div class="meta-left">
-                        <div class="meta-title-line">
-                            <span class="file-title">NetKing Fake Lag OG Edition</span>
-                            <span class="mini-tag safe">SECURE</span>
-                        </div>
-                        <p class="file-description">Using OG VPN Service, Never getting BlackListed. Freeze The Game For 2s Have About 1.5s To Shoot.</p>
-                        <div class="file-build">BUILD_VER: v1.0.2 <span>|</span> HASH: SHA-256_PASSED</div>
-                    </div>
-                    <div class="action-cluster">
-                        <a href="LINK_TAI_CUA_BAN_4" target="_blank" class="action-btn"><i class="fa-solid fa-terminal"></i> FETCH_FILE</a>
-                    </div>
-                </div>
-
-                <!-- File 5 (Cảnh báo nguy cơ cao cấp) -->
-                <div class="file-card-row">
-                    <div class="meta-left">
-                        <div class="meta-title-line">
-                            <span class="file-title">Netking Modern Cracked</span>
-                            <span class="mini-tag risk">UNVERIFIED</span>
-                        </div>
-                        <p class="file-description" style="opacity: 0.7;">This app got cracked by Netking team, not made by Netking team. Can be risk! Người dùng cần tự chịu rủi ro.</p>
-                        <div class="file-build" style="color: #ffb300;">STATUS: EXTERNAL_SOURCE</div>
-                    </div>
-                    <div class="action-cluster">
-                        <a href="LINK_TAI_RUI_RO" target="_blank" class="action-btn bypass"><i class="fa-solid fa-shield-cat"></i> BYPASS_FETCH</a>
-                    </div>
-                </div>
-
-                <!-- File 6 -->
-                <div class="file-card-row">
-                    <div class="meta-left">
-                        <div class="meta-title-line">
-                            <span class="file-title">Sky Ping Optimization</span>
-                            <span class="mini-tag safe">SECURE</span>
-                        </div>
-                        <p class="file-description">Safe App, made by tunmod the frames and UIs look very cool and all free. Vui lòng kết nối server discord để nhận khóa kích hoạt.</p>
-                        <div class="file-build">BUILD_VER: V4 <span>|</span> HASH: SHA-256_PASSED</div>
-                    </div>
-                    <div class="action-cluster">
-                        <a href="LINK_TAI_CUA_BAN_6" target="_blank" class="action-btn"><i class="fa-solid fa-terminal"></i> FETCH_FILE</a>
-                    </div>
-                </div>
-
+                <label class="switch">
+                    <input type="checkbox" id="theme-switch" onchange="toggleThemeMode(this)">
+                    <span class="slider"></span>
+                </label>
             </div>
-        </section>
-    </div>
 
-</body>
-</html>
-                <h3>Trở thành thành viên Premium</h3>
-                <p>Trải nghiệm tốc độ tải nhanh hơn, không quảng cáo và nhiều ưu đãi hấp dẫn!</p>
+            <div class="setting-row" style="border:none;">
+                <div class="setting-info">
+                    <h5>Hiệu ứng chuyển cảnh nâng cao</h5>
+                    <p>Bật hiệu ứng Blur và Fade In/Out mượt mà</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="animation-switch" checked disabled>
+                    <span class="slider"></span>
+                </label>
             </div>
-            <a href="#" class="btn-upgrade">Nâng cấp ngay <i class="fa-solid fa-chevron-right"></i></a>
+            <p style="text-align: center; font-size:0.75rem; color:var(--text-muted); margin-top:16px;">HDanhTech UI v8.5 Engine • Active</p>
         </div>
     </div>
 
-    <footer>
-        <div class="container footer-grid">
-            <div class="footer-brand">
-                <h4>HDanh Developer</h4>
-                <p>Chia sẻ ứng dụng Android chất lượng cao và hoàn toàn miễn phí cho cộng đồng.</p>
-                <div class="social-icons">
-                    <a href="#"><i class="fa-brands fa-discord"></i></a>
-                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
-                    <a href="#"><i class="fa-brands fa-telegram"></i></a>
-                </div>
-            </div>
-            <div class="footer-links">
-                <h4>LIÊN KẾT</h4>
-                <ul>
-                    <li>Trang chủ</li>
-                    <li>Tải xuống</li>
-                    <li>Thông báo</li>
-                    <li>Discord</li>
-                    <li>Chính sách bảo mật</li>
-                </ul>
-            </div>
-            <div class="footer-stats">
-                <h4>THỐNG KÊ</h4>
-                <div class="stat-row"><span>Tổng người dùng</span><span>1,248</span></div>
-                <div class="stat-row"><span>Tổng lượt tải</span><span>3,652</span></div>
-                <div class="stat-row"><span>Tổng lượt truy cập</span><span>12,860</span></div>
-                <div class="stat-row"><span>Đang trực tuyến</span><span class="online-dot">● 18</span></div>
-            </div>
+    <div id="status-modal" class="modal-overlay">
+        <div class="modal-box" style="text-align: center; border-radius: 24px; margin: 16px; margin-top: auto;">
+            <h3 id="status-title" style="font-size: 1.15rem; margin-bottom: 6px; font-weight: 600;">Thông báo</h3>
+            <p id="status-desc" style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin-bottom: 20px;">Thao tác thành công.</p>
+            <button class="btn-submit" onclick="closeStatusModal()" style="background: #0381fe;">Xác nhận</button>
         </div>
-        <div class="container copyright">
-            <p>© 2025 HDanh Developer. All rights reserved.</p>
-            <p>Made with <span style="color:red;">♥</span> by HDanh</p>
-        </div>
-    </footer>
+    </div>
 
-</body>
-</html>
-thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow.png" alt="Logo" style="width: 56px; height: 56px; object-fit: contain; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+    <div id="welcome-modal" class="modal-overlay">
+        <div class="modal-box">
+            <button id="close-welcome-btn" class="modal-close-btn" disabled style="font-size:0.75rem; width:auto; padding:0 12px; border-radius:14px;">3s</button>
+            <div style="text-align: center; margin-bottom: 12px; margin-top: 10px;">
+                <img src="https://raw.githubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow.png" alt="Logo" style="width: 56px; height: 56px; object-fit: contain; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
             </div>
-            <h2 style="margin-bottom: 8px; font-size: 1.25rem; font-weight:600; text-align: center; color:var(--text-color);">Chào mừng đến với Netking Files</h2>
+            <h2 style="margin-bottom: 8px; font-size: 1.25rem; font-weight:600; text-align: center; color:var(--text-color);">Chào mừng đến với HDanhTech Files</h2>
             <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin-bottom: 22px; text-align: center; padding: 0 10px;">
-                Hệ thống đám mây lưu trữ dữ liệu chính thức của Netking Team. Vui lòng đăng nhập tài khoản hệ thống của ông để tiếp tục.
+                Hệ thống đám mây lưu trữ dữ liệu chính thức của HDanhTech Team. Vui lòng đăng nhập tài khoản hệ thống của ông để tiếp tục.
             </p>
             <div class="auth-links" style="border-top: 1px solid var(--header-border); padding-top: 16px; text-align: center; padding-bottom: 10px;">
                 <a onclick="openAuthModal('signin')">Đăng ký</a> <span style="color: #d1d1d6;">|</span> <a onclick="openAuthModal('login')">Đăng nhập</a>
@@ -663,9 +367,9 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
         <div class="oneui-card" style="margin-bottom: 14px;">
             <p class="section-title">About Us</p>
             <div class="about-team-box">
-                <img src="https://raw.githubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow.png" alt="NetKing Logo" class="about-team-logo">
+                <img src="https://raw.githubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow.png" alt="HDanhTech Logo" class="about-team-logo">
                 <div class="about-team-info">
-                    <h5>Team NetKing Official</h5>
+                    <h5>Team HDanhTech Official</h5>
                     <p>Hệ thống cung cấp, crack và phân phối các tệp tin ứng dụng di động an toàn, tối ưu hóa trải nghiệm người dùng cao cấp.</p>
                     <a href="https://discord.gg/wf4QnepsxS" target="_blank" class="discord-blue-link">➔ Tham gia Discord của nhóm</a>
                 </div>
@@ -689,8 +393,8 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
                 <div id="files-container">
                     
                     <div class="file-item">
-                        <h4>Netking Launcher <span style="display: flex; gap: 4px;"><span class="badge-insanity">INSANITY!!</span><span class="badge-hot">HOT 🔥</span><span class="badge-verified">An toàn</span></span></h4>
-                        <p class="file-desc">Finding good launcher apk? NL will give you best enjoy. Hide your apps from others people to find it, NL can help you!<br><span style="color: #0381fe; font-weight: 500;">✓ Verified by netking team and fishisred</span></p>
+                        <h4>HDanhTech Launcher <span style="display: flex; gap: 4px;"><span class="badge-insanity">INSANITY!!</span><span class="badge-hot">HOT 🔥</span><span class="badge-verified">An toàn</span></span></h4>
+                        <p class="file-desc">Finding good launcher apk? NL will give you best enjoy. Hide your apps from others people to find it, NL can help you!<br><span style="color: #0381fe; font-weight: 500;">✓ Verified by hdantech team and fishisred</span></p>
                         <div class="file-meta">Phiên bản: V1</div>
                         <div class="file-actions-row">
                             <button onclick="downloadFileProtect('https://www.mediafire.com/file/zmd786crhxyv6no/NLauncher_1.0.apk/file', false)" class="btn-view">Tải tập tin</button>
@@ -699,7 +403,7 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
                     
                     <div class="file-item">
                         <h4>NetPlus <span style="display: flex; gap: 4px;"><span class="badge-hot">HOT 🔥</span><span class="badge-verified">An toàn</span></span></h4>
-                        <p class="file-desc">2 option antiband 88% - 90%:<br>1. Freeze<br>2. Ghost<br><span style="color: #0381fe; font-weight: 500;">✓ This app got verified by shin mod, davisk tech and netking team</span></p>
+                        <p class="file-desc">2 option antiband 88% - 90%:<br>1. Freeze<br>2. Ghost<br><span style="color: #0381fe; font-weight: 500;">✓ This app got verified by shin mod, davisk tech and hdantech team</span></p>
                         <div class="file-meta">Phiên bản: V18</div>
                         <div class="file-actions-row">
                             <button onclick="downloadFileProtect('https://www.mediafire.com/file/c5rjolz3ezd8yun/NetPlusV18.apk/file?dkey=hl9pz305lxt&r=1774', false)" class="btn-view">Tải tập tin</button>
@@ -708,7 +412,7 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
                     </div>
 
                     <div class="file-item">
-                        <h4>Netking Fake Lag <span class="badge-verified">An toàn</span></h4>
+                        <h4>HDanhTech Fake Lag <span class="badge-verified">An toàn</span></h4>
                         <p class="file-desc">Fake Lag Modern, 3 Options:<br>1. Freeze Infinity<br>2. Invisible<br>3. Teleporter</p>
                         <div class="file-meta">Phiên bản: v1.0.1</div>
                         <div class="file-actions-row">
@@ -717,7 +421,7 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
                     </div>
 
                     <div class="file-item">
-                        <h4>Netking Fake Lag OG Version <span class="badge-verified">An toàn</span></h4>
+                        <h4>HDanhTech Fake Lag OG Version <span class="badge-verified">An toàn</span></h4>
                         <p class="file-desc">Using OG VPN Service, Never getting BlackListed But Just Own 1 Options:<br>Freeze The Game For 2s Have About 1.5s To Shoot</p>
                         <div class="file-meta">Phiên bản: v1.0.2</div>
                         <div class="file-actions-row">
@@ -726,8 +430,8 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
                     </div>
 
                     <div class="file-item">
-                        <h4>Netking Modern <span class="badge-risk">Chưa xác minh</span></h4>
-                        <p class="file-desc" style="color: #e65100;">This app got cracked by Netking team, not made by Netking team. Can be risk!</p>
+                        <h4>HDanhTech Modern <span class="badge-risk">Chưa xác minh</span></h4>
+                        <p class="file-desc" style="color: #e65100;">This app got cracked by HDanhTech team, not made by HDanhTech team. Can be risk!</p>
                         <div class="file-meta">Phiên bản: V2.0.0</div>
                         <div class="file-actions-row">
                             <button onclick="downloadFileProtect('https://www.mediafire.com/file/e72t7fqxcis9hp0/Netking+Modern.apk/file', true)" class="btn-view risk-btn">Tải tập tin rủi ro</button>
@@ -753,8 +457,8 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
                 <div id="verified-container">
                     
                     <div class="file-item">
-                        <h4>Netking Launcher <span style="display: flex; gap: 4px;"><span class="badge-insanity">INSANITY!!</span><span class="badge-hot">HOT 🔥</span><span class="badge-verified">An toàn</span></span></h4>
-                        <p class="file-desc">Finding good launcher apk? NL will give you best enjoy. Hide your apps from others people to find it, NL can help you!<br><span style="color: #0381fe; font-weight: 500;">✓ Verified by netking team and fishisred</span></p>
+                        <h4>HDanhTech Launcher <span style="display: flex; gap: 4px;"><span class="badge-insanity">INSANITY!!</span><span class="badge-hot">HOT 🔥</span><span class="badge-verified">An toàn</span></span></h4>
+                        <p class="file-desc">Finding good launcher apk? NL will give you best enjoy. Hide your apps from others people to find it, NL can help you!<br><span style="color: #0381fe; font-weight: 500;">✓ Verified by hdantech team and fishisred</span></p>
                         <div class="file-meta">Phiên bản: V1</div>
                         <div class="file-actions-row">
                             <button onclick="downloadFileProtect('https://www.mediafire.com/file/zmd786crhxyv6no/NLauncher_1.0.apk/file', false)" class="btn-view">Tải tập tin</button>
@@ -763,7 +467,7 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
                     
                     <div class="file-item">
                         <h4>NetPlus <span style="display: flex; gap: 4px;"><span class="badge-hot">HOT 🔥</span><span class="badge-verified">An toàn</span></span></h4>
-                        <p class="file-desc">2 option antiband 88% - 90%:<br>1. Freeze<br>2. Ghost<br><span style="color: #0381fe; font-weight: 500;">✓ This app got verified by shin mod, davisk tech and netking team</span></p>
+                        <p class="file-desc">2 option antiband 88% - 90%:<br>1. Freeze<br>2. Ghost<br><span style="color: #0381fe; font-weight: 500;">✓ This app got verified by shin mod, davisk tech and hdantech team</span></p>
                         <div class="file-meta">Phiên bản: V18</div>
                         <div class="file-actions-row">
                             <button onclick="downloadFileProtect('https://www.mediafire.com/file/c5rjolz3ezd8yun/NetPlusV18.apk/file?dkey=hl9pz305lxt&r=1774', false)" class="btn-view">Tải tập tin</button>
@@ -772,7 +476,7 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
                     </div>
 
                     <div class="file-item">
-                        <h4>Netking Fake Lag <span class="badge-verified">An toàn</span></h4>
+                        <h4>HDanhTech Fake Lag <span class="badge-verified">An toàn</span></h4>
                         <p class="file-desc">Fake Lag Modern, 3 Options:<br>1. Freeze Infinity<br>2. Invisible<br>3. Teleporter</p>
                         <div class="file-meta">Phiên bản: v1.0.1</div>
                         <div class="file-actions-row">
@@ -781,7 +485,7 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
                     </div>
 
                     <div class="file-item">
-                        <h4>Netking Fake Lag OG Version <span class="badge-verified">An toàn</span></h4>
+                        <h4>HDanhTech Fake Lag OG Version <span class="badge-verified">An toàn</span></h4>
                         <p class="file-desc">Using OG VPN Service, Never getting BlackListed But Just Own 1 Options:<br>Freeze The Game For 2s Have About 1.5s To Shoot</p>
                         <div class="file-meta">Phiên bản: v1.0.2</div>
                         <div class="file-actions-row">
@@ -827,7 +531,6 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
     </div>
 
     <script>
-        // HỆ THỐNG ĐỒNG BỘ THÔNG BÁO HỆ THỐNG FIREBASE REALTIME
         const firebaseConfig = {
             apiKey: "AIzaSyA1jVOVPHECGp27Qgi4U4r71fiKm_a3biM",
             authDomain: "netking-b0ad0.firebaseapp.com",
@@ -842,19 +545,18 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
         const db = firebase.database();
 
         let databaseNotices = [];
-        let currentUser = localStorage.getItem("netking_current_user") || "guest"; 
+        let currentUser = localStorage.getItem("hdantech_current_user") || "guest"; 
         let nextActionFlow = ""; 
 
         window.onload = function() {
             checkUserSession();
             updateHeaderAuthButtonUI();
-            initNetkingCounters();
-            loadAppliedTheme(); // Khởi tạo theme lưu trữ
+            initHDanhTechCounters();
+            loadAppliedTheme();
         };
 
-        // --- CẤU HÌNH THAY ĐỔI GIAO DIỆN LIGHT / DARK MODE ---
         function loadAppliedTheme() {
-            const savedTheme = localStorage.getItem("netking_theme") || "light";
+            const savedTheme = localStorage.getItem("hdantech_theme") || "light";
             document.body.setAttribute("data-theme", savedTheme);
             document.getElementById("theme-switch").checked = (savedTheme === "dark");
         }
@@ -862,26 +564,19 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
         function toggleThemeMode(checkbox) {
             const targetTheme = checkbox.checked ? "dark" : "light";
             document.body.setAttribute("data-theme", targetTheme);
-            localStorage.setItem("netking_theme", targetTheme);
+            localStorage.setItem("hdantech_theme", targetTheme);
         }
 
         function openSettingsModal() { document.getElementById("settings-modal").classList.add("active"); }
         function closeSettingsModal() { document.getElementById("settings-modal").classList.remove("active"); }
 
-
-        // --- HỆ THỐNG BỘ ĐẾM TRUY CẬP TRANG FILES (ĐỒNG BỘ FIREBASE REALTIME CHUẨN) ---
-        function initNetkingCounters() {
+        function initHDanhTechCounters() {
             const visitsRef = db.ref('total_visits');
-            
-            visitsRef.transaction((currentValue) => {
-                return (currentValue || 0) + 1;
-            });
-
+            visitsRef.transaction((currentValue) => { return (currentValue || 0) + 1; });
             visitsRef.on('value', (snapshot) => {
                 const totalVisits = snapshot.val() || 0;
                 document.getElementById('totalVisits').innerText = totalVisits.toLocaleString();
             });
-
             updateLiveUsers();
             setInterval(updateLiveUsers, 4000);
         }
@@ -889,17 +584,13 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
         function updateLiveUsers() {
             const hour = new Date().getHours();
             let baseActive = 18; 
-            
             if (hour >= 19 && hour <= 23) baseActive = 54; 
             else if (hour >= 1 && hour <= 6) baseActive = 5;   
-            
             const fluctuation = Math.floor(Math.random() * 9) - 4; 
             const currentActive = Math.max(3, baseActive + fluctuation);
-            
             document.getElementById('activeUsers').innerText = currentActive;
         }
 
-        // CHẶN TẢI FILE KHI CHƯA ĐĂNG NHẬP / ĐĂNG KÝ
         function downloadFileProtect(url, isRisk) {
             if (currentUser === "guest") {
                 nextActionFlow = "open_auth_sheet";
@@ -917,7 +608,7 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
         function updateHeaderAuthButtonUI() {
             const authBtn = document.getElementById("header-auth-action");
             const adminTabBtn = document.getElementById("tab-btn-admin-panel");
-            const savedDisplayUser = localStorage.getItem("netking_session_username") || "Tài khoản";
+            const savedDisplayUser = localStorage.getItem("hdantech_session_username") || "Tài khoản";
 
             if (currentUser === "guest") {
                 authBtn.innerText = "Đăng nhập";
@@ -926,7 +617,6 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
             } else {
                 authBtn.innerText = savedDisplayUser;
                 authBtn.className = "header-auth-btn auth-state-logged";
-                
                 if (savedDisplayUser.toLowerCase() === "xine3d") {
                     adminTabBtn.style.display = "block";
                 } else {
@@ -936,8 +626,8 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
         }
 
         function openAccountInfoModal() {
-            document.getElementById("info-display-username").innerText = localStorage.getItem("netking_session_username") || "N/A";
-            document.getElementById("info-display-password").innerText = localStorage.getItem("netking_session_password") || "••••••••";
+            document.getElementById("info-display-username").innerText = localStorage.getItem("hdantech_session_username") || "N/A";
+            document.getElementById("info-display-password").innerText = localStorage.getItem("hdantech_session_password") || "••••••••";
             document.getElementById("info-display-rank").innerText = currentUser.toUpperCase();
             document.getElementById("account-info-modal").classList.add("active");
         }
@@ -947,13 +637,11 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
         function processLogout() {
             closeAccountInfoModal();
             currentUser = "guest";
-            localStorage.setItem("netking_current_user", "guest");
-            localStorage.removeItem("netking_session_username");
-            localStorage.removeItem("netking_session_password");
-            
+            localStorage.setItem("hdantech_current_user", "guest");
+            localStorage.removeItem("hdantech_session_username");
+            localStorage.removeItem("hdantech_session_password");
             updateHeaderAuthButtonUI();
             switchTab('tab-files');
-            
             showStatusModal("Hệ thống", "Đã đăng xuất tài khoản.");
             document.getElementById("welcome-modal").classList.add("active");
             startWelcomeCounter();
@@ -1006,7 +694,6 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
                         renderServerAnnouncements();
                     });
                 }
-
                 loader.classList.remove("active");
             }, 300);
         }
@@ -1014,12 +701,10 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
         function renderServerAnnouncements() {
             const container = document.getElementById("announcements-container");
             container.innerHTML = "";
-
             if (databaseNotices.length === 0) {
                 container.innerHTML = `<p style="color:#9aa0a6; font-size:0.85rem; padding:15px; text-align:center;">Chưa có thông báo nào từ ban quản trị.</p>`;
                 return;
             }
-
             databaseNotices.forEach(notice => {
                 const html = `
                     <div class="notice-item">
@@ -1037,12 +722,11 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
         function handlePostAnnouncement() {
             const title = document.getElementById("notice-title").value.trim();
             const content = document.getElementById("notice-content").value.trim();
-            const savedDisplayUser = localStorage.getItem("netking_session_username") || "guest";
+            const savedDisplayUser = localStorage.getItem("hdantech_session_username") || "guest";
 
             if (savedDisplayUser.toLowerCase() !== "xine3d") {
                 return showStatusModal("Lỗi phân quyền", "Quyền hạn của ông không hợp lệ để thực hiện!");
             }
-
             if (!title || !content) {
                 return showStatusModal("Thiếu thông tin", "Vui lòng điền tiêu đề và nội dung bảng tin!");
             }
@@ -1105,10 +789,9 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
 
                 if (userLower === "xine3d" && passInput === "Thinh_2012") {
                     currentUser = "admin";
-                    localStorage.setItem("netking_current_user", "admin"); 
-                    localStorage.setItem("netking_session_username", "xine3d");
-                    localStorage.setItem("netking_session_password", "Thinh_2012");
-                    
+                    localStorage.setItem("hdantech_current_user", "admin"); 
+                    localStorage.setItem("hdantech_session_username", "xine3d");
+                    localStorage.setItem("hdantech_session_password", "Thinh_2012");
                     nextActionFlow = "login_success_clear"; 
                     updateHeaderAuthButtonUI();
                     showStatusModal("Admin Core", "Chào hệ thống, chúc một ngày tốt lành!");
@@ -1119,10 +802,9 @@ thubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow
                     const userData = snapshot.val();
                     if (userData && userData.password === passInput) {
                         currentUser = "member";
-                        localStorage.setItem("netking_current_user", "member"); 
-                        localStorage.setItem("netking_session_username", userData.username);
-                        localStorage.setItem("netking_session_password", passInput);
-
+                        localStorage.setItem("hdantech_current_user", "member"); 
+                        localStorage.setItem("hdantech_session_username", userData.username);
+                        localStorage.setItem("hdantech_session_password", passInput);
                         nextActionFlow = "login_success_clear"; 
                         updateHeaderAuthButtonUI();
                         showStatusModal("Đăng nhập", "Đăng nhập thành công!");
