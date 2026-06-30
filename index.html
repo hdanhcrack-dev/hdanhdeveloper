@@ -3,200 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HDanh Developer - Management</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>HDanh Developer // Terminal</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --bg-color: #030816;
-            --card-bg: rgba(6, 14, 38, 0.6);
-            --primary-blue: #0066ff;
-            --text-color: #ffffff;
-            --text-muted: #8fa0c0;
-            --border-color: rgba(255, 255, 255, 0.05);
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
+            --bg: #060608;
+            --surface: #0c0d12;
+            --border: rgba(255, 255, 255, 0.03);
+            --accent: #00ffaa; /* Màu xanh Hacker cực sang */
+            --accent-glow: rgba(0, 255, 170, 0.15);
+            --text-main: #eff1f5;
+            --text-muted: #575f75;
+            --font-mono: 'JetBrains Mono', monospace;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); padding-bottom: 50px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background-color: var(--bg); 
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: -0.2px;
+        }
         a { text-decoration: none; color: inherit; }
-        
-        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
 
-        /* --- HEADER --- */
-        header { border-bottom: 1px solid var(--border-color); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+        /* --- HEADER (Tối giản, Sang trọng) --- */
+        header { border-bottom: 1px solid var(--border); background: rgba(6, 6, 8, 0.8); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; }
         .nav-container { display: flex; justify-content: space-between; align-items: center; height: 70px; }
-        .logo { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.5px; }
-        .logo span { color: var(--primary-blue); }
-        .nav-menu { display: flex; gap: 25px; list-style: none; font-size: 0.9rem; color: var(--text-muted); }
+        .logo { font-family: var(--font-mono); font-weight: 600; font-size: 0.95rem; letter-spacing: 1px; color: #fff; }
+        .logo span { color: var(--accent); }
+        .nav-menu { display: flex; gap: 32px; list-style: none; font-size: 0.85rem; font-family: var(--font-mono); }
+        .nav-menu a { color: var(--text-muted); transition: color 0.2s; }
         .nav-menu a:hover, .nav-menu .active { color: #fff; }
-        .btn-login { background: var(--primary-blue); padding: 8px 18px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; }
+        .btn-login { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); border: 1px solid var(--accent); padding: 6px 14px; border-radius: 4px; transition: all 0.2s; }
+        .btn-login:hover { background: var(--accent-glow); box-shadow: 0 0 15px var(--accent-glow); }
 
-        /* --- SUB MENU (Rút gọn từ các nút thô sơ) --- */
-        .sub-nav { display: flex; gap: 10px; margin: 25px 0; background: rgba(255,255,255,0.02); padding: 6px; border-radius: 8px; border: 1px solid var(--border-color); width: fit-content; }
-        .sub-nav-btn { padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; transition: 0.2s; }
-        .sub-nav-btn.active, .sub-nav-btn:hover { background: rgba(0, 102, 255, 0.15); color: #38bdf8; }
+        /* --- INFO BAR --- */
+        .system-status { display: flex; justify-content: space-between; align-items: center; padding: 30px 0 15px 0; border-bottom: 1px solid var(--border); font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
+        .status-online { color: var(--accent); display: inline-flex; align-items: center; gap: 6px; }
+        .status-online::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); }
 
-        /* --- PROFILE / ABOUT US --- */
-        .profile-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 25px; display: flex; gap: 25px; align-items: center; margin-bottom: 35px; }
-        .avatar-wrapper { position: relative; }
-        .avatar { width: 110px; height: 110px; border-radius: 50%; border: 3px solid #38bdf8; object-fit: cover; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); }
-        .profile-info h3 { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
-        .profile-info h2 { font-size: 1.3rem; margin-bottom: 8px; }
-        .profile-info p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin-bottom: 12px; }
-        .profile-stats { display: flex; gap: 20px; font-size: 0.8rem; color: var(--text-muted); }
-        .profile-stats span strong { color: #fff; }
+        /* --- ABOUT US (Dạng Terminal thu nhỏ) --- */
+        .hacker-banner { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin: 25px 0 40px 0; position: relative; }
+        .hacker-banner::after { content: "SYS_INFO"; position: absolute; top: -9px; left: 15px; background: var(--bg); padding: 0 8px; font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); letter-spacing: 1px; }
+        .hacker-banner h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; font-family: var(--font-mono); }
+        .hacker-banner p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; }
 
-        /* --- FILE LIST --- */
-        .section-header { font-size: 1.1rem; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .file-grid { display: flex; flex-direction: column; gap: 15px; }
-        .file-item { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 20px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
-        .file-item:hover { border-color: rgba(0, 102, 255, 0.2); background: rgba(6, 14, 38, 0.8); }
+        /* --- LIST FILES (Siêu tối giản, sang trọng) --- */
+        .section-title { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
         
-        .file-details { flex: 1; padding-right: 20px; }
-        .file-title-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-        .file-name { font-weight: 600; font-size: 1rem; }
-        .badge { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; text-transform: uppercase; }
-        .badge.hot { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
-        .badge.safe { background: rgba(16, 185, 129, 0.15); color: var(--success-color); }
-        .badge.risk { background: rgba(245, 158, 11, 0.15); color: var(--warning-color); }
-        
-        .file-desc { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px; line-height: 1.4; }
-        .file-meta { font-size: 0.8rem; display: flex; gap: 15px; }
-        .verified-text { color: #38bdf8; }
-        .unverified-text { color: var(--warning-color); }
-        .version-text { color: var(--text-muted); }
+        .file-list { display: flex; flex-direction: column; gap: 12px; }
+        .file-row { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s ease-in-out; }
+        .file-row:hover { border-color: rgba(255, 255, 255, 0.08); background: #11121a; }
 
-        .file-actions { display: flex; gap: 10px; }
-        .btn-action { padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 6px; }
-        .btn-download { background: var(--primary-blue); color: #fff; }
-        .btn-download.btn-risk { background: #df4747; }
-        .btn-key { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
+        .file-left { display: flex; flex-direction: column; gap: 6px; }
+        .file-meta-top { display: flex; align-items: center; gap: 12px; }
+        .file-name { font-size: 0.95rem; font-weight: 600; color: #fff; }
+        
+        /* Badge siêu nhỏ, gọn gàng */
+        .tag { font-family: var(--font-mono); font-size: 0.65rem; padding: 2px 6px; border-radius: 3px; font-weight: 500; text-transform: uppercase; }
+        .tag.hot { color: #ff4757; background: rgba(255, 71, 87, 0.1); }
+        .tag.safe { color: var(--accent); background: var(--accent-glow); }
+        .tag.risk { color: #ffa502; background: rgba(255, 165, 2, 0.1); }
+
+        .file-desc { color: var(--text-muted); font-size: 0.85rem; max-width: 550px; line-height: 1.5; }
+        .file-ver { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
+
+        /* Nút bấm tinh tế phẳng */
+        .actions { display: flex; gap: 12px; }
+        .btn { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; padding: 8px 16px; border-radius: 4px; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; cursor: pointer; }
+        
+        .btn-download { background: rgba(255, 255, 255, 0.04); color: #fff; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .btn-download:hover { background: #fff; color: #000; }
+        
+        .btn-download.risk-btn { color: #ffa502; border-color: rgba(255, 165, 2, 0.3); background: transparent; }
+        .btn-download.risk-btn:hover { background: #ffa502; color: #000; }
+
+        .btn-key { color: var(--text-muted); background: transparent; }
+        .btn-key:hover { color: #fff; }
     </style>
 </head>
 <body>
 
     <header>
         <div class="container nav-container">
-            <div class="logo">HDANH <span>DEVELOPER</span></div>
+            <div class="logo">HDANH_DEV<span>//</span></div>
             <ul class="nav-menu">
-                <li><a href="#">Trang chủ</a></li>
-                <li><a href="#">Tải xuống</a></li>
-                <li><a href="#">Thông báo</a></li>
-                <li><a href="#" class="active">Bảng điều khiển</a></li>
+                <li><a href="#">HOME</a></li>
+                <li><a href="#">DOWNLOADS</a></li>
+                <li><a href="#" class="active">TERMINAL</a></li>
             </ul>
-            <a href="#" class="btn-login">Đăng nhập</a>
+            <a href="#" class="btn-login">CONNECT</a>
         </div>
     </header>
 
     <div class="container">
-        <div class="sub-nav">
-            <div class="sub-nav-btn active">Tập tin</div>
-            <div class="sub-nav-btn">Đã xác minh</div>
-            <div class="sub-nav-btn">Thông báo</div>
-            <div class="sub-nav-btn">Quản trị</div>
+        <div class="system-status">
+            <span>NETWORK: ROOT@NETKING_OFFICIAL</span>
+            <span class="status-online">SECURE NODE ONLINE</span>
         </div>
 
-        <div class="profile-card">
-            <div class="avatar-wrapper">
-                <img src="https://via.placeholder.com/110" alt="Avatar" class="avatar">
-            </div>
-            <div class="profile-info">
-                <h3>About Us</h3>
-                <h2>Team NetKing Official</h2>
-                <p>Hệ thống cung cấp, crack và phân phối các tệp tin ứng dụng di động an toàn, tối ưu hóa trải nghiệm người dùng cao cấp.<br>➔ Tham gia Discord của nhóm để cập nhật thông tin.</p>
-                <div class="profile-stats">
-                    <span>Lượt truy cập: <strong>0</strong></span>
-                    <span>Trực tuyến: <strong>0</strong></span>
-                </div>
-            </div>
+        <div class="hacker-banner">
+            <h2>Team NetKing Official</h2>
+            <p>Hệ thống phân phối và mã hóa tệp tin di động cao cấp. Mọi tệp tin đều được quét qua hệ thống bảo mật cục bộ trước khi phát hành công khai.</p>
         </div>
 
         <section>
-            <div class="section-header">
-                <div>Danh sách hoạt động (6 Tệp)</div>
-                <div style="font-size: 0.8rem; color: var(--success-color);"><i class="fa-solid fa-check"></i> Chỉ hiện tệp tin an toàn</div>
-            </div>
-
-            <div class="file-grid">
-                <div class="file-item">
-                    <div class="file-details">
-                        <div class="file-title-row">
+            <div class="section-title">// REPOSITORY_FILES (6)</div>
+            
+            <div class="file-list">
+                <div class="file-row">
+                    <div class="file-left">
+                        <div class="file-meta-top">
                             <span class="file-name">Netking Launcher</span>
-                            <span class="badge hot">INSANITY!! HOT</span>
-                            <span class="badge safe"><i class="fa-solid fa-shield"></i> An toàn</span>
+                            <span class="tag hot">HOT</span>
+                            <span class="tag safe">PASSED</span>
                         </div>
-                        <div class="file-desc">Finding good launcher apk? NL will give you best enjoy. Hide your apps from others people to find it, NL can help you!</div>
-                        <div class="file-meta">
-                            <span class="verified-text"><i class="fa-solid fa-circle-check"></i> Verified by netking team and fishisred</span>
-                            <span class="version-text">Phiên bản: V1</span>
-                        </div>
+                        <p class="file-desc">Finding good launcher apk? NL will give you best enjoy. Hide your apps from others people to find it.</p>
+                        <span class="file-ver">BUILD: V1</span>
                     </div>
-                    <div class="file-actions">
-                        <button class="btn-action btn-download">Tải tập tin</button>
+                    <div class="actions">
+                        <a href="LINK_TAI_1" target="_blank" class="btn btn-download"><i class="fa-solid fa-terminal"></i> FETCH</a>
                     </div>
                 </div>
 
-                <div class="file-item">
-                    <div class="file-details">
-                        <div class="file-title-row">
+                <div class="file-row">
+                    <div class="file-left">
+                        <div class="file-meta-top">
                             <span class="file-name">NetPlus</span>
-                            <span class="badge hot">HOT</span>
-                            <span class="badge safe"><i class="fa-solid fa-shield"></i> An toàn</span>
+                            <span class="tag hot">HOT</span>
+                            <span class="tag safe">PASSED</span>
                         </div>
-                        <div class="file-desc">2 option antiband 88% - 90%: 1. Freeze | 2. Ghost</div>
-                        <div class="file-meta">
-                            <span class="verified-text"><i class="fa-solid fa-circle-check"></i> This app got verified by shin mod, davisk tech and netking team</span>
-                            <span class="version-text">Phiên bản: V18</span>
-                        </div>
+                        <p class="file-desc">2 option antiband 88% - 90%: 1. Freeze | 2. Ghost. Verified by shin mod & davisk tech.</p>
+                        <span class="file-ver">BUILD: V18</span>
                     </div>
-                    <div class="file-actions">
-                        <button class="btn-action btn-download">Tải tập tin</button>
-                        <button class="btn-action btn-key">Lấy Key</button>
+                    <div class="actions">
+                        <a href="LINK_LAY_KEY" target="_blank" class="btn btn-key"><i class="fa-solid fa-key"></i> KEY</a>
+                        <a href="LINK_TAI_2" target="_blank" class="btn btn-download"><i class="fa-solid fa-terminal"></i> FETCH</a>
                     </div>
                 </div>
 
-                <div class="file-item">
-                    <div class="file-details">
-                        <div class="file-title-row">
-                            <span class="file-name">Netking Fake Lag An toàn</span>
-                            <span class="badge safe"><i class="fa-solid fa-shield"></i> An toàn</span>
+                <div class="file-row">
+                    <div class="file-left">
+                        <div class="file-meta-top">
+                            <span class="file-name">Netking Fake Lag</span>
+                            <span class="tag safe">PASSED</span>
                         </div>
-                        <div class="file-desc">Fake Lag Modern, 3 Options: 1. Freeze Infinity | 2. Invisible | 3. Teleporter</div>
-                        <div class="file-meta">
-                            <span class="version-text">Phiên bản: v1.0.1</span>
-                        </div>
+                        <p class="file-desc">Fake Lag Modern, 3 Options: 1. Freeze Infinity | 2. Invisible | 3. Teleporter.</p>
+                        <span class="file-ver">BUILD: v1.0.1</span>
                     </div>
-                    <div class="file-actions">
-                        <button class="btn-action btn-download">Tải tập tin</button>
+                    <div class="actions">
+                        <a href="LINK_TAI_3" target="_blank" class="btn btn-download"><i class="fa-solid fa-terminal"></i> FETCH</a>
                     </div>
                 </div>
 
-                <div class="file-item">
-                    <div class="file-details">
-                        <div class="file-title-row">
-                            <span class="file-name">NetKing Fake Lag OG Version An toàn</span>
-                            <span class="badge safe"><i class="fa-solid fa-shield"></i> An toàn</span>
+                <div class="file-row">
+                    <div class="file-left">
+                        <div class="file-meta-top">
+                            <span class="file-name">NetKing Fake Lag OG Version</span>
+                            <span class="tag safe">PASSED</span>
                         </div>
-                        <div class="file-desc">Using OG VPN Service, Never getting BlackListed But Just Own 1 Options: Freeze The Game For 2s Have About 1.5s To Shoot</div>
-                        <div class="file-meta">
-                            <span class="version-text">Phiên bản: v1.0.2</span>
-                        </div>
+                        <p class="file-desc">Using OG VPN Service. Freeze The Game For 2s Have About 1.5s To Shoot.</p>
+                        <span class="file-ver">BUILD: v1.0.2</span>
                     </div>
-                    <div class="file-actions">
-                        <button class="btn-action btn-download">Tải tập tin</button>
+                    <div class="actions">
+                        <a href="LINK_TAI_4" target="_blank" class="btn btn-download"><i class="fa-solid fa-terminal"></i> FETCH</a>
                     </div>
                 </div>
 
-                <div class="file-item">
-                    <div class="file-details">
-                        <div class="file-title-row">
-                            <span class="file-name">Netking Modern Chưa xác minh</span>
-                            <span class="badge risk"><i class="fa-solid fa-triangle-exclamation"></i> Nguy cơ</span>
+                <div class="file-row">
+                    <div class="file-left">
+                        <div class="file-meta-top">
+                            <span class="file-name">Netking Modern</span>
+                            <span class="tag risk">UNVERIFIED</span>
                         </div>
-                        <div class="file-desc" style="color: var(--warning-color);">This app got cracked by Netking team, not made by Netking team. Can be risk!</div>
+                        <p class="file-desc" style="color: #ffa502; opacity: 0.8;">Cracked by Netking team, not made by Netking team. Can be risk!</p>
+                        <span class="file-ver">BUILD: V2.0.0</span>
+                    </div>
+                    <div class="actions">
+                        <a href="LINK_TAI_5" target="_blank" class="btn btn-download risk-btn"><i class="fa-solid fa-biohazard"></i> BYPASS_FETCH</a>
+                    </div>
+                </div>
+
+                <div class="file-row">
+                    <div class="file-left">
+                        <div class="file-meta-top">
+                            <span class="file-name">Sky Ping</span>
+                            <span class="tag safe">PASSED</span>
+                        </div>
+                        <p class="file-desc">Safe App, made by tunmod. Join our server discord for key.</p>
+                        <span class="file-ver">BUILD: V4</span>
+                    </div>
+                    <div class="actions">
+                        <a href="LINK_TAI_6" target="_blank" class="btn btn-download"><i class="fa-solid fa-terminal"></i> FETCH</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+</body>
+</html>
+de by Netking team. Can be risk!</div>
                         <div class="file-meta">
                             <span class="unverified-text">Chưa xác minh</span>
                             <span class="version-text">Phiên bản: V2.0.0</span>
