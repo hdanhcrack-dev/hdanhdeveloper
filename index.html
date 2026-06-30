@@ -3,838 +3,780 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HDanhTech Files</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>HD</text></svg>">
+    <title>HDanhTech Files - Premium Blue</title>
     
+    <link rel="icon" type="image/png" href="https://via.placeholder.com/150/0381fe/ffffff?text=HD">
+
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <style>
         :root {
-            --bg: #f0f4f9;
-            --text: #1e293b;
-            --muted: #64748b;
-            --card: rgba(255,255,255,0.85);
-            --border: rgba(255,255,255,0.6);
-            --item: rgba(241,245,249,0.9);
-            --header: rgba(240,244,249,0.8);
-            --tab-bg: #e2e8f0;
-            --input: #f1f5f9;
-            --blue: #0381fe;
+            --bg-color: #f0f4f9;
+            --bg-gradient: linear-gradient(135deg, #f0f4f9 0%, #d9e6f7 100%);
+            --text-color: #1e293b;
+            --text-muted: #64748b;
+            --text-title: #475569;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(255, 255, 255, 0.6);
+            --item-bg: rgba(241, 245, 249, 0.9);
+            --header-bg: rgba(240, 244, 249, 0.8);
+            --header-border: rgba(3, 129, 254, 0.08);
+            --tab-container-bg: #e2e8f0;
+            --tab-btn-active: #ffffff;
+            --input-bg: #f1f5f9;
+            --glow-op: 0.6;
+            --glow-1: #60a5fa;
+            --glow-2: #93c5fd;
+            --glow-3: #3b82f6;
+            --insanity-gradient: linear-gradient(135deg, #3b82f6, #1d4ed8, #1e40af);
         }
 
         [data-theme="dark"] {
-            --bg: #0b1329;
-            --text: #f1f5f9;
-            --muted: #94a3b8;
-            --card: rgba(15,23,42,0.8);
-            --border: rgba(255,255,255,0.04);
-            --item: rgba(30,41,59,0.7);
-            --header: rgba(11,19,41,0.8);
-            --tab-bg: #1e293b;
-            --input: #1e293b;
+            --bg-color: #0b1329;
+            --bg-gradient: linear-gradient(135deg, #0b1329 0%, #050b18 100%);
+            --text-color: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-title: #cbd5e1;
+            --card-bg: rgba(15, 23, 42, 0.8);
+            --card-border: rgba(255, 255, 255, 0.04);
+            --item-bg: rgba(30, 41, 59, 0.7);
+            --header-bg: rgba(11, 19, 41, 0.8);
+            --header-border: rgba(255, 255, 255, 0.05);
+            --tab-container-bg: #1e293b;
+            --tab-btn-active: #334155;
+            --input-bg: #1e293b;
+            --glow-op: 0.4;
+            --glow-1: #1d4ed8;
+            --glow-2: #1e3a8a;
+            --glow-3: #172554;
+            --insanity-gradient: linear-gradient(135deg, #2563eb, #1d4ed8, #1e40af);
         }
 
-        * { margin:0; padding:0; box-sizing:border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
         
         body {
-            background: linear-gradient(135deg, var(--bg) 0%, #d9e6f7 100%);
-            color: var(--text);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-color);
             padding: 16px;
-            padding-top: 80px;
+            padding-top: 84px;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        [data-theme="dark"] body {
-            background: linear-gradient(135deg, #0b1329 0%, #050b18 100%);
-        }
+        .ambient-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .glow-circle { position: absolute; border-radius: 50%; filter: blur(100px); opacity: var(--glow-op); }
+        .glow-1 { top: -10%; left: -10%; width: 400px; height: 400px; background: var(--glow-1); }
+        .glow-2 { top: 20%; right: -10%; width: 350px; height: 350px; background: var(--glow-2); }
 
         .top-header {
-            position: fixed; top:0; left:0; width:100%;
-            background: var(--header); backdrop-filter: blur(20px);
-            padding: 14px 20px; display:flex; align-items:center; justify-content:space-between;
-            z-index:100; border-bottom: 1px solid var(--border);
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: var(--header-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+            z-index: 100; border-bottom: 1px solid var(--header-border);
         }
-
-        .logo {
-            width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white;
-            font-weight: 800; font-size: 0.9rem; border-radius: 10px;
-        }
-
-        .header-title { font-size: 1.1rem; font-weight: 700; }
-
-        .header-right { display: flex; align-items: center; gap: 10px; }
-
-        .btn-settings {
-            background: var(--input); border: none; width: 36px; height: 36px;
-            border-radius: 50%; cursor: pointer; font-size: 1rem; transition: all 0.3s;
-            color: var(--text);
-        }
-        .btn-settings:hover { transform: rotate(90deg); background: var(--blue); color: #fff; }
-
-        .btn-header {
-            padding: 8px 18px; border-radius: 20px; border: none; font-weight: 600;
-            font-size: 0.85rem; cursor: pointer; transition: all 0.3s;
-        }
-
-        .btn-login { background: var(--blue); color: #fff; }
-        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(3,129,254,0.3); }
+        .header-brand { display: flex; align-items: center; gap: 12px; }
         
-        .btn-user { background: var(--tab-bg); color: var(--muted); }
-        .btn-user:hover { background: #334155; color: #f1f5f9; }
+        .tech-logo-fallback {
+            width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white;
+            font-weight: 800; font-size: 0.85rem; border-radius: 10px; box-shadow: 0 4px 10px rgba(29, 78, 216, 0.3);
+        }
+        .tech-logo-fallback.large { width: 64px; height: 64px; font-size: 1.5rem; border-radius: 18px; margin: 0 auto 16px auto; }
 
-        .tabs {
-            display: flex; gap: 4px; margin-bottom: 20px; width: 100%; max-width: 500px;
-            background: var(--tab-bg); padding: 4px; border-radius: 30px;
+        .top-header h1 { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.5px; }
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+
+        .btn-setting-toggle {
+            background: var(--input-bg); border: none; width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem;
+            transition: all 0.3s ease; transform: rotate(0deg);
+        }
+        
+        .btn-setting-toggle:hover {
+            transform: rotate(90deg) scale(1.1);
+            background: #0381fe;
+            color: white;
         }
 
-        .tab {
-            flex: 1; padding: 10px; border: none; background: transparent;
-            color: var(--muted); font-weight: 600; cursor: pointer; border-radius: 26px;
-            font-size: 0.85rem; transition: all 0.3s;
+        .header-auth-btn {
+            padding: 8px 18px; font-size: 0.85rem; font-weight: 600; border-radius: 20px; cursor: pointer; border: none;
+            position: relative; overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .header-auth-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .header-auth-btn:hover::before {
+            left: 100%;
+        }
+        
+        .auth-state-signin { background: #0381fe; color: #fff; box-shadow: 0 4px 12px rgba(3, 129, 254, 0.25); }
+        .auth-state-signin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(3, 129, 254, 0.4);
+        }
+        
+        .auth-state-logged { background: var(--tab-container-bg); color: var(--text-muted); }
+        .auth-state-logged:hover {
+            transform: translateY(-2px);
+            background: #334155;
+            color: #f1f5f9;
         }
 
-        .tab.active { background: #fff; color: var(--blue); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        [data-theme="dark"] .tab.active { background: #334155; }
+        .tabs-container { 
+            display: flex; gap: 4px; margin-bottom: 20px; width: 100%; max-width: 500px; 
+            background: var(--tab-container-bg); padding: 4px; border-radius: 30px;
+        }
+        .tab-btn {
+            flex: 1; padding: 10px 4px; background: transparent; border: none;
+            color: var(--text-muted); font-weight: 600; cursor: pointer; border-radius: 26px; font-size: 0.85rem;
+            position: relative; overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #0381fe;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .tab-btn:hover::after {
+            width: 50%;
+        }
+        
+        .tab-btn:hover {
+            color: #0381fe;
+        }
+        
+        .tab-btn.active { background: var(--tab-btn-active); color: #0381fe; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .tab-btn.active::after {
+            width: 70%;
+            background: #0381fe;
+        }
+        
+        #tab-btn-admin-panel { display: none; color: #ef4444; }
+        #tab-btn-admin-panel.active { background: var(--tab-btn-active); color: #ef4444; }
 
-        .container { width: 100%; max-width: 500px; }
+        .container { width: 100%; max-width: 500px; z-index: 5; }
+        
+        .tab-content { display: none; opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
+        .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
 
-        .card {
-            background: var(--card); border-radius: 28px; padding: 24px; margin-bottom: 16px;
-            backdrop-filter: blur(16px); border: 1px solid var(--border);
-            box-shadow: 0 10px 30px rgba(0,40,80,0.04);
+        .oneui-card {
+            background: var(--card-bg); border-radius: 28px; padding: 24px; margin-bottom: 16px;
+            box-shadow: 0 10px 30px rgba(0, 40, 80, 0.04); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--card-border);
+        }
+        .section-title { font-size: 0.8rem; font-weight: 700; color: var(--text-title); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.8px; }
+
+        .about-team-box { display: flex; align-items: center; gap: 16px; background: var(--item-bg); border-radius: 20px; padding: 16px; }
+        .about-team-info h5 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+        .about-team-info p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 8px; }
+        .discord-blue-link { color: #0381fe; text-decoration: none; font-size: 0.82rem; font-weight: 700; display: inline-block; }
+
+        .counter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+        .counter-box { background: var(--item-bg); padding: 14px; border-radius: 18px; text-align: center; border: 1px solid var(--card-border); }
+        .counter-box p { font-size: 0.75rem; font-weight: 700; color: var(--text-title); text-transform: uppercase; margin-bottom: 4px; }
+        .counter-box h4 { font-size: 1.25rem; font-weight: 800; color: var(--text-color); }
+        .pulse-dot { width: 8px; height: 8px; background-color: #10b981; border-radius: 50%; display: inline-block; margin-right: 6px; animation: pulse 1.6s infinite; vertical-align: middle; }
+        @keyframes pulse { 0%, 100% { transform: scale(0.9); opacity: 0.6; } 50% { transform: scale(1.2); opacity: 1; } }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.3);
+            z-index: 9999; display: flex; justify-content: center; align-items: flex-end;
+            opacity: 0; pointer-events: none; backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px);
+            transition: opacity 0.3s ease, backdrop-filter 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+
+        .modal-box { 
+            padding: 32px 24px; max-width: 500px; width: 100%; position: relative; 
+            background: var(--card-bg); border-radius: 32px 32px 0 0;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(100%); border: 1px solid var(--card-border);
+            transition: transform 0.35s cubic-bezier(0.1, 0.9, 0.2, 1);
+        }
+        .modal-overlay.active .modal-box { transform: translateY(0); }
+        
+        .modal-close-btn { 
+            position: absolute; top: 20px; right: 20px; background: var(--input-bg); border: none; 
+            color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.85rem;
+            padding: 6px 14px; border-radius: 20px;
+            transition: all 0.3s ease; transform: rotate(0deg);
+        }
+        .modal-close-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .modal-close-btn:hover:not(:disabled) {
+            background: #ef4444;
+            color: white;
+            transform: rotate(90deg) scale(1.1);
         }
 
-        .section-title {
-            font-size: 0.8rem; font-weight: 700; color: var(--muted);
-            margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.8px;
+        .welcome-title { font-size: 1.35rem; font-weight: 800; text-align: center; color: var(--text-color); margin-bottom: 10px; letter-spacing: -0.5px; }
+        .welcome-desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 28px; text-align: center; padding: 0 12px; }
+
+        .auth-bottom-links {
+            border-top: 1px solid var(--header-border); padding-top: 20px; text-align: center; display: flex; justify-content: center; gap: 16px;
         }
-
-        .about-box {
-            display: flex; align-items: center; gap: 16px;
-            background: var(--item); border-radius: 20px; padding: 16px;
+        .auth-bottom-links a { 
+            color: #0381fe; font-weight: 700; text-decoration: none; font-size: 0.95rem; cursor: pointer; 
+            padding: 8px 16px; border-radius: 12px;
+            position: relative;
+            transition: all 0.3s ease;
         }
-
-        .about-box h5 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
-        .about-box p { font-size: 0.82rem; color: var(--muted); margin-bottom: 8px; }
-        .about-box a { color: var(--blue); text-decoration: none; font-weight: 700; font-size: 0.82rem; }
-
-        .counter-row {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px;
+        
+        .auth-bottom-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #0381fe;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
-
-        .counter-box {
-            background: var(--item); padding: 14px; border-radius: 18px;
-            text-align: center; border: 1px solid var(--border);
+        
+        .auth-bottom-links a:hover::after {
+            width: 70%;
         }
-
-        .counter-box p { font-size: 0.75rem; font-weight: 700; color: var(--muted); }
-        .counter-box h4 { font-size: 1.25rem; font-weight: 800; }
-
-        .dot-pulse {
-            width: 8px; height: 8px; background: #10b981;
-            border-radius: 50%; display: inline-block; margin-right: 6px;
-            animation: dotPulse 1.6s infinite; vertical-align: middle;
+        
+        .auth-bottom-links a:hover {
+            transform: translateY(-2px);
+            background: rgba(3, 129, 254, 0.08);
         }
+        
+        .auth-bottom-links .divider { color: var(--header-border); font-size: 1.2rem; align-self: center; }
 
-        @keyframes dotPulse {
-            0%,100% { transform: scale(0.9); opacity: 0.6; }
-            50% { transform: scale(1.2); opacity: 1; }
+        /* Giao diện danh sách tệp gốc */
+        .file-item { 
+            background: var(--item-bg); border-radius: 22px; padding: 18px; margin-bottom: 12px; 
+            display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--card-border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .file-item {
-            background: var(--item); border-radius: 22px; padding: 18px; margin-bottom: 12px;
-            border: 1px solid var(--border); transition: all 0.3s;
-        }
-
+        
         .file-item:hover {
             transform: translateX(5px);
-            box-shadow: 0 8px 25px rgba(3,129,254,0.1);
+            box-shadow: 0 8px 25px rgba(3, 129, 254, 0.1);
+            border-color: rgba(3, 129, 254, 0.2);
+        }
+        
+        .file-item h4 { font-size: 1rem; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+        .file-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+        .file-meta { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
+
+        /* --- NÂNG CẤP GIAO DIỆN THÔNG BÁO ADMIN ĐẸP HƠN --- */
+        .notice-item {
+            background: var(--item-bg);
+            border-radius: 22px;
+            padding: 18px 20px;
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border: 1px solid var(--card-border);
+            border-left: 5px solid #0381fe;
+            box-shadow: 0 4px 14px rgba(3, 129, 254, 0.03);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .notice-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(3, 129, 254, 0.08);
+        }
+        .notice-item h4 {
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .notice-content-text {
+            font-size: 0.88rem;
+            color: var(--text-color);
+            opacity: 0.95;
+            line-height: 1.55;
+        }
+        .notice-meta-footer {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            border-top: 1px dashed var(--header-border);
+            padding-top: 8px;
+            margin-top: 4px;
         }
 
-        .file-name {
-            font-size: 1rem; font-weight: 700; display: flex;
-            align-items: center; justify-content: space-between;
-            margin-bottom: 6px; flex-wrap: wrap; gap: 4px;
+        .badge-verified { background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
+        .badge-risk { background: rgba(245, 158, 11, 0.1); color: #f59e0b; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
+        .badge-admin { background: rgba(3, 129, 254, 0.1); color: #0381fe; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+        .badge-hot { background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
+        .badge-insanity { background: var(--insanity-gradient); color: #fff; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; }
+        
+        .file-actions-row { display: flex; gap: 8px; margin-top: 6px; }
+        
+        /* === ANIMATIONS CHO NÚT TẢI TẬP TIN === */
+        .btn-view {
+            flex: 1; text-align: center; padding: 12px; border-radius: 14px; font-weight: 700; 
+            cursor: pointer; text-decoration: none; font-size: 0.85rem; display: block;
+            background: #e0ebf8; color: #0381fe; border: none;
+            position: relative; overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(3, 129, 254, 0.1);
         }
-
-        .file-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 8px; }
-        .file-version { font-size: 0.75rem; color: var(--muted); }
-
-        .badge {
-            padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700;
-            white-space: nowrap;
+        
+        .btn-view::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
-        .badge-safe { background: rgba(16,185,129,0.1); color: #10b981; }
-        .badge-risk { background: rgba(245,158,11,0.1); color: #f59e0b; }
-        .badge-hot { background: rgba(239,68,68,0.1); color: #ef4444; }
-        .badge-insanity { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; }
-        .badge-admin { background: rgba(3,129,254,0.1); color: #0381fe; }
-
-        .btn-download {
-            width: 100%; padding: 12px; border-radius: 14px; border: none;
-            font-weight: 700; font-size: 0.85rem; cursor: pointer;
-            background: #e0ebf8; color: var(--blue);
-            transition: all 0.3s; margin-top: 10px;
+        
+        [data-theme="dark"] .btn-view { background: #1e293b; color: #3b82f6; }
+        .btn-view:hover { 
+            background: #0381fe; color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(3, 129, 254, 0.3);
+            letter-spacing: 0.5px;
         }
-
-        .btn-download:hover {
-            background: var(--blue); color: #fff;
-            transform: translateY(-2px); box-shadow: 0 8px 25px rgba(3,129,254,0.3);
+        
+        .btn-view:active {
+            transform: translateY(-1px) scale(0.98);
+            box-shadow: 0 4px 12px rgba(3, 129, 254, 0.2);
         }
-
-        .btn-download.risk {
-            background: rgba(245,158,11,0.1); color: #f59e0b;
-            animation: pulse 2s infinite;
+        
+        .btn-view:hover::before {
+            width: 300px;
+            height: 300px;
         }
-
-        .btn-download.risk:hover { background: #f59e0b; color: #fff; animation: none; }
-
-        @keyframes pulse {
-            0%,100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.4); }
-            50% { box-shadow: 0 0 0 8px rgba(245,158,11,0); }
+        
+        /* Animation cho nút Rủi ro */
+        .btn-view.risk-btn { 
+            background: rgba(245, 158, 11, 0.1); color: #f59e0b;
+            animation: riskPulse 2s infinite;
         }
-
-        .modal {
-            position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.3); z-index: 9999;
-            display: flex; justify-content: center; align-items: flex-end;
-            opacity: 0; pointer-events: none; transition: all 0.3s;
-            backdrop-filter: blur(0px);
+        
+        @keyframes riskPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(245, 158, 11, 0);
+            }
         }
-
-        .modal.show { opacity: 1; pointer-events: auto; backdrop-filter: blur(8px); }
-
-        .modal-content {
-            padding: 32px 24px; max-width: 500px; width: 100%;
-            background: var(--card); border-radius: 32px 32px 0 0;
-            transform: translateY(100%); transition: transform 0.35s;
-            position: relative;
+        
+        .btn-view.risk-btn:hover { 
+            background: #f59e0b; color: #fff;
+            animation: none;
+            transform: translateY(-3px) rotate(1deg);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
         }
-
-        .modal.show .modal-content { transform: translateY(0); }
-
-        .modal-close {
-            position: absolute; top: 20px; right: 20px;
-            background: var(--input); border: none; padding: 6px 14px;
-            border-radius: 20px; cursor: pointer; font-weight: 600;
-            color: var(--muted); font-size: 0.85rem; transition: all 0.3s;
+        
+        /* Animation cho nút Lấy Key */
+        .btn-key { 
+            background: var(--tab-container-bg); color: var(--text-muted);
+            position: relative; overflow: hidden;
+            transition: all 0.3s ease;
         }
-
-        .modal-close:hover { background: #ef4444; color: #fff; }
+        
+        .btn-key::after {
+            content: '🔑';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%) rotate(0deg);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-key:hover {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #fbbf24;
+            padding-right: 35px;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(251, 191, 36, 0.2);
+        }
+        
+        .btn-key:hover::after {
+            transform: translateY(-50%) rotate(360deg);
+        }
 
         .form-group { margin-bottom: 16px; }
+        label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 0.75rem; color: var(--text-title); letter-spacing: 0.5px; }
+        input[type="text"], input[type="password"], textarea {
+            width: 100%; padding: 14px; background: var(--input-bg); border: 1px solid transparent;
+            border-radius: 16px; color: var(--text-color); outline: none; font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        input:focus, textarea:focus { background: var(--card-bg); border-color: #0381fe; box-shadow: 0 0 0 3px rgba(3, 129, 254, 0.1); }
 
-        .form-group label {
-            display: block; margin-bottom: 6px; font-weight: 700;
-            font-size: 0.75rem; color: var(--muted); letter-spacing: 0.5px;
+        /* Loading spinner cho nút đăng ký */
+        .btn-submit { 
+            width: 100%; padding: 14px; color: white; font-weight: 700; cursor: pointer; font-size: 0.9rem; 
+            border-radius: 16px; border: none;
+            position: relative; overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+        }
+        
+        .btn-submit:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(3, 129, 254, 0.3);
+        }
+        
+        .btn-submit:active:not(:disabled) {
+            transform: translateY(-1px) scale(0.98);
+        }
+        
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-submit .spinner-mini {
+            display: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-left-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s infinite linear;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .btn-submit.loading .spinner-mini {
+            display: inline-block;
+        }
+        
+        .btn-submit::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .btn-submit:active::after {
+            animation: submitRipple 0.6s ease-out;
+        }
+        
+        @keyframes submitRipple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        /* Glow Pulse cho nút chính */
+        .btn-submit[style*="background: #0381fe"] {
+            animation: glowPulse 2s infinite;
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(3, 129, 254, 0.2),
+                            0 0 20px rgba(3, 129, 254, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 10px rgba(3, 129, 254, 0.4),
+                            0 0 40px rgba(3, 129, 254, 0.2);
+            }
         }
 
-        .form-group input, .form-group textarea {
-            width: 100%; padding: 14px; background: var(--input);
-            border: 1px solid transparent; border-radius: 16px;
-            color: var(--text); outline: none; font-size: 0.9rem;
-            font-family: inherit;
+        /* Shake animation cho modal lỗi */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .shake-animation {
+            animation: shake 0.6s ease-in-out;
         }
 
-        .form-group input:focus, .form-group textarea:focus {
-            border-color: var(--blue);
+        /* Success animation */
+        @keyframes successPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .success-animation {
+            animation: successPop 0.5s ease-out;
         }
 
-        .btn-submit {
-            width: 100%; padding: 14px; border: none; border-radius: 16px;
-            font-weight: 700; font-size: 0.9rem; cursor: pointer;
-            color: #fff; transition: all 0.3s;
+        #loading-frame {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(240, 244, 249, 0.85);
+            z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.2s ease; backdrop-filter: blur(10px);
         }
+        body[data-theme="dark"] #loading-frame { background: rgba(11, 19, 41, 0.85); }
+        #loading-frame.active { opacity: 1; pointer-events: auto; }
+        .spinner { width: 32px; height: 32px; border: 3px solid var(--tab-container-bg); border-left-color: #0381fe; border-radius: 50%; animation: spin 0.8s infinite linear; }
 
-        .btn-submit:hover { transform: translateY(-2px); }
-
-        .btn-blue { background: var(--blue); }
-        .btn-green { background: #10b981; }
-        .btn-red { background: #fee2e2; color: #ef4444; }
-
-        .link-text { color: var(--blue); font-weight: 600; cursor: pointer; }
-        .link-text:hover { text-decoration: underline; }
-
-        .info-row {
-            display: flex; justify-content: space-between; padding: 14px 0;
-            border-bottom: 1px solid var(--border); font-size: 0.9rem;
-        }
-
-        .switch {
-            position: relative; display: inline-block; width: 44px; height: 24px;
-        }
+        .info-row { display: flex; justify-content: space-between; padding: 14px 4px; border-bottom: 1px solid var(--header-border); font-size: 0.9rem; }
+        
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top:0; left:0; right:0; bottom:0;
-            background-color: #cbd5e1; border-radius: 24px; transition: .3s;
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 18px; width: 18px;
-            left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: .3s;
-        }
-        input:checked + .slider { background-color: var(--blue); }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .3s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+        input:checked + .slider { background-color: #0381fe; }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        .toast {
-            position: fixed; top: 20px; right: 20px;
-            background: #10b981; color: #fff; padding: 12px 20px;
-            border-radius: 12px; font-weight: 600; font-size: 0.85rem;
-            z-index: 10001; transform: translateX(120%);
-            transition: transform 0.3s; box-shadow: 0 8px 25px rgba(16,185,129,0.3);
+        /* Toast notification */
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 16px;
+            font-weight: 600;
+            z-index: 10001;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .toast-notification.show {
+            transform: translateX(0);
         }
 
-        .toast.show { transform: translateX(0); }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
-        .file-actions { display: flex; gap: 8px; margin-top: 10px; }
-
-        .notice-item {
-            background: var(--item); border-radius: 22px; padding: 18px; margin-bottom: 12px;
-            border-left: 5px solid var(--blue);
-        }
-
-        .notice-item h4 { margin-bottom: 8px; }
-        .notice-item p { font-size: 0.88rem; color: var(--text); margin-bottom: 8px; }
-        .notice-footer {
-            font-size: 0.76rem; color: var(--muted);
-            border-top: 1px dashed var(--border); padding-top: 8px;
-        }
-
+        /* Responsive animations */
         @media (max-width: 600px) {
-            body { padding: 10px; padding-top: 75px; }
-            .card { padding: 20px; }
+            .btn-view:hover,
+            .btn-submit:hover,
+            .header-auth-btn:hover {
+                transform: translateY(-2px);
+            }
+            
+            .file-item:hover {
+                transform: translateX(3px);
+            }
         }
     </style>
 </head>
 <body>
 
+    <div class="ambient-glow">
+        <div class="glow-circle glow-1"></div>
+        <div class="glow-circle glow-2"></div>
+    </div>
+
+    <!-- TOP HEADER -->
     <div class="top-header">
-        <div style="display:flex; align-items:center; gap:12px;">
-            <div class="logo">HD</div>
-            <span class="header-title">HDanhTech Files</span>
+        <div class="header-brand">
+            <div class="tech-logo-fallback">HD</div>
+            <h1>HDanhTech Files</h1>
         </div>
-        <div class="header-right">
-            <button class="btn-settings" onclick="openModal('settings-modal')">|||</button>
-            <button id="headerAuthBtn" class="btn-header btn-login" onclick="handleHeaderClick()">Đăng nhập</button>
+        <div class="header-actions">
+            <button class="btn-setting-toggle" onclick="openSettingsModal()">⚙️</button>
+            <button id="header-auth-action" class="header-auth-btn auth-state-signin" onclick="handleHeaderAuthClick()">Đăng nhập</button>
         </div>
     </div>
 
-    <div id="toast" class="toast"><span id="toastMsg"></span></div>
+    <div id="loading-frame"><div class="spinner"></div></div>
 
-    <div id="settings-modal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('settings-modal')">Đóng</button>
-            <h3 style="margin-bottom:20px;">Cài đặt</h3>
-            <div class="info-row">
+    <!-- Toast Notification -->
+    <div id="toast-notification" class="toast-notification">
+        <span>✅</span>
+        <span id="toast-message">Thành công!</span>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div id="settings-modal" class="modal-overlay">
+        <div class="modal-box">
+            <button onclick="closeSettingsModal()" class="modal-close-btn">Đóng</button>
+            <h3 style="margin-bottom: 20px; font-size: 1.15rem; font-weight:700;">Cài đặt hệ thống</h3>
+            <div class="info-row" style="align-items: center;">
                 <div>
-                    <h5 style="font-weight:600;">Chế độ tối</h5>
-                    <p style="font-size:0.78rem; color:var(--muted);">Giao diện ban đêm</p>
+                    <h5 style="font-weight: 600;">Chế độ tối (Dark Mode)</h5>
+                    <p style="font-size: 0.78rem; color: var(--text-muted);">Tối ưu giao diện vào ban đêm</p>
                 </div>
                 <label class="switch">
-                    <input type="checkbox" id="themeSwitch" onchange="toggleTheme(this)">
+                    <input type="checkbox" id="theme-switch" onchange="toggleThemeMode(this)">
                     <span class="slider"></span>
                 </label>
             </div>
-            <p style="text-align:center; font-size:0.75rem; color:var(--muted); margin-top:24px;">HDanhTech Engine - Active</p>
+            <p style="text-align: center; font-size:0.75rem; color:var(--text-muted); margin-top:24px;">HDanhTech Engine Premium • Active</p>
         </div>
     </div>
 
-    <div id="auth-modal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('auth-modal')">x</button>
-            
-            <div id="loginForm">
-                <h3 style="margin-bottom:20px;">Đăng nhập</h3>
-                <div class="form-group">
-                    <label>TÀI KHOẢN</label>
-                    <input type="text" id="loginUser" placeholder="Nhập tên tài khoản...">
-                </div>
-                <div class="form-group">
-                    <label>MẬT KHẨU</label>
-                    <input type="password" id="loginPass" placeholder="Nhập mật khẩu...">
-                </div>
-                <button class="btn-submit btn-blue" onclick="handleLogin()">Đăng nhập</button>
-                <p style="text-align:center; margin-top:16px; font-size:0.85rem; color:var(--muted);">
-                    Chưa có tài khoản? <span class="link-text" onclick="showRegisterForm()">Đăng ký</span>
-                </p>
-            </div>
+    <!-- STATUS MODAL -->
+    <div id="status-modal" class="modal-overlay">
+        <div class="modal-box" style="border-radius: 28px; margin: 20px; margin-top: auto; padding: 24px;">
+            <h3 id="status-title" style="font-size: 1.15rem; margin-bottom: 8px; font-weight: 700;">Thông báo</h3>
+            <p id="status-desc" style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin-bottom: 24px;">Thao tác thành công.</p>
+            <button class="btn-submit" onclick="closeStatusModal()" style="background: #0381fe;">Xác nhận</button>
+        </div>
+    </div>
 
-            <div id="registerForm" style="display:none;">
-                <h3 style="margin-bottom:20px;">Đăng ký</h3>
-                <div class="form-group">
-                    <label>TÊN TÀI KHOẢN</label>
-                    <input type="text" id="regUser" placeholder="Tối đa 10 kí tự" maxlength="10">
-                </div>
-                <div class="form-group">
-                    <label>MẬT KHẨU</label>
-                    <input type="password" id="regPass" placeholder="Tối đa 20 kí tự" maxlength="20">
-                </div>
-                <button class="btn-submit btn-green" onclick="handleRegister()">Đăng ký ngay</button>
-                <p style="text-align:center; margin-top:16px; font-size:0.85rem; color:var(--muted);">
-                    Đã có tài khoản? <span class="link-text" onclick="showLoginForm()">Đăng nhập</span>
-                </p>
+    <!-- MÀN HÌNH CHÀO MỪNG -->
+    <div id="welcome-modal" class="modal-overlay">
+        <div class="modal-box">
+            <button id="close-welcome-btn" class="modal-close-btn" disabled>3s</button>
+            <div class="tech-logo-fallback large">HD</div>
+            <h2 class="welcome-title">Chào mừng đến với HDanhTech Files</h2>
+            <p class="welcome-desc">Hệ thống đám mây lưu trữ dữ liệu chính thức của HDanhTech Team. Vui lòng đăng ký tài khoản để tiếp tục.</p>
+            <div class="auth-bottom-links">
+                <a onclick="openAuthModal('signin')">Đăng ký ngay</a>
+                <span class="divider">|</span>
+                <a onclick="openAuthModal('login')">Đăng nhập</a>
             </div>
         </div>
     </div>
 
-    <div id="account-modal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('account-modal')">x</button>
-            <h3 style="text-align:center; margin-bottom:20px;">Thông tin cá nhân</h3>
-            <div style="background:var(--input); padding:16px; border-radius:20px; margin-bottom:24px;">
-                <div class="info-row"><span>Tài khoản:</span><strong id="accUsername">N/A</strong></div>
-                <div class="info-row"><span>Mật khẩu:</span><strong>........</strong></div>
-                <div class="info-row" style="border:none;"><span>Cấp bậc:</span><strong id="accRank" style="color:var(--blue);">MEMBER</strong></div>
+    <!-- AUTH MODAL -->
+    <div id="auth-modal" class="modal-overlay">
+        <div class="modal-box">
+            <button onclick="closeAuthModal()" class="modal-close-btn">×</button>
+            <div id="login-form-wrapper">
+                <h3 style="margin-bottom: 20px; font-size: 1.15rem; font-weight:700;">Đăng nhập hệ thống</h3>
+                <div class="form-group"><label>TÀI KHOẢN</label><input type="text" id="login-user" placeholder="Nhập tên tài khoản..."></div>
+                <div class="form-group"><label>MẬT KHẨU</label><input type="password" id="login-pass" placeholder="Nhập mật khẩu..."></div>
+                <button class="btn-submit" style="background: #0381fe; margin-top: 8px;" onclick="handleAuth('login')">
+                    <span class="spinner-mini"></span> Đăng nhập
+                </button>
+                <p style="margin-top: 20px; text-align:center; font-size: 0.85rem; color:var(--text-muted);">Chưa có tài khoản? <a onclick="toggleAuthForm('signin')" style="color:#0381fe; font-weight:600; cursor:pointer;">Tạo tài khoản</a></p>
             </div>
-            <button class="btn-submit btn-red" onclick="handleLogout()">Đăng xuất</button>
+            <div id="signin-form-wrapper" style="display: none;">
+                <h3 style="margin-bottom: 20px; font-size: 1.15rem; font-weight:700;">Đăng ký tài khoản</h3>
+                <div class="form-group"><label>TÊN TÀI KHOẢN</label><input type="text" id="reg-user" placeholder="Tối đa 10 kí tự" maxlength="10"></div>
+                <div class="form-group"><label>MẬT KHẨU BẢO MẬT</label><input type="password" id="reg-pass" placeholder="Tối đa 20 kí tự" maxlength="20"></div>
+                <button class="btn-submit" style="background: #10b981; color: #fff; margin-top: 8px;" onclick="handleAuth('register')">
+                    <span class="spinner-mini"></span> Đăng ký ngay
+                </button>
+                <p style="margin-top: 20px; text-align:center; font-size: 0.85rem; color:var(--text-muted);">Đã có tài khoản? <a onclick="toggleAuthForm('login')" style="color:#0381fe; font-weight:600; cursor:pointer;">Đăng nhập</a></p>
+            </div>
         </div>
     </div>
 
-    <div id="status-modal" class="modal">
-        <div class="modal-content" style="border-radius:28px; margin:20px;">
-            <h3 id="statusTitle" style="margin-bottom:8px;">Thông báo</h3>
-            <p id="statusDesc" style="color:var(--muted); margin-bottom:24px;"></p>
-            <button class="btn-submit btn-blue" onclick="closeModal('status-modal')">Xác nhận</button>
+    <!-- ACCOUNT INFO MODAL -->
+    <div id="account-info-modal" class="modal-overlay">
+        <div class="modal-box">
+            <button onclick="closeAccountInfoModal()" class="modal-close-btn">×</button>
+            <h3 style="margin-bottom: 20px; font-size: 1.15rem; font-weight:700; text-align: center;">Thông tin cá nhân</h3>
+            <div style="margin-bottom: 24px; background: var(--input-bg); padding: 8px 16px; border-radius: 20px;">
+                <div class="info-row"><span>Tài khoản:</span><strong id="info-display-username">N/A</strong></div>
+                <div class="info-row"><span>Mật khẩu:</span><strong id="info-display-password">••••••••</strong></div>
+                <div class="info-row" style="border:none;"><span>Cấp bậc:</span><strong id="info-display-rank" style="color: #0381fe;">MEMBER</strong></div>
+            </div>
+            <button class="btn-submit" style="background: #fee2e2; color: #ef4444;" onclick="processLogout()">Đăng xuất tài khoản</button>
         </div>
     </div>
 
-    <div class="tabs">
-        <button class="tab active" onclick="switchTab('files')">Tệp tin</button>
-        <button class="tab" onclick="switchTab('verified')">Đã xác minh</button>
-        <button class="tab" onclick="switchTab('announcements')">Thông báo</button>
-        <button class="tab" id="adminTab" style="display:none;" onclick="switchTab('admin')">Quản trị</button>
+    <!-- NAVIGATION TABS -->
+    <div class="tabs-container">
+        <button class="tab-btn active" onclick="switchTab('tab-files')">Tệp tin</button>
+        <button class="tab-btn" onclick="switchTab('tab-verified')">Đã xác minh</button>
+        <button class="tab-btn" onclick="switchTab('tab-announcements')">Thông báo</button>
+        <button class="tab-btn" id="tab-btn-admin-panel" onclick="switchTab('tab-admin-panel')">Quản trị</button>
     </div>
 
+    <!-- CONTAINER CONTENT -->
     <div class="container">
         
-        <div class="card">
+        <!-- ABOUT CARD -->
+        <div class="oneui-card">
             <p class="section-title">About Us</p>
-            <div class="about-box">
-                <div class="logo" style="width:48px; height:48px; font-size:1.1rem;">HD</div>
-                <div>
+            <div class="about-team-box">
+                <div class="tech-logo-fallback" style="width:48px; height:48px; font-size:1.1rem; border-radius:14px; flex-shrink: 0;">HD</div>
+                <div class="about-team-info">
                     <h5>Team HDanhTech Official</h5>
-                    <p>Hệ thống cung cấp, crack và phân phối ứng dụng di động an toàn.</p>
-                    <a href="https://discord.gg/wf4QnepsxS" target="_blank">Tham gia Discord</a>
+                    <p>Hệ thống cung cấp, crack và phân phối các tệp tin ứng dụng di động an toàn, tối ưu hóa trải nghiệm.</p>
+                    <a href="https://discord.gg/wf4QnepsxS" target="_blank" class="discord-blue-link">➔ Tham gia Discord của nhóm</a>
                 </div>
             </div>
-            <div class="counter-row">
+            <div class="counter-grid">
                 <div class="counter-box">
                     <p>Lượt truy cập</p>
                     <h4 id="totalVisits">0</h4>
                 </div>
                 <div class="counter-box">
-                    <p><span class="dot-pulse"></span>Trực tuyến</p>
+                    <p><span class="pulse-dot"></span>Trực tuyến</p>
                     <h4 id="activeUsers">0</h4>
                 </div>
             </div>
         </div>
 
+        <!-- TAB 1: TẤT CẢ TỆP TIN -->
         <div id="tab-files" class="tab-content active">
-            <div class="card">
-                <p class="section-title">Danh sách tệp tin</p>
-                <div id="filesList"></div>
-            </div>
-        </div>
-
-        <div id="tab-verified" class="tab-content">
-            <div class="card">
-                <p class="section-title">Tệp tin an toàn</p>
-                <div id="verifiedList"></div>
-            </div>
-        </div>
-
-        <div id="tab-announcements" class="tab-content">
-            <div class="card">
-                <p class="section-title">Bảng tin hệ thống</p>
-                <div id="announcementsList">
-                    <p style="color:var(--muted); text-align:center; padding:25px;">Đang tải...</p>
-                </div>
-            </div>
-        </div>
-
-        <div id="tab-admin" class="tab-content">
-            <div class="card">
-                <p class="section-title">Đăng thông báo</p>
-                <div class="form-group">
-                    <label>TIÊU ĐỀ</label>
-                    <input type="text" id="noticeTitle" placeholder="Nhập tiêu đề...">
-                </div>
-                <div class="form-group">
-                    <label>NỘI DUNG</label>
-                    <textarea id="noticeContent" rows="4" placeholder="Nội dung thông báo..."></textarea>
-                </div>
-                <button class="btn-submit btn-blue" onclick="postAnnouncement()">Phát hành</button>
-            </div>
-        </div>
-
-    </div>
-
-    <script>
-        var firebaseConfig = {
-            apiKey: "AIzaSyA1jVOVPHECGp27Qgi4U4r71fiKm_a3biM",
-            authDomain: "netking-b0ad0.firebaseapp.com",
-            databaseURL: "https://netking-b0ad0-default-rtdb.firebaseio.com",
-            projectId: "netking-b0ad0",
-            storageBucket: "netking-b0ad0.firebasestorage.app",
-            messagingSenderId: "374692503086",
-            appId: "1:374692503086:web:0c46168ddfb8dadf45c9bf"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        var db = firebase.database();
-
-        var userCache = {};
-        var currentUser = localStorage.getItem("hd_user") || "guest";
-        var notices = [];
-
-        function loadUserCache() {
-            db.ref("users").once("value", function(snap) {
-                userCache = snap.val() || {};
-            });
-        }
-
-        var files = [
-            { name: "HDanhTech Launcher", desc: "Finding good launcher apk. Hide your apps from others.", version: "V1", url: "https://www.mediafire.com/file/zmd786crhxyv6no/NLauncher_1.0.apk/file", badges: ["insanity","hot","safe"] },
-            { name: "NetPlus", desc: "2 option antiband 88% - 90%: Freeze | Ghost", version: "V18", url: "https://www.mediafire.com/file/c5rjolz3ezd8yun/NetPlusV18.apk/file", badges: ["hot","safe"], keyUrl: "https://link4m.net/go/eb8Na3" },
-            { name: "HDanhTech Fake Lag", desc: "Fake Lag Modern, 3 Options", version: "v1.0.1", url: "https://www.mediafire.com/file/b566kfjwhsewl98/Netking_%25281%2529.apk/file", badges: ["safe"] },
-            { name: "HDanhTech Fake Lag OG", desc: "Using OG VPN Service", version: "v1.0.2", url: "https://www.mediafire.com/file/k37z83abw7ckrzo/Netking.apk/file", badges: ["safe"] },
-            { name: "HDanhTech Modern", desc: "Can be risk!", version: "V2.0.0", url: "https://www.mediafire.com/file/e72t7fqxcis9hp0/Netking+Modern.apk/file", badges: ["risk"], isRisk: true },
-            { name: "Sky Ping", desc: "Safe App, very cool UI", version: "V4", url: "https://www.mediafire.com/file/2ddgnsos7d2ee7d/SKY_PING_VIPV4.apk/file", badges: ["safe"] }
-        ];
-
-        window.onload = function() {
-            loadUserCache();
-            updateHeaderUI();
-            loadTheme();
-            initCounters();
-            renderFiles();
-            renderVerified();
-            loadAnnouncements();
-        };
-
-        function loadTheme() {
-            var theme = localStorage.getItem("hd_theme") || "light";
-            document.body.setAttribute("data-theme", theme);
-            document.getElementById("themeSwitch").checked = (theme === "dark");
-        }
-
-        function toggleTheme(cb) {
-            var theme = cb.checked ? "dark" : "light";
-            document.body.setAttribute("data-theme", theme);
-            localStorage.setItem("hd_theme", theme);
-        }
-
-        function initCounters() {
-            db.ref("total_visits").transaction(function(v) { return (v || 0) + 1; });
-            db.ref("total_visits").on("value", function(snap) {
-                document.getElementById("totalVisits").innerText = (snap.val() || 0).toLocaleString();
-            });
-            updateActiveUsers();
-            setInterval(updateActiveUsers, 4000);
-        }
-
-        function updateActiveUsers() {
-            var h = new Date().getHours();
-            var base = (h >= 19 && h <= 23) ? 54 : (h >= 1 && h <= 6 ? 5 : 18);
-            document.getElementById("activeUsers").innerText = Math.max(3, base + Math.floor(Math.random() * 9) - 4);
-        }
-
-        function renderFiles() {
-            var html = "";
-            for (var i = 0; i < files.length; i++) {
-                var f = files[i];
-                var badgeHtml = "";
-                for (var j = 0; j < f.badges.length; j++) {
-                    var b = f.badges[j];
-                    if (b === "insanity") badgeHtml += "<span class='badge badge-insanity'>INSANITY</span>";
-                    if (b === "hot") badgeHtml += "<span class='badge badge-hot'>HOT</span>";
-                    if (b === "safe") badgeHtml += "<span class='badge badge-safe'>An toàn</span>";
-                    if (b === "risk") badgeHtml += "<span class='badge badge-risk'>Chưa xác minh</span>";
-                }
-                html += "<div class='file-item'>";
-                html += "<div class='file-name'>" + f.name + "<span style='display:flex; gap:4px;'>" + badgeHtml + "</span></div>";
-                html += "<div class='file-desc'>" + f.desc + "</div>";
-                html += "<div class='file-version'>Phiên bản: " + f.version + "</div>";
-                html += "<div class='file-actions'>";
-                html += "<button class='btn-download" + (f.isRisk ? " risk" : "") + "' onclick=\"downloadFile('" + f.url + "'," + (f.isRisk || false) + ")\">" + (f.isRisk ? "Tải file rủi ro" : "Tải tập tin") + "</button>";
-                if (f.keyUrl) {
-                    html += "<button class='btn-download' style='flex:0.5; background:var(--tab-bg); color:var(--muted);' onclick=\"window.open('" + f.keyUrl + "','_blank')\">Lấy Key</button>";
-                }
-                html += "</div></div>";
-            }
-            document.getElementById("filesList").innerHTML = html;
-        }
-
-        function renderVerified() {
-            var html = "";
-            for (var i = 0; i < files.length; i++) {
-                var f = files[i];
-                if (!f.isRisk) {
-                    html += "<div class='file-item'>";
-                    html += "<div class='file-name'>" + f.name + " <span class='badge badge-safe'>An toàn</span></div>";
-                    html += "<div class='file-desc'>" + f.desc + "</div>";
-                    html += "<div class='file-version'>Phiên bản: " + f.version + "</div>";
-                    html += "<button class='btn-download' onclick=\"downloadFile('" + f.url + "',false)\">Tải tập tin</button>";
-                    html += "</div>";
-                }
-            }
-            document.getElementById("verifiedList").innerHTML = html;
-        }
-
-        function downloadFile(url, isRisk) {
-            if (currentUser === "guest") {
-                showStatus("Yêu cầu", "Vui lòng đăng nhập để tải file!");
-                openModal("auth-modal");
-                return;
-            }
-            window.open(url, "_blank");
-            showToast("Đang tải xuống...");
-        }
-
-        function loadAnnouncements() {
-            db.ref("announcements").on("value", function(snap) {
-                var data = snap.val();
-                notices = data ? Object.values(data).reverse() : [];
-                renderAnnouncements();
-            });
-        }
-
-        function renderAnnouncements() {
-            var container = document.getElementById("announcementsList");
-            if (notices.length === 0) {
-                container.innerHTML = "<p style='color:var(--muted); text-align:center; padding:25px;'>Chưa có thông báo nào.</p>";
-                return;
-            }
-            var html = "";
-            for (var i = 0; i < notices.length; i++) {
-                var n = notices[i];
-                html += "<div class='notice-item'>";
-                html += "<h4>" + n.title + " <span class='badge badge-admin'>Admin</span></h4>";
-                html += "<p>" + n.content + "</p>";
-                html += "<div class='notice-footer'>Đăng bởi: " + n.author + " | " + n.date + "</div>";
-                html += "</div>";
-            }
-            container.innerHTML = html;
-        }
-
-        function postAnnouncement() {
-            var title = document.getElementById("noticeTitle").value.trim();
-            var content = document.getElementById("noticeContent").value.trim();
-            var username = localStorage.getItem("hd_username") || "guest";
-            
-            if (username.toLowerCase() !== "xine3d") return showStatus("Lỗi", "Quyền hạn không hợp lệ!");
-            if (!title || !content) return showStatus("Lỗi", "Vui lòng điền đủ thông tin!");
-
-            var now = new Date();
-            db.ref("announcements").push({
-                title: title,
-                content: content,
-                author: username,
-                date: now.toLocaleDateString("vi-VN") + " - " + now.toLocaleTimeString("vi-VN", {hour: "2-digit", minute: "2-digit"})
-            }).then(function() {
-                document.getElementById("noticeTitle").value = "";
-                document.getElementById("noticeContent").value = "";
-                showStatus("Thành công", "Thông báo đã được phát hành!");
-                switchTab("announcements");
-            }).catch(function() {
-                showStatus("Lỗi", "Không thể đăng thông báo!");
-            });
-        }
-
-        function handleRegister() {
-            var user = document.getElementById("regUser").value.trim();
-            var pass = document.getElementById("regPass").value.trim();
-            
-            if (!user || !pass) return showStatus("Lỗi", "Vui lòng điền đầy đủ thông tin!");
-            if (user.length < 3 || pass.length < 4) return showStatus("Lỗi", "Tài khoản ít nhất 3 kí tự, mật khẩu ít nhất 4 kí tự!");
-            if (user.length > 10 || pass.length > 20) return showStatus("Lỗi", "Tài khoản tối đa 10, mật khẩu tối đa 20 kí tự!");
-
-            if (userCache[user.toLowerCase()]) {
-                return showStatus("Lỗi", "Tài khoản đã tồn tại!");
-            }
-
-            userCache[user.toLowerCase()] = { username: user, password: pass };
-            
-            db.ref("users/" + user.toLowerCase()).set({
-                username: user,
-                password: pass,
-                createdAt: new Date().toISOString()
-            });
-
-            loginSuccess(user, pass, "member");
-            closeModal("auth-modal");
-            showToast("Chào mừng " + user + "!");
-            document.getElementById("regUser").value = "";
-            document.getElementById("regPass").value = "";
-        }
-
-        function handleLogin() {
-            var user = document.getElementById("loginUser").value.trim();
-            var pass = document.getElementById("loginPass").value.trim();
-            
-            if (!user || !pass) return showStatus("Lỗi", "Vui lòng điền đủ thông tin!");
-
-            if (user === "xine3d" && pass === "Thinh_2012") {
-                loginSuccess("xine3d", "Thinh_2012", "admin");
-                closeModal("auth-modal");
-                showToast("Chào Admin!");
-                document.getElementById("loginUser").value = "";
-                document.getElementById("loginPass").value = "";
-                return;
-            }
-
-            var cachedUser = userCache[user.toLowerCase()];
-            if (cachedUser && cachedUser.password === pass) {
-                loginSuccess(cachedUser.username, pass, "member");
-                closeModal("auth-modal");
-                showToast("Chào " + cachedUser.username + "!");
-                document.getElementById("loginUser").value = "";
-                document.getElementById("loginPass").value = "";
-                return;
-            }
-
-            db.ref("users/" + user.toLowerCase()).once("value", function(snap) {
-                var data = snap.val();
-                if (data && data.password === pass) {
-                    userCache[user.toLowerCase()] = data;
-                    loginSuccess(data.username, pass, "member");
-                    closeModal("auth-modal");
-                    showToast("Chào " + data.username + "!");
-                    document.getElementById("loginUser").value = "";
-                    document.getElementById("loginPass").value = "";
-                } else {
-                    showStatus("Lỗi", "Sai tài khoản hoặc mật khẩu!");
-                }
-            });
-        }
-
-        function loginSuccess(username, password, rank) {
-            currentUser = rank;
-            localStorage.setItem("hd_user", rank);
-            localStorage.setItem("hd_username", username);
-            localStorage.setItem("hd_password", password);
-            updateHeaderUI();
-        }
-
-        function handleLogout() {
-            closeModal("account-modal");
-            currentUser = "guest";
-            localStorage.setItem("hd_user", "guest");
-            localStorage.removeItem("hd_username");
-            localStorage.removeItem("hd_password");
-            updateHeaderUI();
-            switchTab("files");
-            showToast("Đã đăng xuất!");
-        }
-
-        function updateHeaderUI() {
-            var btn = document.getElementById("headerAuthBtn");
-            var adminTab = document.getElementById("adminTab");
-            var username = localStorage.getItem("hd_username") || "Tài khoản";
-
-            if (currentUser === "guest") {
-                btn.textContent = "Đăng nhập";
-                btn.className = "btn-header btn-login";
-                adminTab.style.display = "none";
-            } else {
-                btn.textContent = username;
-                btn.className = "btn-header btn-user";
-                adminTab.style.display = (username.toLowerCase() === "xine3d") ? "block" : "none";
-            }
-        }
-
-        function handleHeaderClick() {
-            if (currentUser === "guest") {
-                openModal("auth-modal");
-                showLoginForm();
-            } else {
-                document.getElementById("accUsername").innerText = localStorage.getItem("hd_username") || "N/A";
-                document.getElementById("accRank").innerText = currentUser.toUpperCase();
-                openModal("account-modal");
-            }
-        }
-
-        function showLoginForm() {
-            document.getElementById("loginForm").style.display = "block";
-            document.getElementById("registerForm").style.display = "none";
-        }
-
-        function showRegisterForm() {
-            document.getElementById("loginForm").style.display = "none";
-            document.getElementById("registerForm").style.display = "block";
-        }
-
-        function switchTab(name) {
-            var contents = document.querySelectorAll(".tab-content");
-            for (var i = 0; i < contents.length; i++) {
-                contents[i].classList.remove("active");
-            }
-            var tabs = document.querySelectorAll(".tab");
-            for (var j = 0; j < tabs.length; j++) {
-                tabs[j].classList.remove("active");
-            }
-            
-            document.getElementById("tab-" + name).classList.add("active");
-            
-            if (name === "files") tabs[0].classList.add("active");
-            if (name === "verified") tabs[1].classList.add("active");
-            if (name === "announcements") tabs[2].classList.add("active");
-            if (name === "admin") document.getElementById("adminTab").classList.add("active");
-        }
-
-        function openModal(id) {
-            document.getElementById(id).classList.add("show");
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove("show");
-        }
-
-        function showStatus(title, msg) {
-            document.getElementById("statusTitle").innerText = title;
-            document.getElementById("statusDesc").innerText = msg;
-            openModal("status-modal");
-        }
-
-        function showToast(msg) {
-            document.getElementById("toastMsg").innerText = msg;
-            document.getElementById("toast").classList.add("show");
-            setTimeout(function() {
-                document.getElementById("toast").classList.remove("show");
-            }, 2000);
-        }
-    </script>
-</body>
-</html>ment.getElementById(id).classList.add("show");
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.remove("show");
-        }
-
-        function showStatus(title, msg) {
-            document.getElementById("statusTitle").innerText = title;
-            document.getElementById("statusDesc").innerText = msg;
-            openModal("status-modal");
-        }
-
-        function showToast(msg) {
-            document.getElementById("toastMsg").innerText = msg;
-            document.getElementById("toast").classList.add("show");
-            setTimeout(function() {
-                document.getElementById("toast").classList.remove("show");
-            }, 2000);
-        }
-    </script>
-</body>
-</html>
+            <div class="oneui-card">
+                <p class="section-title">Danh sách hoạt động (6 Tệp)</p>
+                <div id="files-container">
+                    <div class="file-item">
+                        <h4>HDanhTech Launcher <span style="display: flex; gap: 4px;"><span class="badge-insanity">INSANITY!!</span><span class="badge-hot">HOT 🔥</span><span class="badge-verified">An toàn</span></span></h4>
+                        <p class="file-desc">Finding good launcher apk? NL will give you best enjoy. Hide your apps from others people to find it.</p>
+                        <div class="file-meta">Phiên bản: V1</div>
+                        <div class="file-actions-row"><button onclick="downloadFileProtect('https://www.mediafire.com/file/zmd786crhxyv6no/NLauncher_1.0.apk/file', false)" class="btn-view">Tải tập tin</button></div>
+                    </div>
+                    <div class="file-item">
+                        <h4>NetPlus <span style="display: flex; gap: 4px;"><span class="badge-hot">HOT 🔥</span><span class="badge-verified">An toàn</span></span></h4>
+                        <p class="file-desc">2 option antiband 88% - 90%:<br>1. Freeze | 2. Ghost</p>
+                        <div class="file-meta">Phiên bản: V18</div>
+                        <div class="file-actions-row">
+                            <button onclick="downloadFileProtect('https://www.mediafire.com/file/c5rjolz3ezd8yun/NetPlusV18.apk/file', false)" class="btn-view">Tải tập tin</button>
+                            <button onclick="window.open('https://link4m.net/go/eb8Na3', '_blank')" class="btn-view btn-key">Lấy Key</button>
+                        </div>
+                    </div>
+                    <div class="file-item">
+                        <h4>HDanhTech Fake Lag <span class="badge-verified">An toàn</span></h4>
+                        <p class="file-desc">Fake Lag Modern, 3 Options: Freeze Infinity, Invisible, Teleporter</p>
+                        <div class="file-meta">Phiên bản: v1.0.1</div>
+                        <div class="file-actions-row"><button onclick="downloadFileProtect('https://www.mediafire.com/file/b566kfjwhsewl98/Netking_%25281%2529.apk/file', false)" class="btn-view">Tải tập tin</button></div>
+                    </div>
+                    <div class="file-item">
+                        <h4>HDanhTech Fake Lag OG Version <span class="badge-verified">An toàn</span></h4>
+                        <p class="file-desc">Using OG VPN Service, Never getting BlackListed.</p>
+                        <div class="file-meta">Phiên bản: v1.0.2</div>
+                        <div class="file-actions-row"><button onclick="downloadFileProtect('https://www.mediafire.com/file/k37z83abw7ckrzo/Netking.apk/file', false)" class="btn-view">Tải tập tin</button></div>
+                    </div>
+                    <div class="file-item">
+                        <h4>HDanhTech Modern <span class="badge-risk">Chưa xác minh</span></h4>
                         <p class="file-desc" style="color: #f59e0b;">This app got cracked by HDanhTech team. Can be risk!</p>
                         <div class="file-meta">Phiên bản: V2.0.0</div>
                         <div class="file-actions-row"><button onclick="downloadFileProtect('https://www.mediafire.com/file/e72t7fqxcis9hp0/Netking+Modern.apk/file', true)" class="btn-view risk-btn">Tải tập tin rủi ro</button></div>
@@ -955,7 +897,7 @@
                 showStatusModal("Yêu cầu hệ thống", "Vui lòng Đăng ký hoặc Đăng nhập tài khoản để tải tập tin!");
             } else {
                 window.open(url, '_blank');
-                showToast(" Đang tải xuống tập tin...");
+                showToast("✅ Đang tải xuống tập tin...");
             }
         }
 
@@ -996,7 +938,7 @@
             localStorage.removeItem("hdantech_session_password");
             updateHeaderAuthButtonUI();
             switchTab('tab-files');
-            showToast(" Đã đăng xuất thành công!");
+            showToast("👋 Đã đăng xuất thành công!");
             document.getElementById("welcome-modal").classList.add("active");
             startWelcomeCounter();
         }
@@ -1010,7 +952,7 @@
                 const username = localStorage.getItem("hdantech_session_username");
                 if (username) {
                     setTimeout(() => {
-                        showToast(`Chào mừng trở lại, ${username}!`);
+                        showToast(`👋 Chào mừng trở lại, ${username}!`);
                     }, 500);
                 }
             }
@@ -1070,7 +1012,7 @@
                         <div class="notice-content-text" style="white-space: pre-line;">${notice.content}</div>
                         <div class="notice-meta-footer">
                             <span>👤 Đăng bởi: ${notice.author}</span>
-                            <span> ${notice.date}</span>
+                            <span>📅 ${notice.date}</span>
                         </div>
                     </div>
                 `);
@@ -1201,7 +1143,7 @@
                         document.getElementById("welcome-modal").classList.remove("active");
                         
                         // Hiển thị thông báo thành công và chào mừng
-                        showToast(` Chào mừng ${user}! Đăng ký thành công!`);
+                        showToast(`🎉 Chào mừng ${user}! Đăng ký thành công!`);
                         
                         // Reset form
                         document.getElementById("reg-user").value = "";
@@ -1236,7 +1178,7 @@
                     updateHeaderAuthButtonUI();
                     closeAuthModal();
                     document.getElementById("welcome-modal").classList.remove("active");
-                    showToast("Chào mừng Admin! Chúc một ngày tốt lành!");
+                    showToast("👑 Chào mừng Admin! Chúc một ngày tốt lành!");
                     document.getElementById("login-user").value = "";
                     document.getElementById("login-pass").value = "";
                     return;
@@ -1254,7 +1196,7 @@
                         updateHeaderAuthButtonUI();
                         closeAuthModal();
                         document.getElementById("welcome-modal").classList.remove("active");
-                        showToast(` Chào mừng trở lại, ${userData.username}!`);
+                        showToast(`✅ Chào mừng trở lại, ${userData.username}!`);
                         document.getElementById("login-user").value = "";
                         document.getElementById("login-pass").value = "";
                     } else {
@@ -1276,7 +1218,5 @@
             document.getElementById("signin-form-wrapper").style.display = type === 'login' ? "none" : "block";
         }
     </script>
-</body>
-</html>   </script>
 </body>
 </html>
