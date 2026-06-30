@@ -171,18 +171,62 @@
         .auth-bottom-links a:hover { background: rgba(3, 129, 254, 0.08); }
         .auth-bottom-links .divider { color: var(--header-border); font-size: 1.2rem; align-self: center; }
 
-        .file-item, .notice-item { background: var(--item-bg); border-radius: 22px; padding: 18px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--card-border); }
+        /* Giao diện danh sách tệp gốc */
+        .file-item { background: var(--item-bg); border-radius: 22px; padding: 18px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--card-border); }
         .file-item h4 { font-size: 1rem; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 6px; }
-        
-        .badge-verified { background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
-        .badge-risk { background: rgba(245, 158, 11, 0.1); color: #f59e0b; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
-        .badge-admin { background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
-        .badge-hot { background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
-        .badge-insanity { background: var(--insanity-gradient); color: #fff; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; }
-        
         .file-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
         .file-meta { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
 
+        /* --- NÂNG CẤP GIAO DIỆN THÔNG BÁO ADMIN ĐẸP HƠN --- */
+        .notice-item {
+            background: var(--item-bg);
+            border-radius: 22px;
+            padding: 18px 20px;
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border: 1px solid var(--card-border);
+            border-left: 5px solid #0381fe; /* Đường line xanh công nghệ làm điểm nhấn */
+            box-shadow: 0 4px 14px rgba(3, 129, 254, 0.03);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .notice-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(3, 129, 254, 0.08);
+        }
+        .notice-item h4 {
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .notice-content-text {
+            font-size: 0.88rem;
+            color: var(--text-color);
+            opacity: 0.95;
+            line-height: 1.55;
+        }
+        .notice-meta-footer {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            border-top: 1px dashed var(--header-border);
+            padding-top: 8px;
+            margin-top: 4px;
+        }
+
+        .badge-verified { background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
+        .badge-risk { background: rgba(245, 158, 11, 0.1); color: #f59e0b; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
+        .badge-admin { background: rgba(3, 129, 254, 0.1); color: #0381fe; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+        .badge-hot { background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
+        .badge-insanity { background: var(--insanity-gradient); color: #fff; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; }
+        
         .file-actions-row { display: flex; gap: 8px; margin-top: 6px; }
         .btn-view {
             flex: 1; text-align: center; padding: 12px; border-radius: 14px; font-weight: 700; 
@@ -232,6 +276,7 @@
         <div class="glow-circle glow-2"></div>
     </div>
 
+    <!-- TOP HEADER -->
     <div class="top-header">
         <div class="header-brand">
             <div class="tech-logo-fallback">HD</div>
@@ -245,6 +290,7 @@
 
     <div id="loading-frame"><div class="spinner"></div></div>
 
+    <!-- SETTINGS MODAL -->
     <div id="settings-modal" class="modal-overlay">
         <div class="modal-box">
             <button onclick="closeSettingsModal()" class="modal-close-btn">Đóng</button>
@@ -263,6 +309,7 @@
         </div>
     </div>
 
+    <!-- STATUS MODAL -->
     <div id="status-modal" class="modal-overlay">
         <div class="modal-box" style="border-radius: 28px; margin: 20px; margin-top: auto; padding: 24px;">
             <h3 id="status-title" style="font-size: 1.15rem; margin-bottom: 8px; font-weight: 700;">Thông báo</h3>
@@ -271,17 +318,13 @@
         </div>
     </div>
 
+    <!-- MÀN HÌNH CHÀO MỪNG -->
     <div id="welcome-modal" class="modal-overlay">
         <div class="modal-box">
             <button id="close-welcome-btn" class="modal-close-btn" disabled>3s</button>
-            
             <div class="tech-logo-fallback large">HD</div>
-            
             <h2 class="welcome-title">Chào mừng đến với HDanhTech Files</h2>
-            <p class="welcome-desc">
-                Hệ thống đám mây lưu trữ dữ liệu chính thức của HDanhTech Team. Vui lòng đăng nhập tài khoản hệ thống của ông để tiếp tục.
-            </p>
-            
+            <p class="welcome-desc">Hệ thống đám mây lưu trữ dữ liệu chính thức của HDanhTech Team. Vui lòng đăng nhập tài khoản hệ thống của ông để tiếp tục.</p>
             <div class="auth-bottom-links">
                 <a onclick="openAuthModal('signin')">Đăng ký</a>
                 <span class="divider">|</span>
@@ -290,10 +333,10 @@
         </div>
     </div>
 
+    <!-- AUTH MODAL -->
     <div id="auth-modal" class="modal-overlay">
         <div class="modal-box">
             <button onclick="closeAuthModal()" class="modal-close-btn">×</button>
-            
             <div id="login-form-wrapper">
                 <h3 style="margin-bottom: 20px; font-size: 1.15rem; font-weight:700;">Đăng nhập hệ thống</h3>
                 <div class="form-group"><label>TÀI KHOẢN</label><input type="text" id="login-user" placeholder="Nhập tên tài khoản..."></div>
@@ -301,7 +344,6 @@
                 <button class="btn-submit" style="background: #0381fe; margin-top: 8px;" onclick="handleAuth('login')">Đăng nhập</button>
                 <p style="margin-top: 20px; text-align:center; font-size: 0.85rem; color:var(--text-muted);">Chưa có tài khoản? <a onclick="toggleAuthForm('signin')" style="color:#0381fe; font-weight:600; cursor:pointer;">Tạo tài khoản</a></p>
             </div>
-
             <div id="signin-form-wrapper" style="display: none;">
                 <h3 style="margin-bottom: 20px; font-size: 1.15rem; font-weight:700;">Đăng ký tài khoản</h3>
                 <div class="form-group"><label>TÊN TÀI KHOẢN</label><input type="text" id="reg-user" placeholder="Tối đa 10 kí tự"></div>
@@ -312,6 +354,7 @@
         </div>
     </div>
 
+    <!-- ACCOUNT INFO MODAL -->
     <div id="account-info-modal" class="modal-overlay">
         <div class="modal-box">
             <button onclick="closeAccountInfoModal()" class="modal-close-btn">×</button>
@@ -325,6 +368,7 @@
         </div>
     </div>
 
+    <!-- NAVIGATION TABS -->
     <div class="tabs-container">
         <button class="tab-btn active" onclick="switchTab('tab-files')">Tệp tin</button>
         <button class="tab-btn" onclick="switchTab('tab-verified')">Đã xác minh</button>
@@ -332,8 +376,10 @@
         <button class="tab-btn" id="tab-btn-admin-panel" onclick="switchTab('tab-admin-panel')">Quản trị</button>
     </div>
 
+    <!-- CONTAINER CONTENT -->
     <div class="container">
         
+        <!-- ABOUT CARD -->
         <div class="oneui-card">
             <p class="section-title">About Us</p>
             <div class="about-team-box">
@@ -344,7 +390,6 @@
                     <a href="https://discord.gg/wf4QnepsxS" target="_blank" class="discord-blue-link">➔ Tham gia Discord của nhóm</a>
                 </div>
             </div>
-            
             <div class="counter-grid">
                 <div class="counter-box">
                     <p>Lượt truy cập</p>
@@ -357,6 +402,7 @@
             </div>
         </div>
 
+        <!-- TAB 1: TẤT CẢ TỆP TIN -->
         <div id="tab-files" class="tab-content active">
             <div class="oneui-card">
                 <p class="section-title">Danh sách hoạt động (6 Tệp)</p>
@@ -404,6 +450,7 @@
             </div>
         </div>
 
+        <!-- TAB 2: ĐÃ XÁC MINH -->
         <div id="tab-verified" class="tab-content">
             <div class="oneui-card">
                 <p class="section-title">✓ Chỉ hiện tệp tin an toàn</p>
@@ -411,6 +458,7 @@
             </div>
         </div>
 
+        <!-- TAB 3: THÔNG BÁO -->
         <div id="tab-announcements" class="tab-content">
             <div class="oneui-card">
                 <p class="section-title">📢 Bảng tin hệ thống</p>
@@ -418,17 +466,19 @@
             </div>
         </div>
 
+        <!-- TAB 4: QUẢN TRỊ -->
         <div id="tab-admin-panel" class="tab-content">
             <div class="oneui-card">
                 <p class="section-title">⚙️ Đăng thông báo toàn server</p>
                 <div class="form-group"><label>Tiêu đề bảng tin</label><input type="text" id="notice-title" placeholder="Nhập tiêu đề..."></div>
-                <div class="form-group"><label>Nội dung chi tiết thông báo</label><textarea id="notice-content" analytics-id="desc" rows="4" style="resize:none;" placeholder="Nội dung truyền tải..."></textarea></div>
+                <div class="form-group"><label>Nội dung chi tiết thông báo</label><textarea id="notice-content" rows="4" style="resize:none;" placeholder="Nội dung truyền tải..."></textarea></div>
                 <button class="btn-submit" style="background: #0381fe;" onclick="handlePostAnnouncement()">Phát hành bảng tin</button>
             </div>
         </div>
 
     </div>
 
+    <!-- TOÀN BỘ KHỐI CODE JAVASCRIPT HỆ THỐNG -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyA1jVOVPHECGp27Qgi4U4r71fiKm_a3biM",
@@ -594,15 +644,23 @@
             }, 250);
         }
 
+        // HÀM HIỂN THỊ THÔNG BÁO CHUẨN ĐẸP ĐÃ SỬA LỖI TRỰC QUAN
         function renderServerAnnouncements() {
             const container = document.getElementById("announcements-container");
-            container.innerHTML = databaseNotices.length === 0 ? `<p style="color:#94a3b8; font-size:0.85rem; padding:15px; text-align:center;">Chưa có thông báo nào.</p>` : "";
+            container.innerHTML = "";
+            if (databaseNotices.length === 0) {
+                container.innerHTML = `<p style="color:#94a3b8; font-size:0.85rem; padding:25px; text-align:center;">Chưa có thông báo nào từ ban quản trị.</p>`;
+                return;
+            }
             databaseNotices.forEach(notice => {
                 container.insertAdjacentHTML('beforeend', `
                     <div class="notice-item">
                         <h4>📌 ${notice.title} <span class="badge-admin">Admin</span></h4>
-                        <p class="file-desc" style="white-space: pre-line; margin-top:4px;">${notice.content}</p>
-                        <div class="file-meta" style="margin-top:6px;">Đăng bởi: ${notice.author} • ${notice.date}</div>
+                        <div class="notice-content-text" style="white-space: pre-line;">${notice.content}</div>
+                        <div class="notice-meta-footer">
+                            <span>👤 Đăng bởi: ${notice.author}</span>
+                            <span>📅 ${notice.date}</span>
+                        </div>
                     </div>
                 `);
             });
@@ -653,7 +711,6 @@
                 if (user.length > 10 || pass.length > 20) return showStatusModal("Lỗi", "Tài khoản tối đa 10 kí tự, mật khẩu tối đa 20 kí tự!");
                 
                 db.ref("users/" + user.toLowerCase()).set({ username: user, password: pass }).then(() => {
-                    // TỰ ĐỘNG ĐĂNG NHẬP VÀO LUÔN NGAY SAU KHI ĐĂNG KÝ
                     currentUser = "member";
                     localStorage.setItem("hdantech_current_user", "member"); 
                     localStorage.setItem("hdantech_session_username", user);
@@ -662,7 +719,7 @@
                     nextActionFlow = "login_success_clear"; 
                     updateHeaderAuthButtonUI();
                     
-                    showStatusModal("Đăng ký thành công", `Chào mừng ${user}! Hệ thống đã tự động kích hoạt phiên đăng nhập cho ông.`);
+                    showStatusModal("Đăng ký thành công", `Chào mừng ${user}! Hệ thống đã tự động đăng nhập tài khoản cho ông.`);
                 }).catch(() => {
                     showStatusModal("Lỗi kết nối", "Không thể ghi dữ liệu, vui lòng thử lại sau.");
                 });
@@ -708,47 +765,7 @@
     </script>
 </body>
 </html>
-nt.getElementById("announcements-container");
-            container.innerHTML = "";
-            if (databaseNotices.length === 0) {
-                container.innerHTML = `<p style="color:#9aa0a6; font-size:0.85rem; padding:15px; text-align:center;">Chưa có thông báo nào từ ban quản trị.</p>`;
-                return;
-            }
-            databaseNotices.forEach(notice => {
-                const html = `
-                    <div class="notice-item">
-                        <h4>📌 ${notice.title} <span class="badge-admin">Admin</span></h4>
-                        <p class="file-desc" style="white-space: pre-line; margin-top:4px;">${notice.content}</p>
-                        <div class="file-meta" style="margin-top:6px; font-size:0.7rem;">
-                            Đăng bởi: ${notice.author} • ${notice.date}
-                        </div>
-                    </div>
-                `;
-                container.insertAdjacentHTML('beforeend', html);
-            });
-        }
-
-        function handlePostAnnouncement() {
-            const title = document.getElementById("notice-title").value.trim();
-            const content = document.getElementById("notice-content").value.trim();
-            const savedDisplayUser = localStorage.getItem("hdantech_session_username") || "guest";
-
-            if (savedDisplayUser.toLowerCase() !== "xine3d") {
-                return showStatusModal("Lỗi phân quyền", "Quyền hạn của ông không hợp lệ để thực hiện!");
-            }
-            if (!title || !content) {
-                return showStatusModal("Thiếu thông tin", "Vui lòng điền tiêu đề và nội dung bảng tin!");
-            }
-
-            const newNoticeRef = db.ref("announcements").push();
-            const now = new Date();
-            const dateString = now.toLocaleDateString('vi-VN') + " - " + now.toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'});
-
-            newNoticeRef.set({
-                id: newNoticeRef.key,
-                title: title,
-                content: content,
-                author: savedDisplayUser,
+r,
                 date: dateString
             }).then(() => {
                 document.getElementById("notice-title").value = "";
