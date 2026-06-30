@@ -3,62 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HDanhTech Files - Premium Blue</title>
+    <title>HDanhTech Files - Cyberpunk</title>
     
-    <link rel="icon" type="image/png" href="https://via.placeholder.com/150/0381fe/ffffff?text=HD">
+    <link rel="icon" type="image/png" href="https://via.placeholder.com/150/00ffcc/000000?text=HD">
 
+    <!-- Load Firebase Libraries -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <style>
+        /* --- PHONG CÁCH CYBERPUNK/HACKER --- */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800&family=Share+Tech+Mono&display=swap');
+
         :root {
-            --bg-color: #f0f4f9;
-            --bg-gradient: linear-gradient(135deg, #f0f4f9 0%, #d9e6f7 100%);
-            --text-color: #1e293b;
-            --text-muted: #64748b;
-            --text-title: #475569;
-            --card-bg: rgba(255, 255, 255, 0.85);
-            --card-border: rgba(255, 255, 255, 0.6);
-            --item-bg: rgba(241, 245, 249, 0.9);
-            --header-bg: rgba(240, 244, 249, 0.8);
-            --header-border: rgba(3, 129, 254, 0.08);
-            --tab-container-bg: #e2e8f0;
-            --tab-btn-active: #ffffff;
-            --input-bg: #f1f5f9;
-            --glow-op: 0.6;
-            --glow-1: #60a5fa;
-            --glow-2: #93c5fd;
-            --glow-3: #3b82f6;
-            --insanity-gradient: linear-gradient(135deg, #3b82f6, #1d4ed8, #1e40af);
-        }
-
-        [data-theme="dark"] {
-            --bg-color: #0b1329;
-            --bg-gradient: linear-gradient(135deg, #0b1329 0%, #050b18 100%);
-            --text-color: #f1f5f9;
+            --bg-color: #0d0f14;
+            --bg-gradient: linear-gradient(135deg, #090a0f 0%, #141724 100%);
+            --text-color: #e0f2fe;
             --text-muted: #94a3b8;
-            --text-title: #cbd5e1;
-            --card-bg: rgba(15, 23, 42, 0.8);
-            --card-border: rgba(255, 255, 255, 0.04);
-            --item-bg: rgba(30, 41, 59, 0.7);
-            --header-bg: rgba(11, 19, 41, 0.8);
-            --header-border: rgba(255, 255, 255, 0.05);
-            --tab-container-bg: #1e293b;
-            --tab-btn-active: #334155;
-            --input-bg: #1e293b;
-            --glow-op: 0.4;
-            --glow-1: #1d4ed8;
-            --glow-2: #1e3a8a;
-            --glow-3: #172554;
-            --insanity-gradient: linear-gradient(135deg, #2563eb, #1d4ed8, #1e40af);
+            --text-title: #7a8b9e;
+            
+            /* Neon Colors */
+            --neon-cyan: #00f0ff;
+            --neon-green: #39ff14;
+            --neon-pink: #ff00c8;
+            --neon-red: #ff0040;
+            
+            --card-bg: rgba(14, 22, 34, 0.75);
+            --card-border: rgba(0, 240, 255, 0.15);
+            --item-bg: rgba(8, 16, 30, 0.9);
+            --header-bg: rgba(9, 10, 15, 0.85);
+            --header-border: rgba(0, 240, 255, 0.2);
+            --tab-container-bg: #111827;
+            --input-bg: #0f172a;
+            --glow-op: 0.5;
+            --glow-1: #00f0ff;
+            --glow-2: #39ff14;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
             background: var(--bg-gradient);
             background-attachment: fixed;
             color: var(--text-color);
+            font-family: 'Share Tech Mono', monospace; /* Font hacker */
             padding: 16px;
             padding-top: 84px;
             display: flex;
@@ -68,546 +56,282 @@
             overflow-x: hidden;
         }
 
+        /* Background Effects */
+        .cyber-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -2; pointer-events: none;
+        }
         .ambient-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-        .glow-circle { position: absolute; border-radius: 50%; filter: blur(100px); opacity: var(--glow-op); }
-        .glow-1 { top: -10%; left: -10%; width: 400px; height: 400px; background: var(--glow-1); }
-        .glow-2 { top: 20%; right: -10%; width: 350px; height: 350px; background: var(--glow-2); }
+        .glow-circle { position: absolute; border-radius: 50%; filter: blur(120px); opacity: var(--glow-op); }
+        .glow-1 { top: -20%; left: -10%; width: 500px; height: 500px; background: var(--glow-1); }
+        .glow-2 { bottom: -10%; right: -20%; width: 400px; height: 400px; background: var(--glow-2); }
 
+        /* Header */
         .top-header {
             position: fixed; top: 0; left: 0; width: 100%;
-            background: var(--header-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+            background: var(--header-bg); backdrop-filter: blur(15px);
+            padding: 12px 20px; display: flex; align-items: center; justify-content: space-between;
             z-index: 100; border-bottom: 1px solid var(--header-border);
+            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.1);
         }
-        .header-brand { display: flex; align-items: center; gap: 12px; }
-        
+        .header-brand { display: flex; align-items: center; gap: 14px; }
         .tech-logo-fallback {
-            width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white;
-            font-weight: 800; font-size: 0.85rem; border-radius: 10px; box-shadow: 0 4px 10px rgba(29, 78, 216, 0.3);
+            width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+            border: 2px solid var(--neon-cyan); color: var(--neon-cyan);
+            font-weight: 800; font-size: 0.9rem; border-radius: 4px;
+            box-shadow: 0 0 10px var(--neon-cyan);
         }
-        .tech-logo-fallback.large { width: 64px; height: 64px; font-size: 1.5rem; border-radius: 18px; margin: 0 auto 16px auto; }
+        .tech-logo-fallback.large { 
+            width: 80px; height: 80px; font-size: 2.2rem; border-radius: 8px; 
+            margin: 0 auto 16px auto; box-shadow: 0 0 30px var(--neon-cyan);
+        }
 
-        .top-header h1 { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.5px; }
+        .top-header h1 { 
+            font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700; 
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+            background: linear-gradient(to right, var(--neon-cyan), var(--neon-green));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
         .header-actions { display: flex; align-items: center; gap: 10px; }
 
         .btn-setting-toggle {
-            background: var(--input-bg); border: none; width: 36px; height: 36px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem;
-            transition: all 0.3s ease; transform: rotate(0deg);
+            background: var(--input-bg); border: 1px solid rgba(0, 240, 255, 0.2); 
+            width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; font-size: 1.1rem; color: var(--neon-cyan);
+            transition: 0.3s; box-shadow: 0 0 5px rgba(0, 240, 255, 0.1);
         }
-        
-        .btn-setting-toggle:hover {
-            transform: rotate(90deg) scale(1.1);
-            background: #0381fe;
-            color: white;
-        }
+        .btn-setting-toggle:hover { box-shadow: 0 0 20px var(--neon-cyan); background: #0f172a; }
 
         .header-auth-btn {
-            padding: 8px 18px; font-size: 0.85rem; font-weight: 600; border-radius: 20px; cursor: pointer; border: none;
-            position: relative; overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 8px 18px; font-family: 'Orbitron', sans-serif; font-size: 0.75rem; font-weight: 700; 
+            border: 1px solid; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            transition: all 0.3s ease; position: relative; overflow: hidden;
         }
-        
-        .header-auth-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
+        .auth-state-signin { 
+            background: #0f172a; color: var(--neon-cyan); border-color: var(--neon-cyan);
+            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
         }
-        
-        .header-auth-btn:hover::before {
-            left: 100%;
-        }
-        
-        .auth-state-signin { background: #0381fe; color: #fff; box-shadow: 0 4px 12px rgba(3, 129, 254, 0.25); }
         .auth-state-signin:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(3, 129, 254, 0.4);
+            background: var(--neon-cyan); color: #000; box-shadow: 0 0 20px var(--neon-cyan);
         }
-        
-        .auth-state-logged { background: var(--tab-container-bg); color: var(--text-muted); }
+        .auth-state-logged { 
+            background: #0f172a; color: var(--neon-green); border-color: var(--neon-green);
+        }
         .auth-state-logged:hover {
-            transform: translateY(-2px);
-            background: #334155;
-            color: #f1f5f9;
+            background: var(--neon-green); color: #000; box-shadow: 0 0 20px var(--neon-green);
         }
 
+        /* Tabs */
         .tabs-container { 
-            display: flex; gap: 4px; margin-bottom: 20px; width: 100%; max-width: 500px; 
-            background: var(--tab-container-bg); padding: 4px; border-radius: 30px;
+            display: flex; gap: 6px; margin-bottom: 24px; width: 100%; max-width: 500px; 
+            border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 4px;
         }
         .tab-btn {
             flex: 1; padding: 10px 4px; background: transparent; border: none;
-            color: var(--text-muted); font-weight: 600; cursor: pointer; border-radius: 26px; font-size: 0.85rem;
-            position: relative; overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text-muted); font-family: 'Orbitron', sans-serif; font-weight: 600; 
+            cursor: pointer; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;
+            transition: all 0.3s ease; position: relative;
         }
-        
-        .tab-btn::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: #0381fe;
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-        
-        .tab-btn:hover::after {
-            width: 50%;
-        }
-        
-        .tab-btn:hover {
-            color: #0381fe;
-        }
-        
-        .tab-btn.active { background: var(--tab-btn-active); color: #0381fe; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .tab-btn:hover { color: var(--text-color); text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+        .tab-btn.active { color: var(--neon-cyan); text-shadow: 0 0 10px rgba(0, 240, 255, 0.4); }
         .tab-btn.active::after {
-            width: 70%;
-            background: #0381fe;
+            content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%);
+            width: 80%; height: 2px; background: var(--neon-cyan);
+            box-shadow: 0 0 10px var(--neon-cyan);
         }
-        
-        #tab-btn-admin-panel { display: none; color: #ef4444; }
-        #tab-btn-admin-panel.active { background: var(--tab-btn-active); color: #ef4444; }
+        #tab-btn-admin-panel { display: none; color: var(--neon-pink); }
+        #tab-btn-admin-panel.active { color: var(--neon-pink); text-shadow: 0 0 10px rgba(255, 0, 200, 0.4); }
+        #tab-btn-admin-panel.active::after { background: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink); }
 
         .container { width: 100%; max-width: 500px; z-index: 5; }
-        
-        .tab-content { display: none; opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
-        .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
+        .tab-content { display: none; opacity: 0; transition: opacity 0.3s ease; }
+        .tab-content.active { display: block; opacity: 1; }
 
-        .oneui-card {
-            background: var(--card-bg); border-radius: 28px; padding: 24px; margin-bottom: 16px;
-            box-shadow: 0 10px 30px rgba(0, 40, 80, 0.04); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--card-border);
+        /* Cards */
+        .hacker-card {
+            background: var(--card-bg); border-radius: 8px; padding: 24px; margin-bottom: 16px;
+            border: 1px solid var(--card-border); backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 240, 255, 0.02);
         }
-        .section-title { font-size: 0.8rem; font-weight: 700; color: var(--text-title); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.8px; }
+        .section-title { 
+            font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 700; 
+            color: var(--text-muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 2px;
+            border-bottom: 1px dashed rgba(255,255,255,0.05); padding-bottom: 8px;
+        }
 
-        .about-team-box { display: flex; align-items: center; gap: 16px; background: var(--item-bg); border-radius: 20px; padding: 16px; }
-        .about-team-info h5 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
-        .about-team-info p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 8px; }
-        .discord-blue-link { color: #0381fe; text-decoration: none; font-size: 0.82rem; font-weight: 700; display: inline-block; }
+        .about-team-box { background: var(--item-bg); padding: 16px; border: 1px solid rgba(57, 255, 20, 0.2); border-radius: 6px; }
+        .about-team-info h5 { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 700; margin-bottom: 6px; color: var(--neon-green); }
+        .about-team-info p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px; }
+        .discord-blue-link { color: var(--neon-cyan); text-decoration: none; font-size: 0.75rem; font-weight: 700; border-bottom: 1px dashed var(--neon-cyan); }
 
-        .counter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
-        .counter-box { background: var(--item-bg); padding: 14px; border-radius: 18px; text-align: center; border: 1px solid var(--card-border); }
-        .counter-box p { font-size: 0.75rem; font-weight: 700; color: var(--text-title); text-transform: uppercase; margin-bottom: 4px; }
-        .counter-box h4 { font-size: 1.25rem; font-weight: 800; color: var(--text-color); }
-        .pulse-dot { width: 8px; height: 8px; background-color: #10b981; border-radius: 50%; display: inline-block; margin-right: 6px; animation: pulse 1.6s infinite; vertical-align: middle; }
-        @keyframes pulse { 0%, 100% { transform: scale(0.9); opacity: 0.6; } 50% { transform: scale(1.2); opacity: 1; } }
+        .counter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+        .counter-box { 
+            background: var(--item-bg); padding: 14px; text-align: center; 
+            border: 1px solid rgba(255,255,255,0.05); border-radius: 4px;
+        }
+        .counter-box p { font-size: 0.7rem; font-weight: 700; color: var(--text-title); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .counter-box h4 { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--text-color); }
+        .pulse-dot { width: 8px; height: 8px; background-color: var(--neon-green); border-radius: 50%; display: inline-block; margin-right: 6px; animation: pulse 1.6s infinite; vertical-align: middle; box-shadow: 0 0 10px var(--neon-green); }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
+        /* Modals */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.3);
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8);
             z-index: 9999; display: flex; justify-content: center; align-items: flex-end;
-            opacity: 0; pointer-events: none; backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px);
-            transition: opacity 0.3s ease, backdrop-filter 0.3s ease;
+            opacity: 0; pointer-events: none; backdrop-filter: blur(4px);
+            transition: opacity 0.3s ease;
         }
-        .modal-overlay.active { opacity: 1; pointer-events: auto; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
         .modal-box { 
-            padding: 32px 24px; max-width: 500px; width: 100%; position: relative; 
-            background: var(--card-bg); border-radius: 32px 32px 0 0;
-            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.08);
-            transform: translateY(100%); border: 1px solid var(--card-border);
+            padding: 32px 24px; max-width: 500px; width: 100%; 
+            background: var(--card-bg); border-radius: 8px 8px 0 0;
+            border: 1px solid var(--card-border); border-bottom: none;
+            transform: translateY(100%); box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
             transition: transform 0.35s cubic-bezier(0.1, 0.9, 0.2, 1);
         }
         .modal-overlay.active .modal-box { transform: translateY(0); }
         
         .modal-close-btn { 
-            position: absolute; top: 20px; right: 20px; background: var(--input-bg); border: none; 
-            color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.85rem;
-            padding: 6px 14px; border-radius: 20px;
-            transition: all 0.3s ease; transform: rotate(0deg);
+            position: absolute; top: 16px; right: 16px; background: transparent; border: 1px solid rgba(255,255,255,0.1); 
+            color: var(--text-muted); font-family: 'Orbitron', sans-serif; font-weight: 700; cursor: pointer; font-size: 0.75rem;
+            padding: 4px 12px; transition: all 0.3s ease;
         }
+        .modal-close-btn:hover:not(:disabled) { border-color: var(--neon-red); color: var(--neon-red); box-shadow: 0 0 10px var(--neon-red); }
         .modal-close-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .modal-close-btn:hover:not(:disabled) {
-            background: #ef4444;
-            color: white;
-            transform: rotate(90deg) scale(1.1);
-        }
 
-        .welcome-title { font-size: 1.35rem; font-weight: 800; text-align: center; color: var(--text-color); margin-bottom: 10px; letter-spacing: -0.5px; }
-        .welcome-desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 28px; text-align: center; padding: 0 12px; }
+        /* Auth Forms Hacker Style */
+        .welcome-title { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 800; text-align: center; color: var(--neon-cyan); text-shadow: 0 0 20px rgba(0, 240, 255, 0.3); margin-bottom: 16px; letter-spacing: 1px; }
+        .welcome-desc { color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin-bottom: 24px; text-align: center; }
 
         .auth-bottom-links {
-            border-top: 1px solid var(--header-border); padding-top: 20px; text-align: center; display: flex; justify-content: center; gap: 16px;
+            border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; text-align: center; display: flex; justify-content: center; gap: 16px;
         }
         .auth-bottom-links a { 
-            color: #0381fe; font-weight: 700; text-decoration: none; font-size: 0.95rem; cursor: pointer; 
-            padding: 8px 16px; border-radius: 12px;
-            position: relative;
-            transition: all 0.3s ease;
+            color: var(--neon-cyan); font-weight: 700; text-decoration: none; font-size: 0.85rem; cursor: pointer; 
+            text-transform: uppercase; letter-spacing: 1px;
+            border-bottom: 1px solid transparent; transition: 0.3s;
         }
-        
-        .auth-bottom-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 4px;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: #0381fe;
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-        
-        .auth-bottom-links a:hover::after {
-            width: 70%;
-        }
-        
-        .auth-bottom-links a:hover {
-            transform: translateY(-2px);
-            background: rgba(3, 129, 254, 0.08);
-        }
-        
-        .auth-bottom-links .divider { color: var(--header-border); font-size: 1.2rem; align-self: center; }
+        .auth-bottom-links a:hover { border-bottom: 1px solid var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); }
+        .auth-bottom-links .divider { color: rgba(255,255,255,0.1); }
 
-        /* Giao diện danh sách tệp gốc */
-        .file-item { 
-            background: var(--item-bg); border-radius: 22px; padding: 18px; margin-bottom: 12px; 
-            display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--card-border);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .file-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 8px 25px rgba(3, 129, 254, 0.1);
-            border-color: rgba(3, 129, 254, 0.2);
-        }
-        
-        .file-item h4 { font-size: 1rem; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 6px; }
-        .file-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
-        .file-meta { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
-
-        /* --- NÂNG CẤP GIAO DIỆN THÔNG BÁO ADMIN ĐẸP HƠN --- */
-        .notice-item {
-            background: var(--item-bg);
-            border-radius: 22px;
-            padding: 18px 20px;
-            margin-bottom: 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            border: 1px solid var(--card-border);
-            border-left: 5px solid #0381fe;
-            box-shadow: 0 4px 14px rgba(3, 129, 254, 0.03);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .notice-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(3, 129, 254, 0.08);
-        }
-        .notice-item h4 {
-            font-size: 1.02rem;
-            font-weight: 700;
-            color: var(--text-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .notice-content-text {
-            font-size: 0.88rem;
-            color: var(--text-color);
-            opacity: 0.95;
-            line-height: 1.55;
-        }
-        .notice-meta-footer {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.76rem;
-            color: var(--text-muted);
-            font-weight: 500;
-            border-top: 1px dashed var(--header-border);
-            padding-top: 8px;
-            margin-top: 4px;
-        }
-
-        .badge-verified { background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
-        .badge-risk { background: rgba(245, 158, 11, 0.1); color: #f59e0b; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
-        .badge-admin { background: rgba(3, 129, 254, 0.1); color: #0381fe; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
-        .badge-hot { background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
-        .badge-insanity { background: var(--insanity-gradient); color: #fff; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; }
-        
-        .file-actions-row { display: flex; gap: 8px; margin-top: 6px; }
-        
-        /* === ANIMATIONS CHO NÚT TẢI TẬP TIN === */
-        .btn-view {
-            flex: 1; text-align: center; padding: 12px; border-radius: 14px; font-weight: 700; 
-            cursor: pointer; text-decoration: none; font-size: 0.85rem; display: block;
-            background: #e0ebf8; color: #0381fe; border: none;
-            position: relative; overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateY(0);
-            box-shadow: 0 2px 8px rgba(3, 129, 254, 0.1);
-        }
-        
-        .btn-view::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        
-        [data-theme="dark"] .btn-view { background: #1e293b; color: #3b82f6; }
-        .btn-view:hover { 
-            background: #0381fe; color: #fff;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(3, 129, 254, 0.3);
-            letter-spacing: 0.5px;
-        }
-        
-        .btn-view:active {
-            transform: translateY(-1px) scale(0.98);
-            box-shadow: 0 4px 12px rgba(3, 129, 254, 0.2);
-        }
-        
-        .btn-view:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-        
-        /* Animation cho nút Rủi ro */
-        .btn-view.risk-btn { 
-            background: rgba(245, 158, 11, 0.1); color: #f59e0b;
-            animation: riskPulse 2s infinite;
-        }
-        
-        @keyframes riskPulse {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 0 8px rgba(245, 158, 11, 0);
-            }
-        }
-        
-        .btn-view.risk-btn:hover { 
-            background: #f59e0b; color: #fff;
-            animation: none;
-            transform: translateY(-3px) rotate(1deg);
-            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
-        }
-        
-        /* Animation cho nút Lấy Key */
-        .btn-key { 
-            background: var(--tab-container-bg); color: var(--text-muted);
-            position: relative; overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-key::after {
-            content: '🔑';
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%) rotate(0deg);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-key:hover {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            color: #fbbf24;
-            padding-right: 35px;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(251, 191, 36, 0.2);
-        }
-        
-        .btn-key:hover::after {
-            transform: translateY(-50%) rotate(360deg);
-        }
-
-        .form-group { margin-bottom: 16px; }
-        label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 0.75rem; color: var(--text-title); letter-spacing: 0.5px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 0.7rem; color: var(--text-title); text-transform: uppercase; letter-spacing: 1px; }
         input[type="text"], input[type="password"], textarea {
-            width: 100%; padding: 14px; background: var(--input-bg); border: 1px solid transparent;
-            border-radius: 16px; color: var(--text-color); outline: none; font-size: 0.9rem;
+            width: 100%; padding: 14px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 4px; color: var(--text-color); outline: none; font-family: 'Share Tech Mono', monospace; font-size: 0.9rem;
             transition: all 0.3s ease;
         }
-        input:focus, textarea:focus { background: var(--card-bg); border-color: #0381fe; box-shadow: 0 0 0 3px rgba(3, 129, 254, 0.1); }
+        input:focus, textarea:focus { border-color: var(--neon-cyan); box-shadow: 0 0 10px rgba(0, 240, 255, 0.1); }
 
-        /* Loading spinner cho nút đăng ký */
         .btn-submit { 
-            width: 100%; padding: 14px; color: white; font-weight: 700; cursor: pointer; font-size: 0.9rem; 
-            border-radius: 16px; border: none;
-            position: relative; overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateY(0);
+            width: 100%; padding: 14px; background: transparent; color: var(--neon-cyan); font-family: 'Orbitron', sans-serif; 
+            font-weight: 700; cursor: pointer; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;
+            border: 1px solid var(--neon-cyan); border-radius: 4px;
+            position: relative; overflow: hidden; transition: all 0.3s ease;
+            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
         }
-        
         .btn-submit:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(3, 129, 254, 0.3);
+            background: var(--neon-cyan); color: #000; box-shadow: 0 0 30px var(--neon-cyan);
         }
-        
-        .btn-submit:active:not(:disabled) {
-            transform: translateY(-1px) scale(0.98);
-        }
-        
-        .btn-submit:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
         
         .btn-submit .spinner-mini {
-            display: none;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-left-color: white;
-            border-radius: 50%;
-            animation: spin 0.8s infinite linear;
-            margin-right: 8px;
-            vertical-align: middle;
+            display: none; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-left-color: #fff; border-radius: 50%; animation: spin 0.8s infinite linear; margin-right: 8px; vertical-align: middle;
         }
-        
-        .btn-submit.loading .spinner-mini {
-            display: inline-block;
-        }
-        
-        .btn-submit::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            border-radius: 100%;
-            transform: scale(1, 1) translate(-50%);
-            transform-origin: 50% 50%;
-        }
-        
-        .btn-submit:active::after {
-            animation: submitRipple 0.6s ease-out;
-        }
-        
-        @keyframes submitRipple {
-            0% {
-                transform: scale(0, 0);
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(20, 20);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        
-        /* Glow Pulse cho nút chính */
-        .btn-submit[style*="background: #0381fe"] {
-            animation: glowPulse 2s infinite;
-        }
-        
-        @keyframes glowPulse {
-            0%, 100% {
-                box-shadow: 0 0 5px rgba(3, 129, 254, 0.2),
-                            0 0 20px rgba(3, 129, 254, 0.1);
-            }
-            50% {
-                box-shadow: 0 0 10px rgba(3, 129, 254, 0.4),
-                            0 0 40px rgba(3, 129, 254, 0.2);
-            }
-        }
+        .btn-submit.loading .spinner-mini { display: inline-block; }
 
-        /* Shake animation cho modal lỗi */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        /* File Items Hacker Style */
+        .file-item { 
+            background: var(--item-bg); border-radius: 4px; padding: 16px; margin-bottom: 14px; 
+            border-left: 4px solid var(--neon-cyan);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
         }
-        
-        .shake-animation {
-            animation: shake 0.6s ease-in-out;
-        }
+        .file-item:hover { transform: translateX(6px); border-left-color: var(--neon-green); box-shadow: 0 0 15px rgba(0,0,0,0.6); }
+        .file-item h4 { font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+        .file-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin: 6px 0; }
+        .file-meta { font-size: 0.7rem; color: #4b5563; font-weight: 500; }
 
-        /* Success animation */
-        @keyframes successPop {
-            0% { transform: scale(0.8); opacity: 0; }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        
-        .success-animation {
-            animation: successPop 0.5s ease-out;
-        }
+        /* Badges Hacker */
+        .badge-verified { color: var(--neon-green); border: 1px solid var(--neon-green); padding: 2px 8px; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge-risk { color: #f59e0b; border: 1px solid #f59e0b; padding: 2px 8px; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge-admin { color: var(--neon-pink); border: 1px solid var(--neon-pink); padding: 2px 8px; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge-hot { color: var(--neon-red); border: 1px solid var(--neon-red); padding: 2px 8px; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; animation: blink 1s infinite; }
+        .badge-insanity { color: #fff; background: linear-gradient(90deg, var(--neon-pink), var(--neon-red)); padding: 2px 8px; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
+        /* Buttons Hacker */
+        .btn-view {
+            flex: 1; text-align: center; padding: 10px; font-family: 'Share Tech Mono', monospace; font-weight: 700; 
+            cursor: pointer; text-decoration: none; font-size: 0.8rem; display: block; text-transform: uppercase; letter-spacing: 1px;
+            background: transparent; color: #94a3b8; border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+        .btn-view:hover { background: rgba(255,255,255,0.05); color: #fff; border-color: #fff; }
+
+        .btn-view.risk-btn { border-color: #f59e0b; color: #f59e0b; animation: riskPulse 2s infinite; }
+        @keyframes riskPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.2); } 50% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); } }
+        .btn-view.risk-btn:hover { background: #f59e0b; color: #000; animation: none; }
+
+        .btn-key { border-color: var(--neon-pink); color: var(--neon-pink); position: relative; }
+        .btn-key::after { content: '🔑'; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); }
+        .btn-key:hover { background: var(--neon-pink); color: #000; }
+
+        .file-actions-row { display: flex; gap: 10px; margin-top: 10px; }
+
+        /* Notice Items */
+        .notice-item {
+            background: var(--item-bg); border-radius: 4px; padding: 16px; margin-bottom: 14px; 
+            border: 1px solid rgba(255,255,255,0.05); border-left: 4px solid var(--neon-pink);
+        }
+        .notice-item:hover { border-left-color: var(--neon-cyan); }
+        .notice-item h4 { font-size: 0.95rem; font-weight: 700; color: var(--text-color); display: flex; align-items: center; justify-content: space-between; }
+        .notice-content-text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 8px 0; }
+        .notice-meta-footer { font-size: 0.7rem; color: #4b5563; border-top: 1px dashed rgba(255,255,255,0.05); padding-top: 8px; margin-top: 8px; display: flex; gap: 12px; }
+
+        /* Utility */
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; }
+        
         #loading-frame {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(240, 244, 249, 0.85);
-            z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.2s ease; backdrop-filter: blur(10px);
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); z-index: 10000;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; backdrop-filter: blur(5px); transition: 0.2s;
         }
-        body[data-theme="dark"] #loading-frame { background: rgba(11, 19, 41, 0.85); }
         #loading-frame.active { opacity: 1; pointer-events: auto; }
-        .spinner { width: 32px; height: 32px; border: 3px solid var(--tab-container-bg); border-left-color: #0381fe; border-radius: 50%; animation: spin 0.8s infinite linear; }
+        .spinner { width: 40px; height: 40px; border: 2px solid rgba(255,255,255,0.1); border-top-color: var(--neon-cyan); border-radius: 50%; animation: spin 0.8s infinite linear; box-shadow: 0 0 20px var(--neon-cyan); }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        .info-row { display: flex; justify-content: space-between; padding: 14px 4px; border-bottom: 1px solid var(--header-border); font-size: 0.9rem; }
-        
-        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .3s; border-radius: 24px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
-        input:checked + .slider { background-color: #0381fe; }
-        input:checked + .slider:before { transform: translateX(20px); }
+        .shake-animation { animation: shake 0.5s ease-in-out; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); } 20%, 40%, 60%, 80% { transform: translateX(6px); } }
 
-        /* Toast notification */
         .toast-notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #10b981;
-            color: white;
-            padding: 16px 24px;
-            border-radius: 16px;
-            font-weight: 600;
-            z-index: 10001;
-            transform: translateX(120%);
-            transition: transform 0.3s ease;
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            position: fixed; top: 20px; right: 20px; background: #0f172a; border: 1px solid var(--neon-green);
+            color: var(--neon-green); padding: 14px 24px; font-family: 'Share Tech Mono', monospace;
+            z-index: 10001; transform: translateX(120%); transition: transform 0.3s ease;
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.2); display: flex; align-items: center; gap: 10px;
         }
-        
-        .toast-notification.show {
-            transform: translateX(0);
-        }
+        .toast-notification.show { transform: translateX(0); }
 
-        /* Responsive animations */
         @media (max-width: 600px) {
-            .btn-view:hover,
-            .btn-submit:hover,
-            .header-auth-btn:hover {
-                transform: translateY(-2px);
-            }
-            
-            .file-item:hover {
-                transform: translateX(3px);
-            }
+            .header-auth-btn { font-size: 0.6rem; padding: 6px 12px; }
+            .tab-btn { font-size: 0.65rem; }
         }
     </style>
 </head>
 <body>
 
+    <div class="cyber-grid"></div>
     <div class="ambient-glow">
         <div class="glow-circle glow-1"></div>
         <div class="glow-circle glow-2"></div>
     </div>
 
-    <!-- TOP HEADER -->
+    <!-- HEADER -->
     <div class="top-header">
         <div class="header-brand">
             <div class="tech-logo-fallback">HD</div>
@@ -620,52 +344,44 @@
     </div>
 
     <div id="loading-frame"><div class="spinner"></div></div>
-
-    <!-- Toast Notification -->
-    <div id="toast-notification" class="toast-notification">
-        <span>✅</span>
-        <span id="toast-message">Thành công!</span>
-    </div>
+    <div id="toast-notification" class="toast-notification"><span>✅</span> <span id="toast-message">Thành công!</span></div>
 
     <!-- SETTINGS MODAL -->
     <div id="settings-modal" class="modal-overlay">
         <div class="modal-box">
             <button onclick="closeSettingsModal()" class="modal-close-btn">Đóng</button>
-            <h3 style="margin-bottom: 20px; font-size: 1.15rem; font-weight:700;">Cài đặt hệ thống</h3>
-            <div class="info-row" style="align-items: center;">
+            <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight:700; margin-bottom: 24px;">CÀI ĐẶT HỆ THỐNG</h3>
+            <div class="info-row" style="align-items: center; border:none;">
                 <div>
-                    <h5 style="font-weight: 600;">Chế độ tối (Dark Mode)</h5>
-                    <p style="font-size: 0.78rem; color: var(--text-muted);">Tối ưu giao diện vào ban đêm</p>
+                    <h5 style="font-family: 'Orbitron', sans-serif; font-weight: 600; font-size: 0.8rem; color: var(--neon-cyan);">CHẾ ĐỘ BẢO MẬT (DARK)</h5>
+                    <p style="font-size: 0.7rem; color: var(--text-muted);">Kích hoạt giao diện tối</p>
                 </div>
-                <label class="switch">
-                    <input type="checkbox" id="theme-switch" onchange="toggleThemeMode(this)">
-                    <span class="slider"></span>
-                </label>
+                <!-- Không dùng toggle mềm mại nữa mà dùng nút bật/tắt kiểu hacker -->
+                <button onclick="toggleThemeMode()" style="background:var(--input-bg); border:1px solid var(--neon-cyan); color:var(--neon-cyan); padding: 6px 12px; cursor:pointer;">[ TOGGLE ]</button>
             </div>
-            <p style="text-align: center; font-size:0.75rem; color:var(--text-muted); margin-top:24px;">HDanhTech Engine Premium • Active</p>
         </div>
     </div>
 
     <!-- STATUS MODAL -->
     <div id="status-modal" class="modal-overlay">
-        <div class="modal-box" style="border-radius: 28px; margin: 20px; margin-top: auto; padding: 24px;">
-            <h3 id="status-title" style="font-size: 1.15rem; margin-bottom: 8px; font-weight: 700;">Thông báo</h3>
-            <p id="status-desc" style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin-bottom: 24px;">Thao tác thành công.</p>
-            <button class="btn-submit" onclick="closeStatusModal()" style="background: #0381fe;">Xác nhận</button>
+        <div class="modal-box">
+            <h3 id="status-title" style="font-family: 'Orbitron', sans-serif; font-size: 1.1rem; margin-bottom: 8px; font-weight: 700; color: var(--neon-cyan);">THÔNG BÁO</h3>
+            <p id="status-desc" style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 24px;">Thao tác thành công.</p>
+            <button class="btn-submit" onclick="closeStatusModal()">XÁC NHẬN</button>
         </div>
     </div>
 
-    <!-- MÀN HÌNH CHÀO MỪNG -->
+    <!-- WELCOME MODAL -->
     <div id="welcome-modal" class="modal-overlay">
         <div class="modal-box">
-            <button id="close-welcome-btn" class="modal-close-btn" disabled>3s</button>
+            <button id="close-welcome-btn" class="modal-close-btn" disabled>[ 3s ]</button>
             <div class="tech-logo-fallback large">HD</div>
-            <h2 class="welcome-title">Chào mừng đến với HDanhTech Files</h2>
-            <p class="welcome-desc">Hệ thống đám mây lưu trữ dữ liệu chính thức của HDanhTech Team. Vui lòng đăng ký tài khoản để tiếp tục.</p>
+            <h2 class="welcome-title">ACCESS GRANTED</h2>
+            <p class="welcome-desc">Kết nối thành công tới kho lưu trữ HDanhTech. Yêu cầu xác thực danh tính để tiếp tục truy cập dữ liệu.</p>
             <div class="auth-bottom-links">
-                <a onclick="openAuthModal('signin')">Đăng ký ngay</a>
+                <a onclick="openAuthModal('signin')">[ ĐĂNG KÝ ]</a>
                 <span class="divider">|</span>
-                <a onclick="openAuthModal('login')">Đăng nhập</a>
+                <a onclick="openAuthModal('login')">[ ĐĂNG NHẬP ]</a>
             </div>
         </div>
     </div>
@@ -674,23 +390,21 @@
     <div id="auth-modal" class="modal-overlay">
         <div class="modal-box">
             <button onclick="closeAuthModal()" class="modal-close-btn">×</button>
+            
             <div id="login-form-wrapper">
-                <h3 style="margin-bottom: 20px; font-size: 1.15rem; font-weight:700;">Đăng nhập hệ thống</h3>
-                <div class="form-group"><label>TÀI KHOẢN</label><input type="text" id="login-user" placeholder="Nhập tên tài khoản..."></div>
-                <div class="form-group"><label>MẬT KHẨU</label><input type="password" id="login-pass" placeholder="Nhập mật khẩu..."></div>
-                <button class="btn-submit" style="background: #0381fe; margin-top: 8px;" onclick="handleAuth('login')">
-                    <span class="spinner-mini"></span> Đăng nhập
-                </button>
-                <p style="margin-top: 20px; text-align:center; font-size: 0.85rem; color:var(--text-muted);">Chưa có tài khoản? <a onclick="toggleAuthForm('signin')" style="color:#0381fe; font-weight:600; cursor:pointer;">Tạo tài khoản</a></p>
+                <h3 style="font-family: 'Orbitron', sans-serif; margin-bottom: 20px; font-size: 1.1rem; font-weight:700; color:var(--neon-cyan);">LOGIN SEQUENCE</h3>
+                <div class="form-group"><label>USERNAME</label><input type="text" id="login-user" placeholder="Nhập tài khoản..."></div>
+                <div class="form-group"><label>PASSWORD</label><input type="password" id="login-pass" placeholder="Nhập mật khẩu..."></div>
+                <button class="btn-submit" onclick="handleAuth('login')"><span class="spinner-mini"></span> XÁC THỰC</button>
+                <p style="margin-top: 16px; text-align:center; font-size: 0.8rem; color:var(--text-muted);">Chưa có tín hiệu? <a onclick="toggleAuthForm('signin')" style="color:var(--neon-cyan); font-weight:600; cursor:pointer; border-bottom:1px dashed var(--neon-cyan);">Tạo tín hiệu mới</a></p>
             </div>
+            
             <div id="signin-form-wrapper" style="display: none;">
-                <h3 style="margin-bottom: 20px; font-size: 1.15rem; font-weight:700;">Đăng ký tài khoản</h3>
-                <div class="form-group"><label>TÊN TÀI KHOẢN</label><input type="text" id="reg-user" placeholder="Tối đa 10 kí tự" maxlength="10"></div>
-                <div class="form-group"><label>MẬT KHẨU BẢO MẬT</label><input type="password" id="reg-pass" placeholder="Tối đa 20 kí tự" maxlength="20"></div>
-                <button class="btn-submit" style="background: #10b981; color: #fff; margin-top: 8px;" onclick="handleAuth('register')">
-                    <span class="spinner-mini"></span> Đăng ký ngay
-                </button>
-                <p style="margin-top: 20px; text-align:center; font-size: 0.85rem; color:var(--text-muted);">Đã có tài khoản? <a onclick="toggleAuthForm('login')" style="color:#0381fe; font-weight:600; cursor:pointer;">Đăng nhập</a></p>
+                <h3 style="font-family: 'Orbitron', sans-serif; margin-bottom: 20px; font-size: 1.1rem; font-weight:700; color:var(--neon-green);">CREATE IDENTITY</h3>
+                <div class="form-group"><label>NEW USERNAME</label><input type="text" id="reg-user" placeholder="Tối đa 10 kí tự" maxlength="10"></div>
+                <div class="form-group"><label>NEW PASSWORD</label><input type="password" id="reg-pass" placeholder="Tối đa 20 kí tự" maxlength="20"></div>
+                <button class="btn-submit" style="border-color:var(--neon-green); color:var(--neon-green);" onclick="handleAuth('register')"><span class="spinner-mini"></span> KÍCH HOẠT</button>
+                <p style="margin-top: 16px; text-align:center; font-size: 0.8rem; color:var(--text-muted);">Đã có tín hiệu? <a onclick="toggleAuthForm('login')" style="color:var(--neon-cyan); font-weight:600; cursor:pointer; border-bottom:1px dashed var(--neon-cyan);">Đăng nhập hệ thống</a></p>
             </div>
         </div>
     </div>
@@ -699,129 +413,123 @@
     <div id="account-info-modal" class="modal-overlay">
         <div class="modal-box">
             <button onclick="closeAccountInfoModal()" class="modal-close-btn">×</button>
-            <h3 style="margin-bottom: 20px; font-size: 1.15rem; font-weight:700; text-align: center;">Thông tin cá nhân</h3>
-            <div style="margin-bottom: 24px; background: var(--input-bg); padding: 8px 16px; border-radius: 20px;">
-                <div class="info-row"><span>Tài khoản:</span><strong id="info-display-username">N/A</strong></div>
-                <div class="info-row"><span>Mật khẩu:</span><strong id="info-display-password">••••••••</strong></div>
-                <div class="info-row" style="border:none;"><span>Cấp bậc:</span><strong id="info-display-rank" style="color: #0381fe;">MEMBER</strong></div>
+            <h3 style="font-family: 'Orbitron', sans-serif; text-align: center; margin-bottom: 20px; font-size: 1.1rem; font-weight:700; color:var(--neon-cyan);">USER PROFILE</h3>
+            <div style="margin-bottom: 24px; background: var(--input-bg); padding: 16px; border: 1px solid rgba(255,255,255,0.05); border-radius: 4px;">
+                <div class="info-row"><span>ID:</span><strong id="info-display-username" style="color:var(--neon-green);">N/A</strong></div>
+                <div class="info-row"><span>KEY:</span><strong id="info-display-password" style="color:var(--neon-cyan);">••••••••</strong></div>
+                <div class="info-row" style="border:none;"><span>PRIVILEGE:</span><strong id="info-display-rank" style="color: var(--neon-pink);">MEMBER</strong></div>
             </div>
-            <button class="btn-submit" style="background: #fee2e2; color: #ef4444;" onclick="processLogout()">Đăng xuất tài khoản</button>
+            <button class="btn-submit" style="border-color: var(--neon-red); color: var(--neon-red);" onclick="processLogout()">TERMINATE SESSION</button>
         </div>
     </div>
 
-    <!-- NAVIGATION TABS -->
+    <!-- TABS -->
     <div class="tabs-container">
-        <button class="tab-btn active" onclick="switchTab('tab-files')">Tệp tin</button>
-        <button class="tab-btn" onclick="switchTab('tab-verified')">Đã xác minh</button>
-        <button class="tab-btn" onclick="switchTab('tab-announcements')">Thông báo</button>
-        <button class="tab-btn" id="tab-btn-admin-panel" onclick="switchTab('tab-admin-panel')">Quản trị</button>
+        <button class="tab-btn active" onclick="switchTab('tab-files')">[ Files ]</button>
+        <button class="tab-btn" onclick="switchTab('tab-verified')">[ Verified ]</button>
+        <button class="tab-btn" onclick="switchTab('tab-announcements')">[ System ]</button>
+        <button class="tab-btn" id="tab-btn-admin-panel" onclick="switchTab('tab-admin-panel')">[ Admin ]</button>
     </div>
 
-    <!-- CONTAINER CONTENT -->
     <div class="container">
-        
-        <!-- ABOUT CARD -->
-        <div class="oneui-card">
-            <p class="section-title">About Us</p>
+        <!-- CARD: ABOUT -->
+        <div class="hacker-card">
+            <p class="section-title">[ SYSTEM INFO ]</p>
             <div class="about-team-box">
-                <div class="tech-logo-fallback" style="width:48px; height:48px; font-size:1.1rem; border-radius:14px; flex-shrink: 0;">HD</div>
-                <div class="about-team-info">
-                    <h5>Team HDanhTech Official</h5>
-                    <p>Hệ thống cung cấp, crack và phân phối các tệp tin ứng dụng di động an toàn, tối ưu hóa trải nghiệm.</p>
-                    <a href="https://discord.gg/wf4QnepsxS" target="_blank" class="discord-blue-link">➔ Tham gia Discord của nhóm</a>
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <div class="tech-logo-fallback" style="width:48px; height:48px; font-size:1.2rem; border-radius:4px;">HD</div>
+                    <div class="about-team-info">
+                        <h5>TEAM HDANHTECH</h5>
+                        <p>Secure data distribution & crack repository. Optimized for maximum performance.</p>
+                        <a href="https://discord.gg/wf4QnepsxS" target="_blank" class="discord-blue-link">[ JOIN DISCORD ]</a>
+                    </div>
                 </div>
             </div>
             <div class="counter-grid">
-                <div class="counter-box">
-                    <p>Lượt truy cập</p>
-                    <h4 id="totalVisits">0</h4>
-                </div>
-                <div class="counter-box">
-                    <p><span class="pulse-dot"></span>Trực tuyến</p>
-                    <h4 id="activeUsers">0</h4>
-                </div>
+                <div class="counter-box"><p>Hits</p><h4 id="totalVisits">0</h4></div>
+                <div class="counter-box"><p><span class="pulse-dot"></span>Online</p><h4 id="activeUsers">0</h4></div>
             </div>
         </div>
 
-        <!-- TAB 1: TẤT CẢ TỆP TIN -->
+        <!-- TAB: FILES -->
         <div id="tab-files" class="tab-content active">
-            <div class="oneui-card">
-                <p class="section-title">Danh sách hoạt động (6 Tệp)</p>
+            <div class="hacker-card">
+                <p class="section-title">[ REPOSITORY ]</p>
                 <div id="files-container">
                     <div class="file-item">
-                        <h4>HDanhTech Launcher <span style="display: flex; gap: 4px;"><span class="badge-insanity">INSANITY!!</span><span class="badge-hot">HOT 🔥</span><span class="badge-verified">An toàn</span></span></h4>
-                        <p class="file-desc">Finding good launcher apk? NL will give you best enjoy. Hide your apps from others people to find it.</p>
-                        <div class="file-meta">Phiên bản: V1</div>
-                        <div class="file-actions-row"><button onclick="downloadFileProtect('https://link4m.org/86Dm207y', false)" class="btn-view">Tải tập tin</button></div>
+                        <h4>HDanhTech Launcher <span><span class="badge-insanity">Insanity</span><span class="badge-hot">Hot</span><span class="badge-verified">Safe</span></span></h4>
+                        <p class="file-desc">Finding good launcher apk? NL will give you best enjoy. Hide your apps.</p>
+                        <div class="file-meta">VERSION: V1</div>
+                        <div class="file-actions-row"><button onclick="downloadFileProtect('https://link4m.org/86Dm207y', false)" class="btn-view">[ DOWNLOAD ]</button></div>
                     </div>
                     <div class="file-item">
-                        <h4>NetPlus <span style="display: flex; gap: 4px;"><span class="badge-hot">HOT 🔥</span><span class="badge-verified">An toàn</span></span></h4>
-                        <p class="file-desc">2 option antiband 88% - 90%:<br>1. Freeze | 2. Ghost</p>
-                        <div class="file-meta">Phiên bản: V18</div>
+                        <h4>NetPlus <span><span class="badge-hot">Hot</span><span class="badge-verified">Safe</span></span></h4>
+                        <p class="file-desc">2 option antiband 88% - 90%: 1. Freeze | 2. Ghost</p>
+                        <div class="file-meta">VERSION: V18</div>
                         <div class="file-actions-row">
-                            <button onclick="downloadFileProtect('https://link4m.org/588Ibq', false)" class="btn-view">Tải tập tin</button>
-                            <button onclick="window.open('https://link4m.net/go/eb8Na3', '_blank')" class="btn-view btn-key">Lấy Key</button>
+                            <button onclick="downloadFileProtect('https://link4m.org/588Ibq', false)" class="btn-view">[ DOWNLOAD ]</button>
+                            <button onclick="window.open('https://link4m.net/go/eb8Na3', '_blank')" class="btn-view btn-key">KEY</button>
                         </div>
                     </div>
                     <div class="file-item">
-                        <h4>HDanhTech Fake Lag <span class="badge-verified">An toàn</span></h4>
+                        <h4>HDanhTech Fake Lag <span class="badge-verified">Safe</span></h4>
                         <p class="file-desc">Fake Lag Modern, 3 Options: Freeze Infinity, Invisible, Teleporter</p>
-                        <div class="file-meta">Phiên bản: v1.0.1</div>
-                        <div class="file-actions-row"><button onclick="downloadFileProtect('https://link4m.org/EHGpQ6', false)" class="btn-view">Tải tập tin</button></div>
+                        <div class="file-meta">VERSION: v1.0.1</div>
+                        <div class="file-actions-row"><button onclick="downloadFileProtect('https://link4m.org/EHGpQ6', false)" class="btn-view">[ DOWNLOAD ]</button></div>
                     </div>
                     <div class="file-item">
-                        <h4>HDanhTech Fake Lag OG Version <span class="badge-verified">An toàn</span></h4>
+                        <h4>HDanhTech Fake Lag OG <span class="badge-verified">Safe</span></h4>
                         <p class="file-desc">Using OG VPN Service, Never getting BlackListed.</p>
-                        <div class="file-meta">Phiên bản: v1.0.2</div>
-                        <div class="file-actions-row"><button onclick="downloadFileProtect('https://link4m.org/j8cEF', false)" class="btn-view">Tải tập tin</button></div>
+                        <div class="file-meta">VERSION: v1.0.2</div>
+                        <div class="file-actions-row"><button onclick="downloadFileProtect('https://link4m.org/j8cEF', false)" class="btn-view">[ DOWNLOAD ]</button></div>
                     </div>
                     <div class="file-item">
-                        <h4>HDanhTech Modern <span class="badge-risk">Chưa xác minh</span></h4>
+                        <h4>HDanhTech Modern <span class="badge-risk">Unverified</span></h4>
                         <p class="file-desc" style="color: #f59e0b;">This app got cracked by HDanhTech team. Can be risk!</p>
-                        <div class="file-meta">Phiên bản: V2.0.0</div>
-                        <div class="file-actions-row"><button onclick="downloadFileProtect('https://link4m.net/P07sXnm', true)" class="btn-view risk-btn">Tải tập tin rủi ro</button></div>
+                        <div class="file-meta">VERSION: V2.0.0</div>
+                        <div class="file-actions-row"><button onclick="downloadFileProtect('https://link4m.net/P07sXnm', true)" class="btn-view risk-btn">[ RISK DOWNLOAD ]</button></div>
                     </div>
                     <div class="file-item">
-                        <h4>Sky Ping <span class="badge-verified">An toàn</span></h4>
+                        <h4>Sky Ping <span class="badge-verified">Safe</span></h4>
                         <p class="file-desc">Safe App, made by tunmod the frames and UIs look very cool.</p>
-                        <div class="file-meta">Phiên bản: V4</div>
-                        <div class="file-actions-row"><button onclick="downloadFileProtect('https://link4m.org/86Dm207y', false)" class="btn-view">Tải tập tin</button></div>
+                        <div class="file-meta">VERSION: V4</div>
+                        <div class="file-actions-row"><button onclick="downloadFileProtect('https://link4m.org/86Dm207y', false)" class="btn-view">[ DOWNLOAD ]</button></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 2: ĐÃ XÁC MINH -->
+        <!-- TAB: VERIFIED -->
         <div id="tab-verified" class="tab-content">
-            <div class="oneui-card">
-                <p class="section-title">✓ Chỉ hiện tệp tin an toàn</p>
+            <div class="hacker-card">
+                <p class="section-title">[ WHITELIST ]</p>
                 <div id="verified-container"></div>
             </div>
         </div>
 
-        <!-- TAB 3: THÔNG BÁO -->
+        <!-- TAB: ANNOUNCEMENTS -->
         <div id="tab-announcements" class="tab-content">
-            <div class="oneui-card">
-                <p class="section-title">📢 Bảng tin hệ thống</p>
+            <div class="hacker-card">
+                <p class="section-title">[ SYSTEM FEED ]</p>
                 <div id="announcements-container"></div>
             </div>
         </div>
 
-        <!-- TAB 4: QUẢN TRỊ -->
+        <!-- TAB: ADMIN -->
         <div id="tab-admin-panel" class="tab-content">
-            <div class="oneui-card">
-                <p class="section-title">⚙️ Đăng thông báo toàn server</p>
-                <div class="form-group"><label>Tiêu đề bảng tin</label><input type="text" id="notice-title" placeholder="Nhập tiêu đề..."></div>
-                <div class="form-group"><label>Nội dung chi tiết thông báo</label><textarea id="notice-content" rows="4" style="resize:none;" placeholder="Nội dung truyền tải..."></textarea></div>
-                <button class="btn-submit" style="background: #0381fe;" onclick="handlePostAnnouncement()">
-                    <span class="spinner-mini"></span> Phát hành bảng tin
+            <div class="hacker-card">
+                <p class="section-title" style="color: var(--neon-pink);">[ ADMIN PANEL ]</p>
+                <div class="form-group"><label>HEADER</label><input type="text" id="notice-title" placeholder="Enter announcement title..."></div>
+                <div class="form-group"><label>DATA STREAM</label><textarea id="notice-content" rows="4" style="resize:none;" placeholder="Insert message content..."></textarea></div>
+                <button class="btn-submit" style="border-color: var(--neon-pink); color: var(--neon-pink);" onclick="handlePostAnnouncement()">
+                    <span class="spinner-mini"></span> BROADCAST
                 </button>
             </div>
         </div>
 
     </div>
 
-    <!-- TOÀN BỘ KHỐI CODE JAVASCRIPT HỆ THỐNG -->
+    <!-- JAVASCRIPT LOGIC -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyA1jVOVPHECGp27Qgi4U4r71fiKm_a3biM",
@@ -844,25 +552,25 @@
             checkUserSession();
             updateHeaderAuthButtonUI();
             initHDanhTechCounters();
-            loadAppliedTheme();
             generateVerifiedTab();
+            loadTheme();
         };
 
-        function loadAppliedTheme() {
-            const savedTheme = localStorage.getItem("hdantech_theme") || "light";
+        function loadTheme() {
+            const savedTheme = localStorage.getItem("hdantech_theme") || "dark";
             document.body.setAttribute("data-theme", savedTheme);
-            document.getElementById("theme-switch").checked = (savedTheme === "dark");
         }
-
-        function toggleThemeMode(checkbox) {
-            const targetTheme = checkbox.checked ? "dark" : "light";
-            document.body.setAttribute("data-theme", targetTheme);
-            localStorage.setItem("hdantech_theme", targetTheme);
+        function toggleThemeMode() {
+            const current = document.body.getAttribute("data-theme");
+            const target = current === "light" ? "dark" : "light";
+            document.body.setAttribute("data-theme", target);
+            localStorage.setItem("hdantech_theme", target);
         }
 
         function openSettingsModal() { document.getElementById("settings-modal").classList.add("active"); }
         function closeSettingsModal() { document.getElementById("settings-modal").classList.remove("active"); }
 
+        // Logic Firebase & Counters
         function initHDanhTechCounters() {
             const visitsRef = db.ref('total_visits');
             visitsRef.transaction((currentValue) => { return (currentValue || 0) + 1; });
@@ -872,13 +580,13 @@
             updateLiveUsers();
             setInterval(updateLiveUsers, 4000);
         }
-
         function updateLiveUsers() {
             const hour = new Date().getHours();
             let baseActive = (hour >= 19 && hour <= 23) ? 54 : (hour >= 1 && hour <= 6 ? 5 : 18); 
             document.getElementById('activeUsers').innerText = Math.max(3, baseActive + (Math.floor(Math.random() * 9) - 4));
         }
 
+        // Verify Tab Logic
         function generateVerifiedTab() {
             const container = document.getElementById("files-container");
             const verifiedContainer = document.getElementById("verified-container");
@@ -891,21 +599,22 @@
             });
         }
 
+        // Download Logic
         function downloadFileProtect(url, isRisk) {
             if (currentUser === "guest") {
                 nextActionFlow = "open_auth_sheet";
-                showStatusModal("Yêu cầu hệ thống", "Vui lòng Đăng ký hoặc Đăng nhập tài khoản để tải tập tin!");
+                showStatusModal("SYSTEM LOCK", "Vui lòng Đăng ký hoặc Đăng nhập tài khoản để tải tập tin!");
             } else {
                 window.open(url, '_blank');
-                showToast("✅ Đang tải xuống tập tin...");
+                showToast("DOWNLOAD INITIATED...");
             }
         }
 
+        // Auth UI Logic
         function handleHeaderAuthClick() {
             if (currentUser === "guest") openAuthModal('signin');
             else openAccountInfoModal();
         }
-
         function updateHeaderAuthButtonUI() {
             const authBtn = document.getElementById("header-auth-action");
             const adminTabBtn = document.getElementById("tab-btn-admin-panel");
@@ -922,6 +631,7 @@
             }
         }
 
+        // Account Info
         function openAccountInfoModal() {
             document.getElementById("info-display-username").innerText = localStorage.getItem("hdantech_session_username") || "N/A";
             document.getElementById("info-display-password").innerText = localStorage.getItem("hdantech_session_password") || "••••••••";
@@ -938,7 +648,7 @@
             localStorage.removeItem("hdantech_session_password");
             updateHeaderAuthButtonUI();
             switchTab('tab-files');
-            showToast("👋 Đã đăng xuất thành công!");
+            showToast("SESSION TERMINATED");
             document.getElementById("welcome-modal").classList.add("active");
             startWelcomeCounter();
         }
@@ -948,30 +658,25 @@
                 document.getElementById("welcome-modal").classList.add("active");
                 startWelcomeCounter();
             } else {
-                // Nếu đã đăng nhập, hiển thị toast chào mừng
                 const username = localStorage.getItem("hdantech_session_username");
-                if (username) {
-                    setTimeout(() => {
-                        showToast(`👋 Chào mừng trở lại, ${username}!`);
-                    }, 500);
-                }
+                if (username) setTimeout(() => showToast(`ACCESS GRANTED, ${username}`), 500);
             }
         }
 
         function startWelcomeCounter() {
             const closeBtn = document.getElementById("close-welcome-btn");
-            let sec = 3; closeBtn.disabled = true; closeBtn.innerText = `${sec}s`;
+            let sec = 3; closeBtn.disabled = true; closeBtn.innerText = `[ ${sec}s ]`;
             const timer = setInterval(() => {
-                sec--;
-                if(sec > 0) closeBtn.innerText = `${sec}s`;
-                else {
+                sec--; closeBtn.innerText = `[ ${sec}s ]`;
+                if(sec <= 0) {
                     clearInterval(timer);
-                    closeBtn.innerText = "Đóng"; closeBtn.disabled = false;
+                    closeBtn.innerText = "[ CLOSE ]"; closeBtn.disabled = false;
                     closeBtn.onclick = () => document.getElementById("welcome-modal").classList.remove("active");
                 }
             }, 1000);
         }
 
+        // Switch Tab Logic
         function switchTab(tabId) {
             const loader = document.getElementById("loading-frame");
             loader.classList.add("active");
@@ -1002,29 +707,30 @@
             const container = document.getElementById("announcements-container");
             container.innerHTML = "";
             if (databaseNotices.length === 0) {
-                container.innerHTML = `<p style="color:#94a3b8; font-size:0.85rem; padding:25px; text-align:center;">Chưa có thông báo nào từ ban quản trị.</p>`;
+                container.innerHTML = `<p style="color:#4b5563; font-size:0.85rem; padding:20px; text-align:center;">[ NO SYSTEM MESSAGES ]</p>`;
                 return;
             }
             databaseNotices.forEach(notice => {
                 container.insertAdjacentHTML('beforeend', `
                     <div class="notice-item">
-                        <h4>📌 ${notice.title} <span class="badge-admin">Admin</span></h4>
+                        <h4>> ${notice.title} <span class="badge-admin">ROOT</span></h4>
                         <div class="notice-content-text" style="white-space: pre-line;">${notice.content}</div>
                         <div class="notice-meta-footer">
-                            <span>👤 Đăng bởi: ${notice.author}</span>
-                            <span>📅 ${notice.date}</span>
+                            <span>AUTHOR: ${notice.author}</span>
+                            <span>TIMESTAMP: ${notice.date}</span>
                         </div>
                     </div>
                 `);
             });
         }
 
+        // Admin Logic
         function handlePostAnnouncement() {
             const title = document.getElementById("notice-title").value.trim();
             const content = document.getElementById("notice-content").value.trim();
             const savedDisplayUser = localStorage.getItem("hdantech_session_username") || "guest";
-            if (savedDisplayUser.toLowerCase() !== "xine3d") return showStatusModal("Lỗi", "Quyền hạn không hợp lệ!");
-            if (!title || !content) return showStatusModal("Thiếu thông tin", "Vui lòng điền đủ tiêu đề và nội dung!");
+            if (savedDisplayUser.toLowerCase() !== "xine3d") return showStatusModal("ACCESS DENIED", "Admin privileges required!");
+            if (!title || !content) return showStatusModal("INCOMPLETE", "Fill all fields.");
 
             const submitBtn = document.querySelector('#tab-admin-panel .btn-submit');
             setButtonLoading(submitBtn, true);
@@ -1039,10 +745,10 @@
                 document.getElementById("notice-content").value = "";
                 setButtonLoading(submitBtn, false);
                 nextActionFlow = "go_to_announcements";
-                showStatusModal("Thành công", "Thông báo đã được phát hành!");
+                showStatusModal("BROADCAST SENT", "Message transmitted to all users.");
             }).catch(() => {
                 setButtonLoading(submitBtn, false);
-                showStatusModal("Lỗi", "Không thể đăng thông báo, vui lòng thử lại!");
+                showStatusModal("ERROR", "Transmission failed.");
             });
         }
 
@@ -1051,8 +757,113 @@
             document.getElementById("status-desc").innerText = msg;
             document.getElementById("status-modal").classList.add("active");
             
-            if (title.toLowerCase().includes('lỗi') || title.toLowerCase().includes('thất bại')) {
+            if (title.toLowerCase().includes('error') || title.toLowerCase().includes('denied') || title.toLowerCase().includes('lỗi')) {
                 const statusBox = document.querySelector('#status-modal .modal-box');
+                if (statusBox) { statusBox.classList.add('shake-animation'); setTimeout(() => statusBox.classList.remove('shake-animation'), 600); }
+            }
+        }
+
+        function closeStatusModal() {
+            document.getElementById("status-modal").classList.remove("active");
+            if (nextActionFlow === "go_to_announcements") switchTab('tab-announcements');
+            else if (nextActionFlow === "open_auth_sheet") openAuthModal('signin');
+            nextActionFlow = "";
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById("toast-notification");
+            document.getElementById("toast-message").innerText = message;
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
+        }
+
+        function setButtonLoading(button, isLoading) {
+            if (isLoading) { button.classList.add("loading"); button.disabled = true; } 
+            else { button.classList.remove("loading"); button.disabled = false; }
+        }
+
+        // Core Auth Logic
+        function handleAuth(action) {
+            if (action === 'register') {
+                const user = document.getElementById("reg-user").value.trim();
+                const pass = document.getElementById("reg-pass").value.trim();
+                
+                if (!user || !pass) return showStatusModal("ERROR", "Incomplete credentials.");
+                if (user.length > 10 || pass.length > 20) return showStatusModal("ERROR", "Length limits: 10 chars user, 20 chars pass.");
+                
+                db.ref("users/" + user.toLowerCase()).once("value", (snapshot) => {
+                    if (snapshot.exists()) return showStatusModal("ERROR", "Identity already exists.");
+                    
+                    const registerBtn = document.querySelector('#signin-form-wrapper .btn-submit');
+                    setButtonLoading(registerBtn, true);
+                    
+                    db.ref("users/" + user.toLowerCase()).set({ username: user, password: pass, createdAt: new Date().toISOString() })
+                    .then(() => {
+                        currentUser = "member";
+                        localStorage.setItem("hdantech_current_user", "member"); 
+                        localStorage.setItem("hdantech_session_username", user);
+                        localStorage.setItem("hdantech_session_password", pass);
+                        setButtonLoading(registerBtn, false);
+                        updateHeaderAuthButtonUI();
+                        closeAuthModal(); document.getElementById("welcome-modal").classList.remove("active");
+                        showToast(`IDENTITY CREATED: ${user}`);
+                        document.getElementById("reg-user").value = ""; document.getElementById("reg-pass").value = "";
+                        switchTab('tab-files');
+                    }).catch(() => {
+                        setButtonLoading(registerBtn, false);
+                        showStatusModal("NETWORK ERROR", "Could not establish connection.");
+                    });
+                });
+                
+            } else {
+                const userInput = document.getElementById("login-user").value.trim();
+                const passInput = document.getElementById("login-pass").value.trim();
+                if(!userInput || !passInput) return showStatusModal("ERROR", "Enter credentials.");
+                
+                const loginBtn = document.querySelector('#login-form-wrapper .btn-submit');
+                setButtonLoading(loginBtn, true);
+                
+                // Admin Backdoor (Keep this for you)
+                if (userInput.toLowerCase() === "xine3d" && passInput === "Thinh_2012") {
+                    currentUser = "admin";
+                    localStorage.setItem("hdantech_current_user", "admin"); 
+                    localStorage.setItem("hdantech_session_username", "xine3d");
+                    localStorage.setItem("hdantech_session_password", "Thinh_2012");
+                    setButtonLoading(loginBtn, false); updateHeaderAuthButtonUI();
+                    closeAuthModal(); document.getElementById("welcome-modal").classList.remove("active");
+                    showToast("ADMIN ACCESS GRANTED");
+                    document.getElementById("login-user").value = ""; document.getElementById("login-pass").value = "";
+                    return;
+                }
+
+                db.ref("users/" + userInput.toLowerCase()).once("value", (snapshot) => {
+                    const userData = snapshot.val();
+                    setButtonLoading(loginBtn, false);
+                    
+                    if (userData && userData.password === passInput) {
+                        currentUser = "member";
+                        localStorage.setItem("hdantech_current_user", "member"); 
+                        localStorage.setItem("hdantech_session_username", userData.username);
+                        localStorage.setItem("hdantech_session_password", passInput);
+                        updateHeaderAuthButtonUI(); closeAuthModal(); document.getElementById("welcome-modal").classList.remove("active");
+                        showToast(`ACCESS GRANTED: ${userData.username}`);
+                        document.getElementById("login-user").value = ""; document.getElementById("login-pass").value = "";
+                    } else {
+                        showStatusModal("AUTH FAILED", "Invalid credentials.");
+                    }
+                });
+            }
+        }
+
+        function openAuthModal(type) { document.getElementById("auth-modal").classList.add("active"); toggleAuthForm(type); }
+        function closeAuthModal() { document.getElementById("auth-modal").classList.remove("active"); }
+        function toggleAuthForm(type) {
+            document.getElementById("login-form-wrapper").style.display = type === 'login' ? "block" : "none";
+            document.getElementById("signin-form-wrapper").style.display = type === 'login' ? "none" : "block";
+        }
+    </script>
+</body>
+</html>               const statusBox = document.querySelector('#status-modal .modal-box');
                 if (statusBox) {
                     statusBox.style.animation = 'shake 0.6s ease-in-out';
                     setTimeout(() => {
