@@ -266,7 +266,6 @@
         
         .auth-bottom-links .divider { color: var(--header-border); font-size: 1.2rem; align-self: center; }
 
-        /* Giao diện danh sách tệp gốc */
         .file-item { 
             background: var(--item-bg); border-radius: 22px; padding: 18px; margin-bottom: 12px; 
             display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--card-border);
@@ -283,7 +282,6 @@
         .file-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
         .file-meta { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
 
-        /* --- NÂNG CẤP GIAO DIỆN THÔNG BÁO ADMIN ĐẸP HƠN --- */
         .notice-item {
             background: var(--item-bg);
             border-radius: 22px;
@@ -335,7 +333,6 @@
         
         .file-actions-row { display: flex; gap: 8px; margin-top: 6px; }
         
-        /* === ANIMATIONS CHO NÚT TẢI TẬP TIN === */
         .btn-view {
             flex: 1; text-align: center; padding: 12px; border-radius: 14px; font-weight: 700; 
             cursor: pointer; text-decoration: none; font-size: 0.85rem; display: block;
@@ -377,7 +374,6 @@
             height: 300px;
         }
         
-        /* Animation cho nút Rủi ro */
         .btn-view.risk-btn { 
             background: rgba(245, 158, 11, 0.1); color: #f59e0b;
             animation: riskPulse 2s infinite;
@@ -399,19 +395,9 @@
             box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
         }
         
-        /* Animation cho nút Lấy Key */
         .btn-key { 
             background: var(--tab-container-bg); color: var(--text-muted);
             position: relative; overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-key::after {
-            content: '🔑';
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%) rotate(0deg);
             transition: all 0.3s ease;
         }
         
@@ -421,10 +407,6 @@
             padding-right: 35px;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(251, 191, 36, 0.2);
-        }
-        
-        .btn-key:hover::after {
-            transform: translateY(-50%) rotate(360deg);
         }
 
         .form-group { margin-bottom: 16px; }
@@ -436,7 +418,6 @@
         }
         input:focus, textarea:focus { background: var(--card-bg); border-color: #0381fe; box-shadow: 0 0 0 3px rgba(3, 129, 254, 0.1); }
 
-        /* Loading spinner cho nút đăng ký */
         .btn-submit { 
             width: 100%; padding: 14px; color: white; font-weight: 700; cursor: pointer; font-size: 0.9rem; 
             border-radius: 16px; border: none;
@@ -454,60 +435,8 @@
             transform: translateY(-1px) scale(0.98);
         }
         
-        .btn-submit:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .btn-submit .spinner-mini {
-            display: none;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-left-color: white;
-            border-radius: 50%;
-            animation: spin 0.8s infinite linear;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
-        
-        .btn-submit.loading .spinner-mini {
-            display: inline-block;
-        }
-        
-        .btn-submit::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            border-radius: 100%;
-            transform: scale(1, 1) translate(-50%);
-            transform-origin: 50% 50%;
-        }
-        
-        .btn-submit:active::after {
-            animation: submitRipple 0.6s ease-out;
-        }
-        
-        @keyframes submitRipple {
-            0% {
-                transform: scale(0, 0);
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(20, 20);
-                opacity: 0;
-            }
-        }
-        
         @keyframes spin { 100% { transform: rotate(360deg); } }
         
-        /* Glow Pulse cho nút chính */
         .btn-submit[style*="background: #0381fe"] {
             animation: glowPulse 2s infinite;
         }
@@ -523,26 +452,16 @@
             }
         }
 
-        /* Shake animation cho modal lỗi */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
             20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
-        
-        .shake-animation {
-            animation: shake 0.6s ease-in-out;
-        }
 
-        /* Success animation */
         @keyframes successPop {
             0% { transform: scale(0.8); opacity: 0; }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); opacity: 1; }
-        }
-        
-        .success-animation {
-            animation: successPop 0.5s ease-out;
         }
 
         #loading-frame {
@@ -563,30 +482,26 @@
         input:checked + .slider { background-color: #0381fe; }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        /* Toast notification */
         .toast-notification {
             position: fixed;
             top: 20px;
             right: 20px;
             background: #10b981;
             color: white;
-            padding: 16px 24px;
-            border-radius: 16px;
+            padding: 12px 20px;
+            border-radius: 12px;
             font-weight: 600;
+            font-size: 0.85rem;
             z-index: 10001;
             transform: translateX(120%);
             transition: transform 0.3s ease;
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
         }
         
         .toast-notification.show {
             transform: translateX(0);
         }
 
-        /* Responsive animations */
         @media (max-width: 600px) {
             .btn-view:hover,
             .btn-submit:hover,
@@ -607,27 +522,23 @@
         <div class="glow-circle glow-2"></div>
     </div>
 
-    <!-- TOP HEADER -->
     <div class="top-header">
         <div class="header-brand">
             <div class="tech-logo-fallback">HD</div>
             <h1>HDanhTech Files</h1>
         </div>
         <div class="header-actions">
-            <button class="btn-setting-toggle" onclick="openSettingsModal()">⚙️</button>
+            <button class="btn-setting-toggle" onclick="openSettingsModal()">|||</button>
             <button id="header-auth-action" class="header-auth-btn auth-state-signin" onclick="handleHeaderAuthClick()">Đăng nhập</button>
         </div>
     </div>
 
     <div id="loading-frame"><div class="spinner"></div></div>
 
-    <!-- Toast Notification -->
     <div id="toast-notification" class="toast-notification">
-        <span>✅</span>
-        <span id="toast-message">Thành công!</span>
+        <span id="toast-message"></span>
     </div>
 
-    <!-- SETTINGS MODAL -->
     <div id="settings-modal" class="modal-overlay">
         <div class="modal-box">
             <button onclick="closeSettingsModal()" class="modal-close-btn">Đóng</button>
@@ -642,11 +553,10 @@
                     <span class="slider"></span>
                 </label>
             </div>
-            <p style="text-align: center; font-size:0.75rem; color:var(--text-muted); margin-top:24px;">HDanhTech Engine Premium • Active</p>
+            <p style="text-align: center; font-size:0.75rem; color:var(--text-muted); margin-top:24px;">HDanhTech Engine Premium - Active</p>
         </div>
     </div>
 
-    <!-- STATUS MODAL -->
     <div id="status-modal" class="modal-overlay">
         <div class="modal-box" style="border-radius: 28px; margin: 20px; margin-top: auto; padding: 24px;">
             <h3 id="status-title" style="font-size: 1.15rem; margin-bottom: 8px; font-weight: 700;">Thông báo</h3>
@@ -655,7 +565,6 @@
         </div>
     </div>
 
-    <!-- MÀN HÌNH CHÀO MỪNG -->
     <div id="welcome-modal" class="modal-overlay">
         <div class="modal-box">
             <button id="close-welcome-btn" class="modal-close-btn" disabled>3s</button>
@@ -670,46 +579,39 @@
         </div>
     </div>
 
-    <!-- AUTH MODAL -->
     <div id="auth-modal" class="modal-overlay">
         <div class="modal-box">
-            <button onclick="closeAuthModal()" class="modal-close-btn">×</button>
+            <button onclick="closeAuthModal()" class="modal-close-btn">x</button>
             <div id="login-form-wrapper">
                 <h3 style="margin-bottom: 20px; font-size: 1.15rem; font-weight:700;">Đăng nhập hệ thống</h3>
                 <div class="form-group"><label>TÀI KHOẢN</label><input type="text" id="login-user" placeholder="Nhập tên tài khoản..."></div>
                 <div class="form-group"><label>MẬT KHẨU</label><input type="password" id="login-pass" placeholder="Nhập mật khẩu..."></div>
-                <button class="btn-submit" style="background: #0381fe; margin-top: 8px;" onclick="handleAuth('login')">
-                    <span class="spinner-mini"></span> Đăng nhập
-                </button>
+                <button class="btn-submit" style="background: #0381fe; margin-top: 8px;" onclick="handleAuth('login')">Đăng nhập</button>
                 <p style="margin-top: 20px; text-align:center; font-size: 0.85rem; color:var(--text-muted);">Chưa có tài khoản? <a onclick="toggleAuthForm('signin')" style="color:#0381fe; font-weight:600; cursor:pointer;">Tạo tài khoản</a></p>
             </div>
             <div id="signin-form-wrapper" style="display: none;">
                 <h3 style="margin-bottom: 20px; font-size: 1.15rem; font-weight:700;">Đăng ký tài khoản</h3>
                 <div class="form-group"><label>TÊN TÀI KHOẢN</label><input type="text" id="reg-user" placeholder="Tối đa 10 kí tự" maxlength="10"></div>
                 <div class="form-group"><label>MẬT KHẨU BẢO MẬT</label><input type="password" id="reg-pass" placeholder="Tối đa 20 kí tự" maxlength="20"></div>
-                <button class="btn-submit" style="background: #10b981; color: #fff; margin-top: 8px;" onclick="handleAuth('register')">
-                    <span class="spinner-mini"></span> Đăng ký ngay
-                </button>
+                <button class="btn-submit" style="background: #10b981; color: #fff; margin-top: 8px;" onclick="handleAuth('register')">Đăng ký ngay</button>
                 <p style="margin-top: 20px; text-align:center; font-size: 0.85rem; color:var(--text-muted);">Đã có tài khoản? <a onclick="toggleAuthForm('login')" style="color:#0381fe; font-weight:600; cursor:pointer;">Đăng nhập</a></p>
             </div>
         </div>
     </div>
 
-    <!-- ACCOUNT INFO MODAL -->
     <div id="account-info-modal" class="modal-overlay">
         <div class="modal-box">
-            <button onclick="closeAccountInfoModal()" class="modal-close-btn">×</button>
+            <button onclick="closeAccountInfoModal()" class="modal-close-btn">x</button>
             <h3 style="margin-bottom: 20px; font-size: 1.15rem; font-weight:700; text-align: center;">Thông tin cá nhân</h3>
             <div style="margin-bottom: 24px; background: var(--input-bg); padding: 8px 16px; border-radius: 20px;">
                 <div class="info-row"><span>Tài khoản:</span><strong id="info-display-username">N/A</strong></div>
-                <div class="info-row"><span>Mật khẩu:</span><strong id="info-display-password">••••••••</strong></div>
+                <div class="info-row"><span>Mật khẩu:</span><strong id="info-display-password">........</strong></div>
                 <div class="info-row" style="border:none;"><span>Cấp bậc:</span><strong id="info-display-rank" style="color: #0381fe;">MEMBER</strong></div>
             </div>
             <button class="btn-submit" style="background: #fee2e2; color: #ef4444;" onclick="processLogout()">Đăng xuất tài khoản</button>
         </div>
     </div>
 
-    <!-- NAVIGATION TABS -->
     <div class="tabs-container">
         <button class="tab-btn active" onclick="switchTab('tab-files')">Tệp tin</button>
         <button class="tab-btn" onclick="switchTab('tab-verified')">Đã xác minh</button>
@@ -717,10 +619,8 @@
         <button class="tab-btn" id="tab-btn-admin-panel" onclick="switchTab('tab-admin-panel')">Quản trị</button>
     </div>
 
-    <!-- CONTAINER CONTENT -->
     <div class="container">
         
-        <!-- ABOUT CARD -->
         <div class="oneui-card">
             <p class="section-title">About Us</p>
             <div class="about-team-box">
@@ -728,7 +628,7 @@
                 <div class="about-team-info">
                     <h5>Team HDanhTech Official</h5>
                     <p>Hệ thống cung cấp, crack và phân phối các tệp tin ứng dụng di động an toàn, tối ưu hóa trải nghiệm.</p>
-                    <a href="https://discord.gg/wf4QnepsxS" target="_blank" class="discord-blue-link">➔ Tham gia Discord của nhóm</a>
+                    <a href="https://discord.gg/wf4QnepsxS" target="_blank" class="discord-blue-link">Tham gia Discord của nhóm</a>
                 </div>
             </div>
             <div class="counter-grid">
@@ -743,19 +643,18 @@
             </div>
         </div>
 
-        <!-- TAB 1: TẤT CẢ TỆP TIN -->
         <div id="tab-files" class="tab-content active">
             <div class="oneui-card">
                 <p class="section-title">Danh sách hoạt động (6 Tệp)</p>
                 <div id="files-container">
                     <div class="file-item">
-                        <h4>HDanhTech Launcher <span style="display: flex; gap: 4px;"><span class="badge-insanity">INSANITY!!</span><span class="badge-hot">HOT 🔥</span><span class="badge-verified">An toàn</span></span></h4>
+                        <h4>HDanhTech Launcher <span style="display: flex; gap: 4px;"><span class="badge-insanity">INSANITY!!</span><span class="badge-hot">HOT</span><span class="badge-verified">An toàn</span></span></h4>
                         <p class="file-desc">Finding good launcher apk? NL will give you best enjoy. Hide your apps from others people to find it.</p>
                         <div class="file-meta">Phiên bản: V1</div>
                         <div class="file-actions-row"><button onclick="downloadFileProtect('https://www.mediafire.com/file/zmd786crhxyv6no/NLauncher_1.0.apk/file', false)" class="btn-view">Tải tập tin</button></div>
                     </div>
                     <div class="file-item">
-                        <h4>NetPlus <span style="display: flex; gap: 4px;"><span class="badge-hot">HOT 🔥</span><span class="badge-verified">An toàn</span></span></h4>
+                        <h4>NetPlus <span style="display: flex; gap: 4px;"><span class="badge-hot">HOT</span><span class="badge-verified">An toàn</span></span></h4>
                         <p class="file-desc">2 option antiband 88% - 90%:<br>1. Freeze | 2. Ghost</p>
                         <div class="file-meta">Phiên bản: V18</div>
                         <div class="file-actions-row">
@@ -791,37 +690,31 @@
             </div>
         </div>
 
-        <!-- TAB 2: ĐÃ XÁC MINH -->
         <div id="tab-verified" class="tab-content">
             <div class="oneui-card">
-                <p class="section-title">✓ Chỉ hiện tệp tin an toàn</p>
+                <p class="section-title">Chỉ hiện tệp tin an toàn</p>
                 <div id="verified-container"></div>
             </div>
         </div>
 
-        <!-- TAB 3: THÔNG BÁO -->
         <div id="tab-announcements" class="tab-content">
             <div class="oneui-card">
-                <p class="section-title">📢 Bảng tin hệ thống</p>
+                <p class="section-title">Bảng tin hệ thống</p>
                 <div id="announcements-container"></div>
             </div>
         </div>
 
-        <!-- TAB 4: QUẢN TRỊ -->
         <div id="tab-admin-panel" class="tab-content">
             <div class="oneui-card">
-                <p class="section-title">⚙️ Đăng thông báo toàn server</p>
+                <p class="section-title">Đăng thông báo toàn server</p>
                 <div class="form-group"><label>Tiêu đề bảng tin</label><input type="text" id="notice-title" placeholder="Nhập tiêu đề..."></div>
                 <div class="form-group"><label>Nội dung chi tiết thông báo</label><textarea id="notice-content" rows="4" style="resize:none;" placeholder="Nội dung truyền tải..."></textarea></div>
-                <button class="btn-submit" style="background: #0381fe;" onclick="handlePostAnnouncement()">
-                    <span class="spinner-mini"></span> Phát hành bảng tin
-                </button>
+                <button class="btn-submit" style="background: #0381fe;" onclick="handlePostAnnouncement()">Phát hành bảng tin</button>
             </div>
         </div>
 
     </div>
 
-    <!-- TOÀN BỘ KHỐI CODE JAVASCRIPT HỆ THỐNG -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyA1jVOVPHECGp27Qgi4U4r71fiKm_a3biM",
@@ -897,7 +790,7 @@
                 showStatusModal("Yêu cầu hệ thống", "Vui lòng Đăng ký hoặc Đăng nhập tài khoản để tải tập tin!");
             } else {
                 window.open(url, '_blank');
-                showToast("✅ Đang tải xuống tập tin...");
+                showToast("Đang tải xuống...");
             }
         }
 
@@ -924,7 +817,7 @@
 
         function openAccountInfoModal() {
             document.getElementById("info-display-username").innerText = localStorage.getItem("hdantech_session_username") || "N/A";
-            document.getElementById("info-display-password").innerText = localStorage.getItem("hdantech_session_password") || "••••••••";
+            document.getElementById("info-display-password").innerText = localStorage.getItem("hdantech_session_password") || "........";
             document.getElementById("info-display-rank").innerText = currentUser.toUpperCase();
             document.getElementById("account-info-modal").classList.add("active");
         }
@@ -938,7 +831,7 @@
             localStorage.removeItem("hdantech_session_password");
             updateHeaderAuthButtonUI();
             switchTab('tab-files');
-            showToast("👋 Đã đăng xuất thành công!");
+            showToast("Đã đăng xuất!");
             document.getElementById("welcome-modal").classList.add("active");
             startWelcomeCounter();
         }
@@ -948,11 +841,10 @@
                 document.getElementById("welcome-modal").classList.add("active");
                 startWelcomeCounter();
             } else {
-                // Nếu đã đăng nhập, hiển thị toast chào mừng
                 const username = localStorage.getItem("hdantech_session_username");
                 if (username) {
                     setTimeout(() => {
-                        showToast(`👋 Chào mừng trở lại, ${username}!`);
+                        showToast("Chào " + username + "!");
                     }, 500);
                 }
             }
@@ -1002,17 +894,17 @@
             const container = document.getElementById("announcements-container");
             container.innerHTML = "";
             if (databaseNotices.length === 0) {
-                container.innerHTML = `<p style="color:#94a3b8; font-size:0.85rem; padding:25px; text-align:center;">Chưa có thông báo nào từ ban quản trị.</p>`;
+                container.innerHTML = `<p style="color:#94a3b8; font-size:0.85rem; padding:25px; text-align:center;">Chưa có thông báo nào.</p>`;
                 return;
             }
             databaseNotices.forEach(notice => {
                 container.insertAdjacentHTML('beforeend', `
                     <div class="notice-item">
-                        <h4>📌 ${notice.title} <span class="badge-admin">Admin</span></h4>
+                        <h4>${notice.title} <span class="badge-admin">Admin</span></h4>
                         <div class="notice-content-text" style="white-space: pre-line;">${notice.content}</div>
                         <div class="notice-meta-footer">
-                            <span>👤 Đăng bởi: ${notice.author}</span>
-                            <span>📅 ${notice.date}</span>
+                            <span>Đăng bởi: ${notice.author}</span>
+                            <span>${notice.date}</span>
                         </div>
                     </div>
                 `);
@@ -1026,9 +918,6 @@
             if (savedDisplayUser.toLowerCase() !== "xine3d") return showStatusModal("Lỗi", "Quyền hạn không hợp lệ!");
             if (!title || !content) return showStatusModal("Thiếu thông tin", "Vui lòng điền đủ tiêu đề và nội dung!");
 
-            const submitBtn = document.querySelector('#tab-admin-panel .btn-submit');
-            setButtonLoading(submitBtn, true);
-
             const newNoticeRef = db.ref("announcements").push();
             const now = new Date();
             newNoticeRef.set({
@@ -1037,12 +926,10 @@
             }).then(() => {
                 document.getElementById("notice-title").value = "";
                 document.getElementById("notice-content").value = "";
-                setButtonLoading(submitBtn, false);
                 nextActionFlow = "go_to_announcements";
                 showStatusModal("Thành công", "Thông báo đã được phát hành!");
             }).catch(() => {
-                setButtonLoading(submitBtn, false);
-                showStatusModal("Lỗi", "Không thể đăng thông báo, vui lòng thử lại!");
+                showStatusModal("Lỗi", "Không thể đăng thông báo!");
             });
         }
 
@@ -1050,26 +937,6 @@
             document.getElementById("status-title").innerText = title;
             document.getElementById("status-desc").innerText = msg;
             document.getElementById("status-modal").classList.add("active");
-            
-            if (title.toLowerCase().includes('lỗi') || title.toLowerCase().includes('thất bại')) {
-                const statusBox = document.querySelector('#status-modal .modal-box');
-                if (statusBox) {
-                    statusBox.style.animation = 'shake 0.6s ease-in-out';
-                    setTimeout(() => {
-                        statusBox.style.animation = '';
-                    }, 600);
-                }
-            }
-            
-            if (title.toLowerCase().includes('thành công') || title.toLowerCase().includes('chào mừng')) {
-                const statusBox = document.querySelector('#status-modal .modal-box');
-                if (statusBox) {
-                    statusBox.style.animation = 'successPop 0.5s ease-out';
-                    setTimeout(() => {
-                        statusBox.style.animation = '';
-                    }, 500);
-                }
-            }
         }
 
         function closeStatusModal() {
@@ -1082,30 +949,110 @@
             nextActionFlow = "just_close";
         }
 
-        // Toast notification
         function showToast(message) {
             const toast = document.getElementById("toast-notification");
             document.getElementById("toast-message").innerText = message;
             toast.classList.add("show");
             setTimeout(() => {
                 toast.classList.remove("show");
-            }, 3000);
+            }, 2000);
         }
 
-        // Button loading state
-        function setButtonLoading(button, isLoading) {
-            if (isLoading) {
-                button.classList.add("loading");
-                button.disabled = true;
-            } else {
-                button.classList.remove("loading");
-                button.disabled = false;
-            }
-        }
-
+        // === ĐĂNG NHẬP NHANH ===
         function handleAuth(action) {
             if (action === 'register') {
                 const user = document.getElementById("reg-user").value.trim();
+                const pass = document.getElementById("reg-pass").value.trim();
+                
+                if (!user || !pass) return showStatusModal("Lỗi", "Vui lòng điền đầy đủ thông tin!");
+                if (user.length > 10 || pass.length > 20) return showStatusModal("Lỗi", "Tài khoản tối đa 10 kí tự, mật khẩu tối đa 20 kí tự!");
+                if (user.length < 3) return showStatusModal("Lỗi", "Tên tài khoản phải có ít nhất 3 kí tự!");
+                if (pass.length < 4) return showStatusModal("Lỗi", "Mật khẩu phải có ít nhất 4 kí tự!");
+
+                db.ref("users/" + user.toLowerCase()).once("value", (snapshot) => {
+                    if (snapshot.exists()) {
+                        return showStatusModal("Lỗi", "Tài khoản đã tồn tại!");
+                    }
+                    
+                    db.ref("users/" + user.toLowerCase()).set({ 
+                        username: user, 
+                        password: pass,
+                        createdAt: new Date().toISOString()
+                    }).then(() => {
+                        currentUser = "member";
+                        localStorage.setItem("hdantech_current_user", "member"); 
+                        localStorage.setItem("hdantech_session_username", user);
+                        localStorage.setItem("hdantech_session_password", pass);
+                        
+                        updateHeaderAuthButtonUI();
+                        closeAuthModal();
+                        document.getElementById("welcome-modal").classList.remove("active");
+                        
+                        document.getElementById("reg-user").value = "";
+                        document.getElementById("reg-pass").value = "";
+                        
+                        showToast("Chào mừng " + user + "!");
+                        
+                    }).catch(() => {
+                        showStatusModal("Lỗi", "Không thể đăng ký!");
+                    });
+                });
+                
+            } else {
+                const userInput = document.getElementById("login-user").value.trim();
+                const passInput = document.getElementById("login-pass").value.trim();
+                
+                if(!userInput || !passInput) return showStatusModal("Lỗi", "Vui lòng điền đủ thông tin!");
+                
+                if (userInput.toLowerCase() === "xine3d" && passInput === "Thinh_2012") {
+                    currentUser = "admin";
+                    localStorage.setItem("hdantech_current_user", "admin"); 
+                    localStorage.setItem("hdantech_session_username", "xine3d");
+                    localStorage.setItem("hdantech_session_password", "Thinh_2012");
+                    updateHeaderAuthButtonUI();
+                    closeAuthModal();
+                    document.getElementById("welcome-modal").classList.remove("active");
+                    document.getElementById("login-user").value = "";
+                    document.getElementById("login-pass").value = "";
+                    showToast("Chào Admin!");
+                    return;
+                }
+
+                db.ref("users/" + userInput.toLowerCase()).once("value", (snapshot) => {
+                    const userData = snapshot.val();
+                    
+                    if (userData && userData.password === passInput) {
+                        currentUser = "member";
+                        localStorage.setItem("hdantech_current_user", "member"); 
+                        localStorage.setItem("hdantech_session_username", userData.username);
+                        localStorage.setItem("hdantech_session_password", passInput);
+                        updateHeaderAuthButtonUI();
+                        closeAuthModal();
+                        document.getElementById("welcome-modal").classList.remove("active");
+                        document.getElementById("login-user").value = "";
+                        document.getElementById("login-pass").value = "";
+                        showToast("Chào " + userData.username + "!");
+                    } else {
+                        showStatusModal("Lỗi", "Sai tài khoản hoặc mật khẩu!");
+                    }
+                });
+            }
+        }
+
+        function openAuthModal(type) { 
+            document.getElementById("auth-modal").classList.add("active"); 
+            toggleAuthForm(type); 
+        }
+        function closeAuthModal() { 
+            document.getElementById("auth-modal").classList.remove("active"); 
+        }
+        function toggleAuthForm(type) {
+            document.getElementById("login-form-wrapper").style.display = type === 'login' ? "block" : "none";
+            document.getElementById("signin-form-wrapper").style.display = type === 'login' ? "none" : "block";
+        }
+    </script>
+</body>
+</html>  const user = document.getElementById("reg-user").value.trim();
                 const pass = document.getElementById("reg-pass").value.trim();
                 
                 if (!user || !pass) return showStatusModal("Lỗi", "Vui lòng điền đầy đủ thông tin tài khoản và mật khẩu!");
