@@ -94,13 +94,48 @@
         .btn-setting-toggle {
             background: var(--input-bg); border: none; width: 36px; height: 36px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem;
+            transition: all 0.3s ease; transform: rotate(0deg);
+        }
+        
+        .btn-setting-toggle:hover {
+            transform: rotate(90deg) scale(1.1);
+            background: #0381fe;
+            color: white;
         }
 
         .header-auth-btn {
             padding: 8px 18px; font-size: 0.85rem; font-weight: 600; border-radius: 20px; cursor: pointer; border: none;
+            position: relative; overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        
+        .header-auth-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .header-auth-btn:hover::before {
+            left: 100%;
+        }
+        
         .auth-state-signin { background: #0381fe; color: #fff; box-shadow: 0 4px 12px rgba(3, 129, 254, 0.25); }
+        .auth-state-signin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(3, 129, 254, 0.4);
+        }
+        
         .auth-state-logged { background: var(--tab-container-bg); color: var(--text-muted); }
+        .auth-state-logged:hover {
+            transform: translateY(-2px);
+            background: #334155;
+            color: #f1f5f9;
+        }
 
         .tabs-container { 
             display: flex; gap: 4px; margin-bottom: 20px; width: 100%; max-width: 500px; 
@@ -109,8 +144,36 @@
         .tab-btn {
             flex: 1; padding: 10px 4px; background: transparent; border: none;
             color: var(--text-muted); font-weight: 600; cursor: pointer; border-radius: 26px; font-size: 0.85rem;
+            position: relative; overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #0381fe;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .tab-btn:hover::after {
+            width: 50%;
+        }
+        
+        .tab-btn:hover {
+            color: #0381fe;
+        }
+        
         .tab-btn.active { background: var(--tab-btn-active); color: #0381fe; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .tab-btn.active::after {
+            width: 70%;
+            background: #0381fe;
+        }
+        
         #tab-btn-admin-panel { display: none; color: #ef4444; }
         #tab-btn-admin-panel.active { background: var(--tab-btn-active); color: #ef4444; }
 
@@ -158,8 +221,14 @@
             position: absolute; top: 20px; right: 20px; background: var(--input-bg); border: none; 
             color: var(--text-muted); font-weight: 600; cursor: pointer; font-size: 0.85rem;
             padding: 6px 14px; border-radius: 20px;
+            transition: all 0.3s ease; transform: rotate(0deg);
         }
         .modal-close-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .modal-close-btn:hover:not(:disabled) {
+            background: #ef4444;
+            color: white;
+            transform: rotate(90deg) scale(1.1);
+        }
 
         .welcome-title { font-size: 1.35rem; font-weight: 800; text-align: center; color: var(--text-color); margin-bottom: 10px; letter-spacing: -0.5px; }
         .welcome-desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 28px; text-align: center; padding: 0 12px; }
@@ -167,12 +236,49 @@
         .auth-bottom-links {
             border-top: 1px solid var(--header-border); padding-top: 20px; text-align: center; display: flex; justify-content: center; gap: 16px;
         }
-        .auth-bottom-links a { color: #0381fe; font-weight: 700; text-decoration: none; font-size: 0.95rem; cursor: pointer; padding: 8px 16px; border-radius: 12px; }
-        .auth-bottom-links a:hover { background: rgba(3, 129, 254, 0.08); }
+        .auth-bottom-links a { 
+            color: #0381fe; font-weight: 700; text-decoration: none; font-size: 0.95rem; cursor: pointer; 
+            padding: 8px 16px; border-radius: 12px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-bottom-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #0381fe;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .auth-bottom-links a:hover::after {
+            width: 70%;
+        }
+        
+        .auth-bottom-links a:hover {
+            transform: translateY(-2px);
+            background: rgba(3, 129, 254, 0.08);
+        }
+        
         .auth-bottom-links .divider { color: var(--header-border); font-size: 1.2rem; align-self: center; }
 
         /* Giao diện danh sách tệp gốc */
-        .file-item { background: var(--item-bg); border-radius: 22px; padding: 18px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--card-border); }
+        .file-item { 
+            background: var(--item-bg); border-radius: 22px; padding: 18px; margin-bottom: 12px; 
+            display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--card-border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .file-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 25px rgba(3, 129, 254, 0.1);
+            border-color: rgba(3, 129, 254, 0.2);
+        }
+        
         .file-item h4 { font-size: 1rem; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 6px; }
         .file-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
         .file-meta { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
@@ -187,7 +293,7 @@
             flex-direction: column;
             gap: 10px;
             border: 1px solid var(--card-border);
-            border-left: 5px solid #0381fe; /* Đường line xanh công nghệ làm điểm nhấn */
+            border-left: 5px solid #0381fe;
             box-shadow: 0 4px 14px rgba(3, 129, 254, 0.03);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
@@ -228,16 +334,98 @@
         .badge-insanity { background: var(--insanity-gradient); color: #fff; padding: 4px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; }
         
         .file-actions-row { display: flex; gap: 8px; margin-top: 6px; }
+        
+        /* === ANIMATIONS CHO NÚT TẢI TẬP TIN === */
         .btn-view {
             flex: 1; text-align: center; padding: 12px; border-radius: 14px; font-weight: 700; 
             cursor: pointer; text-decoration: none; font-size: 0.85rem; display: block;
             background: #e0ebf8; color: #0381fe; border: none;
+            position: relative; overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(3, 129, 254, 0.1);
         }
+        
+        .btn-view::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
         [data-theme="dark"] .btn-view { background: #1e293b; color: #3b82f6; }
-        .btn-view:hover { background: #0381fe; color: #fff; }
-        .btn-view.risk-btn { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
-        .btn-view.risk-btn:hover { background: #f59e0b; color: #fff; }
-        .btn-key { background: var(--tab-container-bg); color: var(--text-muted); }
+        .btn-view:hover { 
+            background: #0381fe; color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(3, 129, 254, 0.3);
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-view:active {
+            transform: translateY(-1px) scale(0.98);
+            box-shadow: 0 4px 12px rgba(3, 129, 254, 0.2);
+        }
+        
+        .btn-view:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        /* Animation cho nút Rủi ro */
+        .btn-view.risk-btn { 
+            background: rgba(245, 158, 11, 0.1); color: #f59e0b;
+            animation: riskPulse 2s infinite;
+        }
+        
+        @keyframes riskPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(245, 158, 11, 0);
+            }
+        }
+        
+        .btn-view.risk-btn:hover { 
+            background: #f59e0b; color: #fff;
+            animation: none;
+            transform: translateY(-3px) rotate(1deg);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+        }
+        
+        /* Animation cho nút Lấy Key */
+        .btn-key { 
+            background: var(--tab-container-bg); color: var(--text-muted);
+            position: relative; overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-key::after {
+            content: '🔑';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%) rotate(0deg);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-key:hover {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #fbbf24;
+            padding-right: 35px;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(251, 191, 36, 0.2);
+        }
+        
+        .btn-key:hover::after {
+            transform: translateY(-50%) rotate(360deg);
+        }
 
         .form-group { margin-bottom: 16px; }
         label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 0.75rem; color: var(--text-title); letter-spacing: 0.5px; }
@@ -247,7 +435,79 @@
         }
         input:focus, textarea:focus { background: var(--card-bg); border-color: #0381fe; }
 
-        .btn-submit { width: 100%; padding: 14px; color: white; font-weight: 700; cursor: pointer; font-size: 0.9rem; border-radius: 16px; border: none; }
+        /* Animation cho nút Submit */
+        .btn-submit { 
+            width: 100%; padding: 14px; color: white; font-weight: 700; cursor: pointer; font-size: 0.9rem; 
+            border-radius: 16px; border: none;
+            position: relative; overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(3, 129, 254, 0.3);
+        }
+        
+        .btn-submit:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+        
+        .btn-submit::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .btn-submit:active::after {
+            animation: submitRipple 0.6s ease-out;
+        }
+        
+        @keyframes submitRipple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+        
+        /* Glow Pulse cho nút chính */
+        .btn-submit[style*="background: #0381fe"] {
+            animation: glowPulse 2s infinite;
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(3, 129, 254, 0.2),
+                            0 0 20px rgba(3, 129, 254, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 10px rgba(3, 129, 254, 0.4),
+                            0 0 40px rgba(3, 129, 254, 0.2);
+            }
+        }
+
+        /* Shake animation cho modal lỗi */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .shake-animation {
+            animation: shake 0.6s ease-in-out;
+        }
 
         #loading-frame {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(240, 244, 249, 0.85);
@@ -267,6 +527,19 @@
         .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
         input:checked + .slider { background-color: #0381fe; }
         input:checked + .slider:before { transform: translateX(20px); }
+
+        /* Responsive animations */
+        @media (max-width: 600px) {
+            .btn-view:hover,
+            .btn-submit:hover,
+            .header-auth-btn:hover {
+                transform: translateY(-2px);
+            }
+            
+            .file-item:hover {
+                transform: translateX(3px);
+            }
+        }
     </style>
 </head>
 <body>
@@ -686,10 +959,22 @@
             });
         }
 
+        // Function để thêm hiệu ứng rung cho modal lỗi
         function showStatusModal(title, msg) {
             document.getElementById("status-title").innerText = title;
             document.getElementById("status-desc").innerText = msg;
             document.getElementById("status-modal").classList.add("active");
+            
+            // Thêm hiệu ứng rung nếu là thông báo lỗi
+            if (title.toLowerCase().includes('lỗi') || title.toLowerCase().includes('thất bại')) {
+                const statusBox = document.querySelector('#status-modal .modal-box');
+                if (statusBox) {
+                    statusBox.style.animation = 'shake 0.6s ease-in-out';
+                    setTimeout(() => {
+                        statusBox.style.animation = '';
+                    }, 600);
+                }
+            }
         }
 
         function closeStatusModal() {
@@ -751,91 +1036,6 @@
                         showStatusModal("Đăng nhập", "Đăng nhập thành công!");
                     } else {
                         showStatusModal("Thất bại", "Tài khoản hoặc mật khẩu không đúng.");
-                    }
-                });
-            }
-        }
-
-        function openAuthModal(type) { document.getElementById("auth-modal").classList.add("active"); toggleAuthForm(type); }
-        function closeAuthModal() { document.getElementById("auth-modal").classList.remove("active"); }
-        function toggleAuthForm(type) {
-            document.getElementById("login-form-wrapper").style.display = type === 'login' ? "block" : "none";
-            document.getElementById("signin-form-wrapper").style.display = type === 'login' ? "none" : "block";
-        }
-    </script>
-</body>
-</html>
-r,
-                date: dateString
-            }).then(() => {
-                document.getElementById("notice-title").value = "";
-                document.getElementById("notice-content").value = "";
-                nextActionFlow = "go_to_announcements";
-                showStatusModal("Bảng tin", "Thông báo đã được gửi lên hệ thống!");
-            });
-        }
-
-        function showStatusModal(title, msg) {
-            const sModal = document.getElementById("status-modal");
-            document.getElementById("status-title").innerText = title;
-            document.getElementById("status-desc").innerText = msg;
-            sModal.classList.add("active");
-        }
-
-        function closeStatusModal() {
-            document.getElementById("status-modal").classList.remove("active");
-            if (nextActionFlow === "login_success_clear") {
-                closeAuthModal();
-                document.getElementById("welcome-modal").classList.remove("active");
-            } else if (nextActionFlow === "go_to_announcements") {
-                switchTab('tab-announcements');
-            } else if (nextActionFlow === "open_auth_sheet") {
-                openAuthModal('signin');
-            }
-            nextActionFlow = "just_close";
-        }
-
-        function handleAuth(action) {
-            if (action === 'register') {
-                const user = document.getElementById("reg-user").value.trim();
-                const pass = document.getElementById("reg-pass").value.trim();
-                if (user.length > 10 || pass.length > 20) return showStatusModal("Lỗi dữ liệu", "Tài khoản tối đa 10 kí tự, mật khẩu tối đa 20 kí tự!");
-
-                db.ref("users/" + user.toLowerCase()).set({ username: user, password: pass });
-                nextActionFlow = "just_close"; 
-                showStatusModal("Đăng ký", "Tạo tài khoản thành công! Mời ông đăng nhập.");
-                toggleAuthForm('login');
-            } 
-            else {
-                let userInput = document.getElementById("login-user").value.trim();
-                const passInput = document.getElementById("login-pass").value.trim();
-                if(!userInput || !passInput) return alert("Vui lòng điền đủ tài khoản và mật khẩu!");
-
-                let userLower = userInput.toLowerCase();
-
-                if (userLower === "xine3d" && passInput === "Thinh_2012") {
-                    currentUser = "admin";
-                    localStorage.setItem("hdantech_current_user", "admin"); 
-                    localStorage.setItem("hdantech_session_username", "xine3d");
-                    localStorage.setItem("hdantech_session_password", "Thinh_2012");
-                    nextActionFlow = "login_success_clear"; 
-                    updateHeaderAuthButtonUI();
-                    showStatusModal("Admin Core", "Chào hệ thống, chúc một ngày tốt lành!");
-                    return;
-                }
-
-                db.ref("users/" + userLower).once("value", (snapshot) => {
-                    const userData = snapshot.val();
-                    if (userData && userData.password === passInput) {
-                        currentUser = "member";
-                        localStorage.setItem("hdantech_current_user", "member"); 
-                        localStorage.setItem("hdantech_session_username", userData.username);
-                        localStorage.setItem("hdantech_session_password", passInput);
-                        nextActionFlow = "login_success_clear"; 
-                        updateHeaderAuthButtonUI();
-                        showStatusModal("Đăng nhập", "Đăng nhập thành công!");
-                    } else {
-                        showStatusModal("Lỗi hệ thống", "Tài khoản hoặc mật khẩu không đúng.");
                     }
                 });
             }
