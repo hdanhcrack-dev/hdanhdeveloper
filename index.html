@@ -3,59 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HDanhTech Files - One UI 8.5 Edition</title>
+    <title>HDanhTech Files - Blue Edition</title>
     
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow.png">
-    <link class="apple-touch-icon" href="https://raw.githubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow.png">
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/9M4Mv940/7133.jpg">
+    <link class="apple-touch-icon" href="https://i.postimg.cc/9M4Mv940/7133.jpg">
 
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <style>
         :root {
-            --bg-color: #f4f6fa;
-            --text-color: #1a1a1a;
-            --text-muted: #5f6368;
-            --text-title: #7a7e85;
-            --card-bg: #ffffff;
-            --card-border: rgba(255, 255, 255, 0.8);
-            --item-bg: #f8f9fa;
-            --header-bg: rgba(244, 246, 250, 0.82);
-            --header-border: rgba(0, 0, 0, 0.04);
-            --tab-container-bg: #e3e5ee;
+            /* Nền chuyển màu xanh dương chuyển động mượt mà cho Light Mode */
+            --bg-color: #e0ebf8;
+            --bg-gradient: linear-gradient(135deg, #e0ebf8 0%, #b8d4f4 100%);
+            --text-color: #1a2536;
+            --text-muted: #4a596e;
+            --text-title: #627792;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-border: rgba(255, 255, 255, 0.7);
+            --item-bg: #f0f5fc;
+            --header-bg: rgba(224, 235, 248, 0.85);
+            --header-border: rgba(3, 129, 254, 0.1);
+            --tab-container-bg: #cbdcf2;
             --tab-btn-active: #ffffff;
-            --input-bg: #f2f3f8;
-            --glow-op: 0.45;
-            --glow-1: #8ca5ff;
-            --glow-2: #ffb6c1;
-            --glow-3: #c3a6ff;
-            --insanity-gradient: linear-gradient(135deg, #8ca5ff, #c3a6ff, #ffb6c1);
+            --input-bg: #e6f0fa;
+            --glow-op: 0.5;
+            --glow-1: #4da3ff;
+            --glow-2: #80bfff;
+            --glow-3: #1a8cff;
+            --insanity-gradient: linear-gradient(135deg, #4da3ff, #1a8cff, #0059b3);
         }
 
         [data-theme="dark"] {
-            --bg-color: #0a0a0c;
-            --text-color: #f5f5f7;
-            --text-muted: #a1a1a9;
-            --text-title: #8e8e93;
-            --card-bg: #16161a;
+            /* Nền chuyển màu xanh dương đậm sâu thẳm cho Dark Mode */
+            --bg-color: #08121e;
+            --bg-gradient: linear-gradient(135deg, #08121e 0%, #050b14 100%);
+            --text-color: #e2ecf8;
+            --text-muted: #8ba2bd;
+            --text-title: #6b87a8;
+            --card-bg: rgba(16, 28, 44, 0.85);
             --card-border: rgba(255, 255, 255, 0.05);
-            --item-bg: #1f1f24;
-            --header-bg: rgba(10, 10, 12, 0.82);
+            --item-bg: #14243b;
+            --header-bg: rgba(8, 18, 30, 0.85);
             --header-border: rgba(255, 255, 255, 0.06);
-            --tab-container-bg: #222227;
-            --tab-btn-active: #2c2c35;
-            --input-bg: #25252b;
-            --glow-op: 0.25;
-            --glow-1: #3b5998;
-            --glow-2: #5c3a41;
-            --glow-3: #4a3475;
-            --insanity-gradient: linear-gradient(135deg, #3b5998, #4a3475, #5c3a41);
+            --tab-container-bg: #112238;
+            --tab-btn-active: #1c3554;
+            --input-bg: #182d47;
+            --glow-op: 0.3;
+            --glow-1: #004080;
+            --glow-2: #002852;
+            --glow-3: #001f3d;
+            --insanity-gradient: linear-gradient(135deg, #1a8cff, #0059b3, #003366);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
         
         body {
-            background-color: var(--bg-color);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
             color: var(--text-color);
             padding: 16px;
             padding-top: 80px;
@@ -68,9 +73,9 @@
         }
 
         .ambient-glow {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none; background: var(--bg-color);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none;
         }
-        .glow-circle { position: absolute; border-radius: 50%; filter: blur(80px); opacity: var(--glow-op); transition: background 0.5s ease; }
+        .glow-circle { position: absolute; border-radius: 50%; filter: blur(90px); opacity: var(--glow-op); transition: background 0.5s ease; }
         .glow-1 { top: -10%; left: -10%; width: 350px; height: 350px; background: var(--glow-1); }
         .glow-2 { top: 5%; right: -5%; width: 280px; height: 280px; background: var(--glow-2); }
         .glow-3 { top: -20%; left: 40%; width: 400px; height: 400px; background: var(--glow-3); }
@@ -82,7 +87,8 @@
             z-index: 100; border-bottom: 1px solid var(--header-border);
         }
         .header-brand { display: flex; align-items: center; gap: 10px; }
-        .top-header img { width: 28px; height: 28px; object-fit: contain; border-radius: 8px; }
+        
+        .top-header img { width: 28px; height: 28px; object-fit: cover; border-radius: 8px; }
         .top-header h1 { font-size: 1.1rem; font-weight: 600; color: var(--text-color); letter-spacing: -0.3px; }
         .header-actions { display: flex; align-items: center; gap: 8px; }
 
@@ -129,12 +135,13 @@
 
         .oneui-card {
             background: var(--card-bg); border-radius: 24px; padding: 20px; margin-bottom: 14px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.02); border: 1px solid var(--card-border);
+            box-shadow: 0 8px 24px rgba(0, 40, 80, 0.05); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--card-border);
         }
         .section-title { font-size: 0.9rem; font-weight: 700; color: var(--text-title); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
 
         .about-team-box { display: flex; align-items: center; gap: 14px; background: var(--item-bg); border-radius: 18px; padding: 14px; border: 1px solid rgba(0,0,0,0.01); }
-        .about-team-logo { width: 44px; height: 44px; object-fit: contain; border-radius: 12px; background: #000; }
+        
+        .about-team-logo { width: 50px; height: 50px; object-fit: cover; border-radius: 14px; }
         .about-team-info h5 { font-size: 0.95rem; font-weight: 600; color: var(--text-color); margin-bottom: 2px; }
         .about-team-info p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 4px; }
         
@@ -168,7 +175,7 @@
         .badge-risk { background: rgba(255,152,0,0.1); color: #ff9800; padding: 3px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
         .badge-admin { background: rgba(233,30,99,0.1); color: #e91e63; padding: 3px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
         .badge-hot { background: rgba(244,67,54,0.1); color: #f44336; padding: 3px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 700; animation: blink 1.2s infinite; }
-        .badge-insanity { background: var(--insanity-gradient); color: #fff; padding: 3px 8px; border-radius: 8px; font-size: 0.7rem; font-800; text-shadow: 0 1px 2px rgba(0,0,0,0.2); animation: blink 1.2s infinite; }
+        .badge-insanity { background: var(--insanity-gradient); color: #fff; padding: 3px 8px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; text-shadow: 0 1px 2px rgba(0,0,0,0.2); animation: blink 1.2s infinite; }
         
         @keyframes blink { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
 
@@ -223,11 +230,11 @@
         input:checked + .slider:before { transform: translateX(20px); }
 
         #loading-frame {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(244, 246, 250, 0.9);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(224, 235, 248, 0.9);
             z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center;
             opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
         }
-        body[data-theme="dark"] #loading-frame { background: rgba(10, 10, 12, 0.9); }
+        body[data-theme="dark"] #loading-frame { background: rgba(8, 18, 30, 0.9); }
         #loading-frame.active { opacity: 1; pointer-events: auto; }
         .spinner { width: 36px; height: 36px; border: 3.5px solid var(--tab-container-bg); border-left-color: #0381fe; border-radius: 50%; animation: spin 0.8s infinite linear; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -247,7 +254,7 @@
 
     <div class="top-header">
         <div class="header-brand">
-            <img src="https://raw.githubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow.png" alt="Logo">
+            <img src="https://i.postimg.cc/9M4Mv940/7133.jpg" alt="Logo">
             <h1>HDanhTech Files</h1>
         </div>
         <div class="header-actions">
@@ -307,7 +314,7 @@
         <div class="modal-box">
             <button id="close-welcome-btn" class="modal-close-btn" disabled style="font-size:0.75rem; width:auto; padding:0 12px; border-radius:14px;">3s</button>
             <div style="text-align: center; margin-bottom: 12px; margin-top: 10px;">
-                <img src="https://raw.githubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow.png" alt="Logo" style="width: 56px; height: 56px; object-fit: contain; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                <img src="https://i.postimg.cc/9M4Mv940/7133.jpg" alt="Logo" style="width: 56px; height: 56px; object-fit: cover; border-radius: 14px; box-shadow: 0 4px 12px rgba(0,40,80,0.1);">
             </div>
             <h2 style="margin-bottom: 8px; font-size: 1.25rem; font-weight:600; text-align: center; color:var(--text-color);">Chào mừng đến với HDanhTech Files</h2>
             <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin-bottom: 22px; text-align: center; padding: 0 10px;">
@@ -367,7 +374,7 @@
         <div class="oneui-card" style="margin-bottom: 14px;">
             <p class="section-title">About Us</p>
             <div class="about-team-box">
-                <img src="https://raw.githubusercontent.com/TheFish-cyber/Netking-Share/refs/heads/main/ic_launcher_meow.png" alt="HDanhTech Logo" class="about-team-logo">
+                <img src="https://i.postimg.cc/9M4Mv940/7133.jpg" alt="HDanhTech Logo" class="about-team-logo">
                 <div class="about-team-info">
                     <h5>Team HDanhTech Official</h5>
                     <p>Hệ thống cung cấp, crack và phân phối các tệp tin ứng dụng di động an toàn, tối ưu hóa trải nghiệm người dùng cao cấp.</p>
