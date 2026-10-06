@@ -35,27 +35,261 @@ body{
   background:var(--bg-dark);color:var(--text);
   line-height:1.6;overflow-x:hidden;
   transition:background .4s,color .4s;
+  position:relative;
+}
+/* ==================== AURORA BOREALIS ==================== */
+#aurora{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  overflow:hidden;opacity:.85;
+}
+.aurora-band{
+  position:absolute;
+  width:200%;height:45vh;
+  left:-50%;top:-10%;
+  filter:blur(60px);
+  mix-blend-mode:screen;
+  opacity:.55;
+  animation:auroraWave 18s ease-in-out infinite;
+}
+.aurora-band.b1{
+  background:linear-gradient(90deg,transparent,rgba(0,255,180,.55),rgba(0,212,255,.5),transparent);
+  top:-8%;
+  animation-duration:16s;
+}
+.aurora-band.b2{
+  background:linear-gradient(90deg,transparent,rgba(160,80,255,.5),rgba(0,212,255,.4),transparent);
+  top:5%;
+  animation-duration:22s;
+  animation-delay:-6s;
+}
+.aurora-band.b3{
+  background:linear-gradient(90deg,transparent,rgba(255,0,200,.4),rgba(120,0,255,.45),transparent);
+  top:18%;
+  animation-duration:26s;
+  animation-delay:-12s;
+}
+@keyframes auroraWave{
+  0%,100%{transform:translateX(0) translateY(0) rotate(0deg) scaleY(1);opacity:.5}
+  25%{transform:translateX(5%) translateY(2vh) rotate(2deg) scaleY(1.15);opacity:.75}
+  50%{transform:translateX(-3%) translateY(-1vh) rotate(-1deg) scaleY(.9);opacity:.6}
+  75%{transform:translateX(4%) translateY(1vh) rotate(1.5deg) scaleY(1.1);opacity:.7}
+}
+[data-theme="light"] #aurora{opacity:.45}
+/* ==================== MOON & CLOUDS ==================== */
+#moon{
+  position:fixed;top:6%;right:8%;z-index:1;pointer-events:none;
+  width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#fff 0%,#f4f7ff 40%,#c9d6ff 70%,#9fb2e0 100%);
+  box-shadow:
+    0 0 40px rgba(255,255,255,.6),
+    0 0 80px rgba(180,200,255,.5),
+    0 0 140px rgba(120,150,255,.35),
+    inset -12px -8px 25px rgba(120,140,200,.4);
+  animation:moonGlow 6s ease-in-out infinite;
+}
+#moon::before{
+  content:'';position:absolute;
+  top:22%;left:22%;width:18%;height:18%;border-radius:50%;
+  background:rgba(180,190,220,.6);filter:blur(2px);
+  box-shadow:
+    25px 18px 0 -4px rgba(180,190,220,.5),
+    42px 40px 0 -6px rgba(180,190,220,.45);
+}
+@keyframes moonGlow{
+  0%,100%{box-shadow:0 0 40px rgba(255,255,255,.6),0 0 80px rgba(180,200,255,.5),0 0 140px rgba(120,150,255,.35),inset -12px -8px 25px rgba(120,140,200,.4)}
+  50%{box-shadow:0 0 60px rgba(255,255,255,.85),0 0 110px rgba(180,200,255,.7),0 0 180px rgba(120,150,255,.55),inset -12px -8px 25px rgba(120,140,200,.4)}
+}
+[data-theme="light"] #moon{
+  background:radial-gradient(circle at 35% 35%,#fff 0%,#eaf1ff 40%,#b8c8ff 70%,#8ba3d8 100%);
+  opacity:.85;
+}
+.clouds{
+  position:fixed;top:0;left:0;right:0;height:50vh;
+  z-index:1;pointer-events:none;overflow:hidden;
+}
+.cloud{
+  position:absolute;
+  background:radial-gradient(ellipse at center,rgba(255,255,255,.15),rgba(200,220,255,.05) 60%,transparent 75%);
+  border-radius:50%;
+  filter:blur(20px);
+  animation:cloudDrift linear infinite;
+}
+@keyframes cloudDrift{
+  from{transform:translateX(-30vw)}
+  to{transform:translateX(130vw)}
+}
+[data-theme="light"] .cloud{opacity:.7}
+/* ==================== BREATHING BACKGROUND ==================== */
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 50%,rgba(0,212,255,.06),transparent 65%);
+  animation:breathe 5s ease-in-out infinite;
+}
+@keyframes breathe{
+  0%,100%{opacity:.4;transform:scale(1)}
+  50%{opacity:.9;transform:scale(1.05)}
 }
 /* ==================== SNOWFALL ==================== */
 #snowfall{
-  position:fixed;inset:0;z-index:1;
+  position:fixed;inset:0;z-index:3;
   pointer-events:none;overflow:hidden;
 }
 .snowflake{
-  position:absolute;top:-10px;color:#fff;
+  position:absolute;top:-30px;
   user-select:none;pointer-events:none;
-  animation:snowFall linear infinite;
-  text-shadow:0 0 6px rgba(255,255,255,.8);
+  will-change:transform;
+  transition:transform .3s ease-out;
 }
-[data-theme="light"] .snowflake{
-  color:#7ec8ff;
-  text-shadow:0 0 6px rgba(126,200,255,.8);
+.snowflake svg{
+  display:block;
+  filter:drop-shadow(0 0 6px rgba(255,255,255,.8))
+         drop-shadow(0 0 12px rgba(0,212,255,.4));
 }
-@keyframes snowFall{
-  0%{transform:translateY(-10px) translateX(0) rotate(0deg);opacity:0}
+[data-theme="light"] .snowflake svg{
+  filter:drop-shadow(0 0 6px rgba(126,200,255,.9))
+         drop-shadow(0 0 12px rgba(74,168,255,.5));
+}
+.snowflake.big{filter:blur(1.5px);opacity:.6}
+.snowflake.small{opacity:.95}
+[data-theme="light"] .snowflake{opacity:.9}
+/* Sao băng */
+.shooting-star{
+  position:absolute;width:3px;height:3px;border-radius:50%;
+  background:#fff;
+  box-shadow:0 0 6px 2px #fff,0 0 12px 4px rgba(0,212,255,.7);
+  animation:shoot linear;
+}
+.shooting-star::after{
+  content:'';position:absolute;top:50%;right:0;
+  width:140px;height:2px;
+  background:linear-gradient(to left,rgba(255,255,255,.95),transparent);
+  transform:translateY(-50%);
+  transform-origin:right center;
+}
+@keyframes shoot{
+  0%{transform:translate(0,0);opacity:0}
   10%{opacity:1}
-  90%{opacity:1}
-  100%{transform:translateY(105vh) translateX(50px) rotate(360deg);opacity:0}
+  100%{transform:translate(-100vw,100vh);opacity:0}
+}
+/* Sao lấp lánh */
+.twinkle-star{
+  position:absolute;width:2px;height:2px;border-radius:50%;
+  background:#fff;
+  animation:twinkle 2s ease-in-out infinite;
+}
+@keyframes twinkle{
+  0%,100%{opacity:.15;transform:scale(.8)}
+  50%{opacity:1;transform:scale(1.8);box-shadow:0 0 10px #fff,0 0 20px rgba(0,212,255,.9)}
+}
+/* Đọng tuyết 2 mép */
+.snow-pile{
+  position:fixed;top:0;width:90px;height:100vh;z-index:4;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 100% 20%,rgba(255,255,255,.35),transparent 60%),
+    radial-gradient(ellipse at 100% 50%,rgba(255,255,255,.28),transparent 55%),
+    radial-gradient(ellipse at 100% 80%,rgba(255,255,255,.32),transparent 60%);
+  filter:blur(8px);opacity:.7;
+}
+.snow-pile.left{left:0;transform:scaleX(-1)}
+.snow-pile.right{right:0}
+[data-theme="light"] .snow-pile{opacity:.4}
+/* Tuyết tích tụ đáy */
+#snowAccumulate{
+  position:fixed;bottom:0;left:0;right:0;height:0;
+  z-index:4;pointer-events:none;
+  background:linear-gradient(to top,rgba(255,255,255,.7),rgba(255,255,255,.3) 40%,transparent);
+  filter:blur(6px);
+  transition:height 3s ease-out;
+  border-radius:50% 50% 0 0 / 20px 20px 0 0;
+}
+[data-theme="light"] #snowAccumulate{
+  background:linear-gradient(to top,rgba(200,225,255,.8),rgba(200,225,255,.4) 40%,transparent);
+}
+/* Sương mù */
+.fog-layer{
+  position:fixed;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 100%,rgba(0,212,255,.08),transparent 70%);
+  animation:fogMove 12s ease-in-out infinite;
+}
+@keyframes fogMove{
+  0%,100%{opacity:.6;transform:translateY(0)}
+  50%{opacity:1;transform:translateY(-10px)}
+}
+/* ==================== SNOW CONTROL PANEL ==================== */
+#snowControl{
+  position:fixed;left:20px;bottom:20px;z-index:999;
+  background:rgba(15,15,30,.85);backdrop-filter:blur(12px);
+  border:1px solid var(--border);border-radius:16px;
+  padding:14px 16px;display:flex;flex-direction:column;gap:10px;
+  font-size:.8em;min-width:180px;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+  transition:all .3s;
+}
+#snowControl:hover{border-color:var(--border-hover);box-shadow:var(--shadow)}
+#snowControl .sc-title{
+  color:var(--primary);font-weight:700;font-size:.85em;
+  display:flex;align-items:center;gap:6px;
+}
+#snowControl .sc-row{
+  display:flex;align-items:center;gap:8px;
+}
+#snowControl input[type="range"]{
+  flex:1;-webkit-appearance:none;appearance:none;
+  height:4px;border-radius:2px;
+  background:linear-gradient(90deg,var(--primary),var(--secondary));
+  outline:none;cursor:pointer;
+}
+#snowControl input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:14px;height:14px;border-radius:50%;
+  background:#fff;cursor:pointer;
+  box-shadow:0 0 8px var(--primary);
+}
+#snowControl input[type="range"]::-moz-range-thumb{
+  width:14px;height:14px;border-radius:50%;border:none;
+  background:#fff;cursor:pointer;box-shadow:0 0 8px var(--primary);
+}
+#snowControl .sc-val{
+  color:var(--text-bright);font-weight:600;min-width:32px;
+  text-align:right;font-size:.85em;
+}
+#snowControl .sc-btns{display:flex;gap:6px}
+#snowControl .sc-btn{
+  flex:1;padding:6px 8px;border-radius:8px;
+  background:var(--bg-card);border:1px solid var(--border);
+  color:var(--text);font-size:.75em;cursor:pointer;
+  font-family:inherit;transition:all .2s;
+}
+#snowControl .sc-btn:hover{background:var(--bg-card-hover);border-color:var(--primary);color:var(--text-bright)}
+#snowControl .sc-btn.active{background:var(--gradient);border-color:transparent;color:#fff;font-weight:700}
+#snowControl.collapsed{min-width:auto;padding:10px}
+#snowControl.collapsed .sc-body{display:none}
+#snowControl .sc-toggle{
+  position:absolute;top:8px;right:10px;
+  background:none;border:none;color:var(--text-dim);
+  cursor:pointer;font-size:.9em;padding:2px 6px;
+  transition:color .2s;
+}
+#snowControl .sc-toggle:hover{color:var(--primary)}
+[data-theme="light"] #snowControl{background:rgba(255,255,255,.9)}
+/* ==================== FROST TEXT EFFECT ==================== */
+.frost-text{
+  position:relative;display:inline-block;
+  transition:color .6s,text-shadow .6s;
+}
+.frost-text:hover{
+  color:#a8e6ff;
+  text-shadow:
+    0 0 8px rgba(168,230,255,.9),
+    0 0 16px rgba(0,212,255,.7),
+    0 0 30px rgba(0,150,255,.5);
+  animation:frostShiver .3s ease-in-out;
+}
+@keyframes frostShiver{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-2px)}
+  75%{transform:translateX(2px)}
 }
 /* ==================== SCROLL PROGRESS ==================== */
 #progress-bar{
@@ -132,17 +366,7 @@ nav.scrolled{
 .hero{
   min-height:100vh;display:flex;align-items:center;justify-content:center;
   text-align:center;padding:120px 20px 60px;position:relative;overflow:hidden;
-}
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:
-    radial-gradient(circle at 20% 30%,rgba(0,212,255,.15),transparent 40%),
-    radial-gradient(circle at 80% 70%,rgba(255,0,255,.15),transparent 40%);
-  animation:bgMove 15s ease-in-out infinite;
-}
-@keyframes bgMove{
-  0%,100%{transform:scale(1)}
-  50%{transform:scale(1.1) rotate(5deg)}
+  z-index:5;
 }
 #particles{position:absolute;inset:0;z-index:0}
 .hero-content{position:relative;z-index:1;max-width:900px}
@@ -188,8 +412,8 @@ nav.scrolled{
 }
 .btn-outline:hover{background:rgba(0,212,255,.1);transform:translateY(-3px)}
 /* ==================== SECTION ==================== */
-.container{max-width:1200px;margin:0 auto;padding:0 20px}
-.section{padding:80px 0;position:relative}
+.container{max-width:1200px;margin:0 auto;padding:0 20px;position:relative;z-index:5}
+.section{padding:80px 0;position:relative;z-index:5}
 .section-title{
   font-size:2.2em;color:var(--text-bright);margin-bottom:15px;
   text-align:center;font-weight:800;position:relative;
@@ -213,6 +437,7 @@ nav.scrolled{
   background:var(--bg-card);border:1px solid var(--border);
   border-radius:20px;padding:30px 20px;text-align:center;
   transition:all .4s;position:relative;overflow:hidden;
+  backdrop-filter:blur(10px);
 }
 .stat-card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:3px;
@@ -238,7 +463,7 @@ nav.scrolled{
   display:flex;align-items:center;
   background:var(--bg-card);border:1px solid var(--border);
   border-radius:50px;padding:12px 25px;
-  transition:all .3s;
+  transition:all .3s;backdrop-filter:blur(10px);
 }
 .feature-search:focus-within{
   border-color:var(--primary);box-shadow:0 0 20px rgba(0,212,255,.2);
@@ -258,6 +483,7 @@ nav.scrolled{
   background:var(--bg-card);border:1px solid var(--border);
   border-radius:20px;padding:28px;cursor:pointer;
   transition:all .4s;position:relative;overflow:hidden;
+  backdrop-filter:blur(10px);
 }
 .feature-card::before{
   content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
@@ -303,7 +529,7 @@ nav.scrolled{
 .timeline-content{
   background:var(--bg-card);border:1px solid var(--border);
   border-radius:16px;padding:20px 25px;width:45%;
-  transition:all .3s;
+  transition:all .3s;backdrop-filter:blur(10px);
 }
 .timeline-content:hover{
   border-color:var(--border-hover);box-shadow:var(--shadow);
@@ -321,7 +547,7 @@ nav.scrolled{
 .faq-item{
   background:var(--bg-card);border:1px solid var(--border);
   border-radius:14px;margin-bottom:12px;overflow:hidden;
-  transition:all .3s;
+  transition:all .3s;backdrop-filter:blur(10px);
 }
 .faq-item:hover{border-color:var(--border-hover)}
 .faq-question{
@@ -350,6 +576,7 @@ nav.scrolled{
   border-radius:20px;padding:30px;text-align:center;
   text-decoration:none;color:var(--text);
   transition:all .4s;position:relative;overflow:hidden;
+  backdrop-filter:blur(10px);
 }
 .contact-card::after{
   content:'';position:absolute;bottom:0;left:0;right:0;height:0;
@@ -410,6 +637,7 @@ nav.scrolled{
   position:relative;animation:slideUp .4s;
 }
 @keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .modal-close{
   position:absolute;top:15px;right:15px;
   background:var(--bg-card);border:1px solid var(--border);
@@ -435,6 +663,7 @@ nav.scrolled{
 footer{
   text-align:center;padding:50px 20px 30px;
   border-top:1px solid var(--border);margin-top:60px;
+  position:relative;z-index:5;
 }
 .footer-brand{
   font-size:1.5em;font-weight:800;margin-bottom:12px;
@@ -470,14 +699,30 @@ footer a:hover{color:var(--secondary)}
   .floating-contact{right:15px;bottom:85px}
   .float-btn{width:46px;height:46px;font-size:1.3em}
   .modal-content{padding:25px}
+  .snow-pile{display:none}
+  #moon{width:60px;height:60px;top:4%;right:6%}
+  #snowControl{left:12px;bottom:12px;transform:scale(.9);transform-origin:bottom left}
+  .aurora-band{filter:blur(40px)}
 }
 @media(max-width:480px){
   .hero h1{font-size:1.8em}
   .btn{padding:12px 24px;font-size:.9em}
+  #snowControl{display:none}
 }
 </style>
 </head>
 <body>
+
+<!-- AURORA -->
+<div id="aurora">
+  <div class="aurora-band b1"></div>
+  <div class="aurora-band b2"></div>
+  <div class="aurora-band b3"></div>
+</div>
+
+<!-- MOON & CLOUDS -->
+<div id="moon"></div>
+<div class="clouds" id="clouds"></div>
 
 <!-- LOADER -->
 <div id="loader">
@@ -485,11 +730,39 @@ footer a:hover{color:var(--secondary)}
   <div class="loader-text">🤖 Đang khởi động Bot...</div>
 </div>
 
-<!-- SNOWFALL -->
+<!-- SNOWFALL EFFECTS -->
 <div id="snowfall"></div>
+<div class="snow-pile left"></div>
+<div class="snow-pile right"></div>
+<div id="snowAccumulate"></div>
+<div class="fog-layer"></div>
 
 <!-- SCROLL PROGRESS -->
 <div id="progress-bar"></div>
+
+<!-- SNOW CONTROL PANEL -->
+<div id="snowControl">
+  <button class="sc-toggle" id="scToggle" title="Thu gọn">−</button>
+  <div class="sc-title">❄️ Điều khiển tuyết</div>
+  <div class="sc-body">
+    <div class="sc-row">
+      <span style="color:var(--text-dim)">Mật độ</span>
+      <input type="range" id="snowDensity" min="0" max="400" value="200" step="10">
+      <span class="sc-val" id="snowDensityVal">200</span>
+    </div>
+    <div class="sc-row">
+      <span style="color:var(--text-dim)">Gió</span>
+      <input type="range" id="snowWind" min="0" max="100" value="50" step="5">
+      <span class="sc-val" id="snowWindVal">50</span>
+    </div>
+    <div class="sc-btns">
+      <button class="sc-btn active" data-preset="light">Nhẹ</button>
+      <button class="sc-btn" data-preset="normal">Vừa</button>
+      <button class="sc-btn" data-preset="heavy">Nặng</button>
+      <button class="sc-btn" data-preset="blizzard">Bão</button>
+    </div>
+  </div>
+</div>
 
 <!-- NAVBAR -->
 <nav id="navbar">
@@ -515,7 +788,7 @@ footer a:hover{color:var(--secondary)}
   <canvas id="particles"></canvas>
   <div class="hero-content">
     <div class="hero-logo">🤖</div>
-    <h1>Haa Hoang Danh Bot</h1>
+    <h1 class="frost-text">Haa Hoang Danh Bot</h1>
     <p class="typed-text"><span id="typed"></span><span class="cursor"></span></p>
     <div class="hero-buttons">
       <a href="#features" class="btn btn-primary">🚀 Khám phá ngay</a>
@@ -555,7 +828,7 @@ footer a:hover{color:var(--secondary)}
 <!-- FEATURES -->
 <section class="section" id="features">
   <div class="container">
-    <h2 class="section-title">✨ Chức Năng Chính</h2>
+    <h2 class="section-title frost-text">✨ Chức Năng Chính</h2>
     <p class="section-subtitle">Đa dạng, mạnh mẽ, ổn định — Đáp ứng mọi nhu cầu treo Zalo</p>
 
     <div class="feature-search">
@@ -643,7 +916,7 @@ footer a:hover{color:var(--secondary)}
 <!-- ZALO TOOLS -->
 <section class="section" id="tools">
   <div class="container">
-    <h2 class="section-title">🎯 Zalo Tools - 50+ Lệnh</h2>
+    <h2 class="section-title frost-text">🎯 Zalo Tools - 50+ Lệnh</h2>
     <p class="section-subtitle">Bộ công cụ Zalo mạnh mẽ, đầy đủ tính năng</p>
     <div class="feature-grid">
       <div class="feature-card"><div class="feature-icon">📊</div><h3>Group Info</h3><p>Xem thông tin chi tiết nhóm: tên, thành viên, admin, avatar</p></div>
@@ -673,7 +946,7 @@ footer a:hover{color:var(--secondary)}
 <!-- TIMELINE -->
 <section class="section" id="timeline">
   <div class="container">
-    <h2 class="section-title">📅 Lịch Sử Phiên Bản</h2>
+    <h2 class="section-title frost-text">📅 Lịch Sử Phiên Bản</h2>
     <p class="section-subtitle">Hành trình phát triển của Haa Hoang Danh Bot</p>
     <div class="timeline">
       <div class="timeline-item">
@@ -718,7 +991,7 @@ footer a:hover{color:var(--secondary)}
 <!-- FAQ -->
 <section class="section" id="faq">
   <div class="container">
-    <h2 class="section-title">❓ Câu Hỏi Thường Gặp</h2>
+    <h2 class="section-title frost-text">❓ Câu Hỏi Thường Gặp</h2>
     <p class="section-subtitle">Những thắc mắc phổ biến khi sử dụng bot</p>
     <div class="faq-list">
       <div class="faq-item">
@@ -763,7 +1036,7 @@ footer a:hover{color:var(--secondary)}
 <!-- CONTACT -->
 <section class="section" id="contact">
   <div class="container">
-    <h2 class="section-title">📞 Liên Hệ Admin</h2>
+    <h2 class="section-title frost-text">📞 Liên Hệ Admin</h2>
     <p class="section-subtitle">Chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7</p>
     <div class="contact-grid">
       <a href="tel:0393515434" class="contact-card">
@@ -1019,7 +1292,7 @@ function showToast(msg){
   window.toastTimer = setTimeout(()=>toast.classList.remove('show'),2500);
 }
 
-/* ==================== PARTICLES ==================== */
+/* ==================== PARTICLES (HERO) ==================== */
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -1032,9 +1305,7 @@ resizeCanvas();
 window.addEventListener('resize',resizeCanvas);
 
 class Particle {
-  constructor(){
-    this.reset();
-  }
+  constructor(){ this.reset(); }
   reset(){
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * canvas.height;
@@ -1083,315 +1354,339 @@ function connectParticles(){
 
 function animateParticles(){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach(p=>{
-    p.update();
-    p.draw();
-  });
+  particles.forEach(p=>{ p.update(); p.draw(); });
   connectParticles();
   requestAnimationFrame(animateParticles);
 }
 animateParticles();
 
-/* ==================== SNOWFALL ==================== */
-(function(){
-  const snowfall = document.getElementById('snowfall');
-  const snowChars = ['❄','❅','❆','•','*','✻','✽'];
-  const snowCount = window.innerWidth < 768 ? 30 : 60;
-  for (let i = 0; i < snowCount; i++){
-    const flake = document.createElement('div');
-    flake.className = 'snowflake';
-    flake.textContent = snowChars[Math.floor(Math.random() * snowChars.length)];
-    flake.style.left = Math.random() * 100 + '%';
-    flake.style.fontSize = (Math.random() * 16 + 8) + 'px';
-    flake.style.opacity = Math.random() * 0.6 + 0.3;
-    flake.style.animationDuration = (Math.random() * 8 + 6) + 's';
-    flake.style.animationDelay = (Math.random() * 10) + 's';
-    snowfall.appendChild(flake);
+/* ==================== SVG SNOWFLAKE GENERATOR ==================== */
+function createSnowflakeSVG(size, color){
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('width', size);
+  svg.setAttribute('height', size);
+  svg.setAttribute('viewBox', '0 0 40 40');
+
+  // 6 cánh chính
+  for (let i = 0; i < 6; i++){
+    const angle = i * 60;
+    const line = document.createElementNS(ns, 'line');
+    line.setAttribute('x1','20');
+    line.setAttribute('y1','20');
+    line.setAttribute('x2','20');
+    line.setAttribute('y2','3');
+    line.setAttribute('stroke', color);
+    line.setAttribute('stroke-width','1.5');
+    line.setAttribute('stroke-linecap','round');
+    line.setAttribute('transform',`rotate(${angle} 20 20)`);
+    svg.appendChild(line);
+
+    // Nhánh phụ trên mỗi cánh
+    const branch = document.createElementNS(ns, 'path');
+    branch.setAttribute('d','M20 8 L16 12 M20 8 L24 12 M20 13 L17 16 M20 13 L23 16');
+    branch.setAttribute('stroke', color);
+    branch.setAttribute('stroke-width','1');
+    branch.setAttribute('stroke-linecap','round');
+    branch.setAttribute('fill','none');
+    branch.setAttribute('transform',`rotate(${angle} 20 20)`);
+    svg.appendChild(branch);
+  }
+
+  // Tâm
+  const center = document.createElementNS(ns, 'circle');
+  center.setAttribute('cx','20');
+  center.setAttribute('cy','20');
+  center.setAttribute('r','2');
+  center.setAttribute('fill', color);
+  svg.appendChild(center);
+
+  return svg;
+}
+
+/* ==================== SNOWFALL (DYNAMIC + INTERACTIVE) ==================== */
+const snowfall = document.getElementById('snowfall');
+let snowflakes = [];
+let snowDensity = 200;
+let windStrength = 50;
+let mouseX = -1000, mouseY = -1000;
+let currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+
+function getSnowColor(){
+  const hour = new Date().getHours();
+  const isNight = hour >= 19 || hour < 6;
+  if (currentTheme === 'light'){
+    return isNight ? '#2a6fc9' : '#4aa8ff';
+  }
+  return isNight ? '#ffffff' : '#e8f6ff';
+}
+
+function createSnowflake(initial = false){
+  const el = document.createElement('div');
+  el.className = 'snowflake';
+
+  const isBig = Math.random() > 0.7;
+  const isSmall = Math.random() > 0.75;
+  if (isBig) el.classList.add('big');
+  if (isSmall) el.classList.add('small');
+
+  const size = isBig
+    ? Math.random() * 22 + 16
+    : isSmall
+      ? Math.random() * 6 + 5
+      : Math.random() * 12 + 9;
+
+  const color = getSnowColor();
+  const svg = createSnowflakeSVG(size, color);
+  el.appendChild(svg);
+
+  const duration = Math.random() * 10 + 6;
+  const delay = initial ? Math.random() * 15 : Math.random() * 3;
+  const swayAmp = (Math.random() * 60 + 20) * (windStrength / 50);
+  const rot = Math.random() * 720 - 360;
+
+  el.style.left = Math.random() * 100 + '%';
+  el.style.animation = `snowFall ${duration}s linear ${delay}s infinite`;
+  el.style.setProperty('--sway', swayAmp + 'px');
+  el.style.setProperty('--rot', rot + 'deg');
+
+  // Data để xử lý mouse repel
+  const flakeData = {
+    el,
+    x: parseFloat(el.style.left) * window.innerWidth / 100,
+    y: -20,
+    baseX: parseFloat(el.style.left) * window.innerWidth / 100,
+    size,
+    vx: 0, vy: 0,
+    repelX: 0, repelY: 0
+  };
+
+  el._flakeData = flakeData;
+  snowflakes.push(flakeData);
+  snowfall.appendChild(el);
+}
+
+function rebuildSnow(){
+  // Xóa hết
+  snowfall.querySelectorAll('.snowflake').forEach(e=>e.remove());
+  snowflakes = [];
+  for (let i = 0; i < snowDensity; i++){
+    createSnowflake(true);
+  }
+}
+
+// Khởi tạo ban đầu
+const initialDensity = window.innerWidth < 768 ? Math.min(80, snowDensity) : snowDensity;
+for (let i = 0; i < initialDensity; i++){
+  createSnowflake(true);
+}
+
+/* ==================== MOUSE INTERACTION (ĐẨY TUYẾT) ==================== */
+document.addEventListener('mousemove',(e)=>{
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+document.addEventListener('mouseleave',()=>{
+  mouseX = -1000; mouseY = -1000;
+});
+
+// Cập nhật vị trí tuyết và đẩy khi gần chuột
+function updateSnowPhysics(){
+  const now = performance.now();
+  snowflakes.forEach(f=>{
+    if (!f.el.isConnected) return;
+    const rect = f.el.getBoundingClientRect();
+    f.x = rect.left;
+    f.y = rect.top;
+
+    // Khoảng cách tới chuột
+    const dx = f.x + f.size/2 - mouseX;
+    const dy = f.y + f.size/2 - mouseY;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    const repelRadius = 100;
+
+    if (dist < repelRadius && mouseX > 0){
+      const force = (1 - dist / repelRadius) * 60;
+      const angle = Math.atan2(dy, dx);
+      f.repelX = Math.cos(angle) * force;
+      f.repelY = Math.sin(angle) * force;
+      f.el.style.transform = `translate(${f.repelX}px, ${f.repelY}px)`;
+      f.el.style.transition = 'transform .15s ease-out';
+    } else {
+      if (f.repelX !== 0 || f.repelY !== 0){
+        f.repelX *= 0.9;
+        f.repelY *= 0.9;
+        if (Math.abs(f.repelX) < 0.5) f.repelX = 0;
+        if (Math.abs(f.repelY) < 0.5) f.repelY = 0;
+        f.el.style.transform = `translate(${f.repelX}px, ${f.repelY}px)`;
+      }
+    }
+  });
+  requestAnimationFrame(updateSnowPhysics);
+}
+updateSnowPhysics();
+
+/* ==================== SHOOTING STARS ==================== */
+function spawnShootingStar(){
+  const star = document.createElement('div');
+  star.className = 'shooting-star';
+  star.style.top = (Math.random() * 40) + '%';
+  star.style.left = (Math.random() * 40 + 60) + '%';
+  const dur = Math.random() * 1.5 + 1;
+  star.style.animationDuration = dur + 's';
+  snowfall.appendChild(star);
+  setTimeout(()=>star.remove(), dur * 1000 + 200);
+  setTimeout(spawnShootingStar, Math.random() * 4000 + 3000);
+}
+if (window.innerWidth >= 768) setTimeout(spawnShootingStar, 2000);
+
+/* ==================== TWINKLE STARS ==================== */
+const twinkleCount = window.innerWidth < 768 ? 30 : 70;
+for (let i = 0; i < twinkleCount; i++){
+  const star = document.createElement('div');
+  star.className = 'twinkle-star';
+  star.style.top = Math.random() * 100 + '%';
+  star.style.left = Math.random() * 100 + '%';
+  star.style.animationDelay = (Math.random() * 3) + 's';
+  star.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+  snowfall.appendChild(star);
+}
+
+/* ==================== CLOUDS ==================== */
+(function createClouds(){
+  const clouds = document.getElementById('clouds');
+  const cloudCount = window.innerWidth < 768 ? 3 : 6;
+  for (let i = 0; i < cloudCount; i++){
+    const c = document.createElement('div');
+    c.className = 'cloud';
+    const w = Math.random() * 300 + 200;
+    const h = Math.random() * 80 + 60;
+    c.style.width = w + 'px';
+    c.style.height = h + 'px';
+    c.style.top = (Math.random() * 30) + '%';
+    const dur = Math.random() * 40 + 50;
+    c.style.animationDuration = dur + 's';
+    c.style.animationDelay = -(Math.random() * dur) + 's';
+    clouds.appendChild(c);
   }
 })();
 
-/* ==================== CONSOLE MESSAGE ==================== */
-console.log('%c🤖 Haa Hoang Danh Bot V12','color:#00d4ff;font-size:24px;font-weight:bold;text-shadow:0 0 10px #00d4ff');
-console.log('%c📞 Liên hệ: t.me/hdanhios','color:#ff00ff;font-size:14px');
-console.log('%c⭐ GitHub: github.com/hdanhcrack-dev','color:#a5d6ff;font-size:14px');
-</script>
-</body>
-</html>List.add('hide'),800);
+/* ==================== SNOW ACCUMULATION (TÍCH TỤ ĐÁY) ==================== */
+(function(){
+  const acc = document.getElementById('snowAccumulate');
+  // Sau 30s bắt đầu tích tụ
+  setTimeout(()=>{
+    acc.style.height = '6px';
+    setTimeout(()=>acc.style.height = '14px', 20000);
+    setTimeout(()=>acc.style.height = '22px', 40000);
+  }, 30000);
+})();
+
+/* ==================== SNOW CONTROL PANEL ==================== */
+const snowDensitySlider = document.getElementById('snowDensity');
+const snowWindSlider = document.getElementById('snowWind');
+const snowDensityVal = document.getElementById('snowDensityVal');
+const snowWindVal = document.getElementById('snowWindVal');
+const scToggle = document.getElementById('scToggle');
+const snowControl = document.getElementById('snowControl');
+
+let densityUpdateTimer;
+snowDensitySlider.addEventListener('input',(e)=>{
+  snowDensity = parseInt(e.target.value);
+  snowDensityVal.textContent = snowDensity;
+  clearTimeout(densityUpdateTimer);
+  densityUpdateTimer = setTimeout(()=>{
+    rebuildSnow();
+  }, 300);
 });
 
-/* ==================== THEME TOGGLE ==================== */
-const themeToggle = document.getElementById('themeToggle');
-const savedTheme = localStorage.getItem('theme') || 'dark';
-document.documentElement.setAttribute('data-theme', savedTheme);
-themeToggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
-
-themeToggle.addEventListener('click',()=>{
-  const current = document.documentElement.getAttribute('data-theme');
-  const next = current === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  themeToggle.textContent = next === 'dark' ? '🌙' : '☀️';
-  localStorage.setItem('theme', next);
-  showToast(next === 'dark' ? '🌙 Đã bật Dark Mode' : '☀️ Đã bật Light Mode');
-});
-
-/* ==================== NAVBAR SCROLL ==================== */
-const navbar = document.getElementById('navbar');
-const progressBar = document.getElementById('progress-bar');
-const backTop = document.getElementById('backTop');
-
-window.addEventListener('scroll',()=>{
-  const scrollTop = window.scrollY;
-  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-  const percent = (scrollTop / docHeight) * 100;
-  progressBar.style.width = percent + '%';
-
-  if (scrollTop > 50) navbar.classList.add('scrolled');
-  else navbar.classList.remove('scrolled');
-
-  if (scrollTop > 500) backTop.classList.add('show');
-  else backTop.classList.remove('show');
-});
-
-backTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
-
-/* ==================== HAMBURGER ==================== */
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('navLinks');
-hamburger.addEventListener('click',()=>{
-  hamburger.classList.toggle('active');
-  navLinks.classList.toggle('active');
-});
-navLinks.querySelectorAll('a').forEach(a=>{
-  a.addEventListener('click',()=>{
-    hamburger.classList.remove('active');
-    navLinks.classList.remove('active');
+snowWindSlider.addEventListener('input',(e)=>{
+  windStrength = parseInt(e.target.value);
+  snowWindVal.textContent = windStrength;
+  // Update wind cho tất cả bông tuyết
+  snowflakes.forEach(f=>{
+    if (f.el.isConnected){
+      const swayAmp = (Math.random() * 60 + 20) * (windStrength / 50);
+      f.el.style.setProperty('--sway', swayAmp + 'px');
+    }
   });
 });
 
-/* ==================== TYPING EFFECT ==================== */
-const typedEl = document.getElementById('typed');
-const phrases = [
-  '🚀 Bot Treo Zalo Đa Chức Năng',
-  '💀 Attack Acc Cực Mạnh',
-  '🎯 50+ Lệnh Zalo Tools',
-  '🎤 Voice ZL & Messenger',
-  '🌈 Treo Ngôn - Treo Map - Treo Video',
-  '📋 Quản Lý Task Chuyên Nghiệp',
-];
-let phraseIdx = 0, charIdx = 0, deleting = false;
+document.querySelectorAll('.sc-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.sc-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const preset = btn.getAttribute('data-preset');
+    const presets = {
+      light:    {density: 80,  wind: 30},
+      normal:   {density: 200, wind: 50},
+      heavy:    {density: 320, wind: 70},
+      blizzard: {density: 400, wind: 100}
+    };
+    const p = presets[preset];
+    snowDensity = p.density;
+    windStrength = p.wind;
+    snowDensitySlider.value = p.density;
+    snowWindSlider.value = p.wind;
+    snowDensityVal.textContent = p.density;
+    snowWindVal.textContent = p.wind;
+    rebuildSnow();
+    showToast(`❄️ Chế độ: ${btn.textContent}`);
+  });
+});
 
-function type(){
-  const current = phrases[phraseIdx];
-  if (!deleting){
-    typedEl.textContent = current.substring(0, charIdx + 1);
-    charIdx++;
-    if (charIdx === current.length){
-      deleting = true;
-      setTimeout(type, 2000);
-      return;
-    }
-  } else {
-    typedEl.textContent = current.substring(0, charIdx - 1);
-    charIdx--;
-    if (charIdx === 0){
-      deleting = false;
-      phraseIdx = (phraseIdx + 1) % phrases.length;
-    }
-  }
-  setTimeout(type, deleting ? 40 : 80);
-}
-type();
+scToggle.addEventListener('click',()=>{
+  snowControl.classList.toggle('collapsed');
+  scToggle.textContent = snowControl.classList.contains('collapsed') ? '+' : '−';
+});
 
-/* ==================== COUNTER ANIMATION ==================== */
-const counters = document.querySelectorAll('.stat-number');
-const counterObserver = new IntersectionObserver((entries)=>{
-  entries.forEach(entry=>{
-    if (entry.isIntersecting){
-      const el = entry.target;
-      const target = +el.getAttribute('data-target');
-      let current = 0;
-      const step = target / 60;
-      const update = ()=>{
-        current += step;
-        if (current < target){
-          el.textContent = Math.floor(current) + (target >= 100 ? '+' : '');
-          requestAnimationFrame(update);
-        } else {
-          el.textContent = target + (target >= 100 ? '+' : '');
+/* ==================== DYNAMIC KEYFRAMES ==================== */
+(function injectSnowKeyframes(){
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes snowFall{
+      0%{transform:translate(0,-30px) rotate(0deg);opacity:0}
+      5%{opacity:1}
+      25%{transform:translate(var(--sway),25vh) rotate(calc(var(--rot) * .25))}
+      50%{transform:translate(calc(var(--sway) * -1),50vh) rotate(calc(var(--rot) * .5))}
+      75%{transform:translate(var(--sway),75vh) rotate(calc(var(--rot) * .75))}
+      95%{opacity:1}
+      100%{transform:translate(0,105vh) rotate(var(--rot));opacity:0}
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+/* ==================== THEME CHANGE → UPDATE SNOW COLOR ==================== */
+const themeObserver = new MutationObserver((mutations)=>{
+  mutations.forEach(m=>{
+    if (m.attributeName === 'data-theme'){
+      currentTheme = document.documentElement.getAttribute('data-theme');
+      // Cập nhật màu tất cả bông tuyết
+      snowflakes.forEach(f=>{
+        if (f.el.isConnected){
+          const svg = f.el.querySelector('svg');
+          if (svg){
+            const color = getSnowColor();
+            svg.querySelectorAll('[stroke]').forEach(el=>{
+              el.setAttribute('stroke', color);
+            });
+            svg.querySelectorAll('[fill]').forEach(el=>{
+              el.setAttribute('fill', color);
+            });
+          }
         }
-      };
-      update();
-      counterObserver.unobserve(el);
-    }
-  });
-},{threshold:0.5});
-counters.forEach(c=>counterObserver.observe(c));
-
-/* ==================== FEATURE SEARCH ==================== */
-const searchInput = document.getElementById('featureSearch');
-const featureCards = document.querySelectorAll('#featureGrid .feature-card');
-searchInput.addEventListener('input',()=>{
-  const q = searchInput.value.toLowerCase().trim();
-  featureCards.forEach(card=>{
-    const name = card.getAttribute('data-name') || '';
-    const text = card.textContent.toLowerCase();
-    if (!q || name.includes(q) || text.includes(q)){
-      card.classList.remove('hidden');
-    } else {
-      card.classList.add('hidden');
+      });
     }
   });
 });
-
-/* ==================== FEATURE MODAL ==================== */
-featureCards.forEach(card=>{
-  card.addEventListener('click',()=>{
-    const icon = card.querySelector('.feature-icon').textContent;
-    const title = card.querySelector('h3').textContent;
-    const desc = card.querySelector('p').textContent;
-    const tag = card.querySelector('.feature-tag')?.textContent || '';
-    document.getElementById('modalIcon').textContent = icon;
-    document.getElementById('modalTitle').textContent = title;
-    document.getElementById('modalDesc').textContent = desc;
-    document.getElementById('modalTags').innerHTML = tag ? `<span class="feature-tag">${tag}</span>` : '';
-    document.getElementById('modal').classList.add('active');
-  });
-});
-
-function closeModal(){
-  document.getElementById('modal').classList.remove('active');
-}
-document.getElementById('modal').addEventListener('click',(e)=>{
-  if (e.target.id === 'modal') closeModal();
-});
-document.addEventListener('keydown',(e)=>{
-  if (e.key === 'Escape') closeModal();
-});
-
-/* ==================== TABS ==================== */
-function showTab(event, tabId){
-  document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active');
-  event.target.classList.add('active');
-}
-
-/* ==================== COPY CODE ==================== */
-function copyCode(btn){
-  const pre = btn.parentElement.querySelector('pre');
-  navigator.clipboard.writeText(pre.textContent).then(()=>{
-    btn.textContent = '✅ Đã copy';
-    btn.classList.add('copied');
-    showToast('📋 Đã copy code vào clipboard!');
-    setTimeout(()=>{
-      btn.textContent = '📋 Copy';
-      btn.classList.remove('copied');
-    },2000);
-  });
-}
-
-/* ==================== FAQ ==================== */
-function toggleFaq(el){
-  const item = el.parentElement;
-  const wasActive = item.classList.contains('active');
-  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('active'));
-  if (!wasActive) item.classList.add('active');
-}
-
-/* ==================== TIMELINE OBSERVER ==================== */
-const timelineObserver = new IntersectionObserver((entries)=>{
-  entries.forEach(entry=>{
-    if (entry.isIntersecting) entry.target.classList.add('visible');
-  });
-},{threshold:0.2});
-document.querySelectorAll('.timeline-item').forEach(item=>timelineObserver.observe(item));
-
-/* ==================== TOAST ==================== */
-function showToast(msg){
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.classList.add('show');
-  clearTimeout(window.toastTimer);
-  window.toastTimer = setTimeout(()=>toast.classList.remove('show'),2500);
-}
-
-/* ==================== PARTICLES ==================== */
-const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
-let particles = [];
-
-function resizeCanvas(){
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
-}
-resizeCanvas();
-window.addEventListener('resize',resizeCanvas);
-
-class Particle {
-  constructor(){
-    this.reset();
-  }
-  reset(){
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 2 + 0.5;
-    this.speedX = (Math.random() - 0.5) * 0.5;
-    this.speedY = (Math.random() - 0.5) * 0.5;
-    this.opacity = Math.random() * 0.5 + 0.2;
-    this.color = Math.random() > 0.5 ? '0,212,255' : '255,0,255';
-  }
-  update(){
-    this.x += this.speedX;
-    this.y += this.speedY;
-    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-  }
-  draw(){
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(${this.color},${this.opacity})`;
-    ctx.fill();
-  }
-}
-
-const particleCount = window.innerWidth < 768 ? 30 : 60;
-for (let i = 0; i < particleCount; i++){
-  particles.push(new Particle());
-}
-
-function connectParticles(){
-  for (let i = 0; i < particles.length; i++){
-    for (let j = i + 1; j < particles.length; j++){
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 120){
-        ctx.beginPath();
-        ctx.strokeStyle = `rgba(0,212,255,${0.15 * (1 - dist / 120)})`;
-        ctx.lineWidth = 0.5;
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.stroke();
-      }
-    }
-  }
-}
-
-function animateParticles(){
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach(p=>{
-    p.update();
-    p.draw();
-  });
-  connectParticles();
-  requestAnimationFrame(animateParticles);
-}
-animateParticles();
+themeObserver.observe(document.documentElement, {attributes: true});
 
 /* ==================== CONSOLE MESSAGE ==================== */
 console.log('%c🤖 Haa Hoang Danh Bot V12','color:#00d4ff;font-size:24px;font-weight:bold;text-shadow:0 0 10px #00d4ff');
 console.log('%c📞 Liên hệ: t.me/hdanhios','color:#ff00ff;font-size:14px');
 console.log('%c⭐ GitHub: github.com/hdanhcrack-dev','color:#a5d6ff;font-size:14px');
+console.log('%c❄️ MAX EFFECTS: Aurora + Moon + Clouds + SVG Snow + Mouse Repel + Frost Text + Slider + Snow Accumulation','color:#7ec8ff;font-size:12px');
 </script>
 </body>
 </html>
