@@ -1,1009 +1,1281 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🤖 Haa Hoang Danh Bot V12 - Treo Zalo Đa Chức Năng</title>
-    <meta name="description" content="Bot Treo Zalo đa chức năng - Treo Ngôn, Treo Map, Treo Video, Nhây Tag, Mute, Attack Acc, Zalo Tools 50+ lệnh">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --primary: #00d4ff;
-            --secondary: #ff00ff;
-            --bg-dark: #0f0c29;
-            --bg-mid: #302b63;
-            --bg-deep: #24243e;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --text: #e0e0e0;
-            --text-dim: #999;
-            --text-bright: #fff;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--bg-dark), var(--bg-mid), var(--bg-deep));
-            background-attachment: fixed;
-            color: var(--text);
-            min-height: 100vh;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Animated background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background:
-                radial-gradient(circle at 20% 30%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.08) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: -1;
-            animation: bgMove 20s ease-in-out infinite;
-        }
-
-        @keyframes bgMove {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(20px, -20px); }
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* ============ HEADER ============ */
-        header {
-            text-align: center;
-            padding: 60px 20px 40px;
-            position: relative;
-        }
-
-        header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
-            border-radius: 3px;
-        }
-
-        .logo {
-            font-size: 4em;
-            margin-bottom: 10px;
-            animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.5));
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        h1 {
-            font-size: 2.5em;
-            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shine 3s linear infinite;
-            margin-bottom: 10px;
-            font-weight: 800;
-        }
-
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
-
-        .subtitle {
-            color: #aaa;
-            font-size: 1.1em;
-        }
-
-        .version-badge {
-            display: inline-block;
-            background: rgba(0, 212, 255, 0.15);
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 4px 16px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            margin-top: 10px;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
-        }
-
-        /* ============ ADMIN CARD ============ */
-        .admin-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 30px;
-            margin: 30px 0;
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .admin-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.15);
-        }
-
-        .admin-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .admin-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8em;
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
-        }
-
-        .admin-info h2 {
-            font-size: 1.4em;
-            color: var(--text-bright);
-        }
-
-        .admin-info p {
-            color: var(--text-dim);
-            font-size: 0.9em;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 12px;
-            margin-top: 15px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-size: 0.9em;
-            transition: background 0.3s, transform 0.3s;
-        }
-
-        .contact-item:hover {
-            background: rgba(0, 212, 255, 0.1);
-            transform: translateX(5px);
-        }
-
-        .contact-item .icon { font-size: 1.2em; }
-
-        .contact-item a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        .contact-item a:hover { text-decoration: underline; }
-
-        /* ============ STATS ============ */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 16px;
-            margin: 20px 0;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 14px;
-            padding: 20px;
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .stat-card:hover {
-            border-color: var(--primary);
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
-        }
-
-        .stat-card .stat-number {
-            font-size: 2em;
-            font-weight: bold;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-card .stat-label {
-            font-size: 0.85em;
-            color: var(--text-dim);
-            margin-top: 5px;
-        }
-
-        /* ============ SECTION ============ */
-        .section { margin: 40px 0; }
-
-        .section-title {
-            font-size: 1.6em;
-            color: var(--text-bright);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-title::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, rgba(0, 212, 255, 0.5), transparent);
-        }
-
-        /* ============ FEATURE GRID ============ */
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px;
-            padding: 20px;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .feature-card:hover::before { left: 100%; }
-
-        .feature-card:hover {
-            background: rgba(0, 212, 255, 0.08);
-            border-color: rgba(0, 212, 255, 0.3);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.15);
-        }
-
-        .feature-card .feature-icon {
-            font-size: 1.8em;
-            margin-bottom: 10px;
-            display: inline-block;
-        }
-
-        .feature-card h3 {
-            font-size: 1.05em;
-            color: var(--text-bright);
-            margin-bottom: 6px;
-        }
-
-        .feature-card p {
-            font-size: 0.85em;
-            color: var(--text-dim);
-        }
-
-        /* ============ ARCHITECTURE ============ */
-        .arch-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 16px;
-        }
-
-        .arch-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 14px;
-            padding: 20px;
-            transition: all 0.3s;
-        }
-
-        .arch-card:hover {
-            border-color: rgba(0, 212, 255, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
-        }
-
-        .arch-card h3 {
-            color: var(--primary);
-            font-size: 1em;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .arch-card ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .arch-card ul li {
-            padding: 4px 0;
-            font-size: 0.85em;
-            color: #bbb;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .arch-card ul li::before {
-            content: '▸';
-            color: var(--secondary);
-            font-weight: bold;
-        }
-
-        /* ============ TABS / CODE ============ */
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #aaa;
-            padding: 8px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.9em;
-            transition: all 0.3s;
-            font-family: inherit;
-        }
-
-        .tab-btn:hover {
-            background: rgba(0, 212, 255, 0.1);
-            color: var(--text-bright);
-        }
-
-        .tab-btn.active {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 0, 255, 0.2));
-            border-color: var(--primary);
-            color: var(--text-bright);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-        }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.4s; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .code-block {
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            padding: 20px;
-            overflow-x: auto;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            font-size: 0.85em;
-            line-height: 1.7;
-            color: #c9d1d9;
-            max-height: 500px;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        .code-block::before {
-            content: '● ● ●';
-            position: absolute;
-            top: 8px;
-            left: 12px;
-            color: #ff5f56;
-            font-size: 0.7em;
-            letter-spacing: 3px;
-        }
-
-        .code-block pre { padding-top: 15px; }
-
-        .keyword { color: #ff7b72; }
-        .string { color: #a5d6ff; }
-        .comment { color: #8b949e; font-style: italic; }
-        .function { color: #d2a8ff; }
-        .number { color: #79c0ff; }
-
-        /* ============ COMMANDS ============ */
-        .cmd-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 12px;
-        }
-
-        .cmd-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 0.9em;
-            transition: all 0.3s;
-        }
-
-        .cmd-item:hover {
-            background: rgba(0, 212, 255, 0.08);
-            border-color: rgba(0, 212, 255, 0.3);
-            transform: translateX(5px);
-        }
-
-        .cmd-item code {
-            background: rgba(0, 212, 255, 0.15);
-            color: var(--primary);
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-family: 'Consolas', monospace;
-            font-size: 0.85em;
-            white-space: nowrap;
-        }
-
-        /* ============ FOOTER ============ */
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            color: #666;
-            font-size: 0.85em;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            margin-top: 40px;
-        }
-
-        footer a {
-            color: var(--primary);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        footer a:hover { color: var(--secondary); }
-
-        /* ============ SCROLLBAR ============ */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 212, 255, 0.3);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 212, 255, 0.5); }
-
-        /* ============ RESPONSIVE ============ */
-        @media (max-width: 768px) {
-            h1 { font-size: 1.6em; }
-            .logo { font-size: 2.5em; }
-            .feature-grid { grid-template-columns: 1fr; }
-            .contact-grid { grid-template-columns: 1fr; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .arch-grid { grid-template-columns: 1fr; }
-            .section-title { font-size: 1.3em; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Haa Hoang Danh Bot V12 - Bot Treo Zalo đa chức năng, hiệu suất cao, ổn định và bảo mật. 50+ lệnh Zalo Tools, Treo Ngôn, Treo Map, Attack Acc, Nhây Tag...">
+<meta name="keywords" content="bot zalo, treo zalo, zalo tools, haa hoang danh, bot telegram, attack acc">
+<meta name="author" content="Haa Hoang Danh">
+<meta property="og:title" content="🤖 Haa Hoang Danh Bot V12 - Treo Zalo Đa Chức Năng">
+<meta property="og:description" content="Bot Treo Zalo đa chức năng - Treo Ngôn, Treo Map, Attack Acc, Zalo Tools 50+ lệnh">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hdanhcrack-dev.github.io/hdanhdeveloper/">
+<title>🤖 Haa Hoang Danh Bot V12 - Treo Zalo Đa Chức Năng</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+<style>
+/* ==================== RESET & ROOT ==================== */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#00d4ff;--secondary:#ff00ff;--accent:#ffa657;
+  --bg-dark:#0a0a15;--bg-mid:#151528;--bg-card:rgba(255,255,255,.04);
+  --bg-card-hover:rgba(0,212,255,.08);--border:rgba(255,255,255,.08);
+  --border-hover:rgba(0,212,255,.3);--text:#e0e0e0;--text-dim:#888;
+  --text-bright:#fff;--shadow:0 10px 40px rgba(0,212,255,.15);
+  --gradient:linear-gradient(135deg,#00d4ff,#ff00ff);
+}
+[data-theme="light"]{
+  --bg-dark:#f5f7fa;--bg-mid:#fff;--bg-card:rgba(0,0,0,.03);
+  --bg-card-hover:rgba(0,212,255,.08);--border:rgba(0,0,0,.08);
+  --text:#1a1a2e;--text-dim:#666;--text-bright:#000;
+  --shadow:0 10px 40px rgba(0,100,200,.1);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Segoe UI',Tahoma,sans-serif;
+  background:var(--bg-dark);color:var(--text);
+  line-height:1.6;overflow-x:hidden;
+  transition:background .4s,color .4s;
+}
+/* ==================== SCROLL PROGRESS ==================== */
+#progress-bar{
+  position:fixed;top:0;left:0;height:3px;width:0%;
+  background:var(--gradient);z-index:9999;
+  transition:width .1s;box-shadow:0 0 10px var(--primary);
+}
+/* ==================== LOADER ==================== */
+#loader{
+  position:fixed;inset:0;background:var(--bg-dark);z-index:99999;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  transition:opacity .5s,visibility .5s;
+}
+#loader.hide{opacity:0;visibility:hidden}
+.loader-spinner{
+  width:60px;height:60px;border-radius:50%;
+  border:4px solid rgba(0,212,255,.1);border-top-color:var(--primary);
+  animation:spin 1s linear infinite;margin-bottom:20px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-text{
+  color:var(--primary);font-size:1.1em;font-weight:600;
+  animation:pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+/* ==================== NAVBAR ==================== */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:15px 30px;display:flex;align-items:center;justify-content:space-between;
+  background:rgba(10,10,21,.85);backdrop-filter:blur(15px);
+  border-bottom:1px solid transparent;transition:all .3s;
+}
+nav.scrolled{
+  padding:10px 30px;border-bottom-color:var(--border);
+  background:rgba(10,10,21,.95);box-shadow:0 5px 30px rgba(0,0,0,.3);
+}
+.nav-logo{
+  display:flex;align-items:center;gap:10px;
+  font-size:1.2em;font-weight:800;color:var(--text-bright);
+  text-decoration:none;
+}
+.nav-logo span{font-size:1.5em}
+.nav-links{display:flex;gap:25px;list-style:none}
+.nav-links a{
+  color:var(--text-dim);text-decoration:none;font-size:.9em;
+  font-weight:500;position:relative;transition:color .3s;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-5px;left:0;width:0;height:2px;
+  background:var(--gradient);transition:width .3s;
+}
+.nav-links a:hover{color:var(--text-bright)}
+.nav-links a:hover::after{width:100%}
+.nav-actions{display:flex;gap:12px;align-items:center}
+.theme-toggle{
+  background:var(--bg-card);border:1px solid var(--border);
+  width:40px;height:40px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1em;transition:all .3s;color:var(--text);
+}
+.theme-toggle:hover{background:var(--bg-card-hover);border-color:var(--primary);transform:rotate(20deg)}
+.hamburger{
+  display:none;background:none;border:none;cursor:pointer;
+  flex-direction:column;gap:5px;padding:8px;
+}
+.hamburger span{
+  width:25px;height:3px;background:var(--text);border-radius:3px;
+  transition:all .3s;
+}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(6px,6px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px)}
+/* ==================== HERO ==================== */
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:120px 20px 60px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 20% 30%,rgba(0,212,255,.15),transparent 40%),
+    radial-gradient(circle at 80% 70%,rgba(255,0,255,.15),transparent 40%);
+  animation:bgMove 15s ease-in-out infinite;
+}
+@keyframes bgMove{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.1) rotate(5deg)}
+}
+#particles{position:absolute;inset:0;z-index:0}
+.hero-content{position:relative;z-index:1;max-width:900px}
+.hero-logo{
+  font-size:5em;margin-bottom:20px;display:inline-block;
+  animation:float 3s ease-in-out infinite;
+  filter:drop-shadow(0 0 30px rgba(0,212,255,.6));
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+.hero h1{
+  font-size:3.5em;font-weight:800;line-height:1.1;margin-bottom:15px;
+  background:linear-gradient(90deg,var(--primary),var(--secondary),var(--primary));
+  background-size:200% auto;-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+  animation:shine 3s linear infinite;
+}
+@keyframes shine{to{background-position:200% center}}
+.typed-text{
+  font-size:1.3em;color:var(--text-dim);margin-bottom:30px;
+  min-height:1.6em;font-weight:500;
+}
+.cursor{
+  display:inline-block;width:3px;height:1.2em;
+  background:var(--primary);vertical-align:middle;
+  animation:blink .8s infinite;margin-left:3px;
+}
+@keyframes blink{50%{opacity:0}}
+.hero-buttons{display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.btn{
+  padding:14px 32px;border-radius:50px;font-size:1em;font-weight:600;
+  text-decoration:none;border:none;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:all .3s;position:relative;overflow:hidden;
+}
+.btn-primary{
+  background:var(--gradient);color:#fff;
+  box-shadow:0 10px 30px rgba(0,212,255,.3);
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(0,212,255,.5)}
+.btn-outline{
+  background:transparent;color:var(--text-bright);
+  border:2px solid var(--primary);
+}
+.btn-outline:hover{background:rgba(0,212,255,.1);transform:translateY(-3px)}
+/* ==================== SECTION ==================== */
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+.section{padding:80px 0;position:relative}
+.section-title{
+  font-size:2.2em;color:var(--text-bright);margin-bottom:15px;
+  text-align:center;font-weight:800;position:relative;
+  display:inline-block;width:100%;
+}
+.section-title::after{
+  content:'';position:absolute;bottom:-15px;left:50%;
+  transform:translateX(-50%);width:80px;height:4px;
+  background:var(--gradient);border-radius:2px;
+}
+.section-subtitle{
+  text-align:center;color:var(--text-dim);
+  margin-bottom:50px;font-size:1.05em;margin-top:30px;
+}
+/* ==================== STATS ==================== */
+.stats-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:20px;margin-top:40px;
+}
+.stat-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:20px;padding:30px 20px;text-align:center;
+  transition:all .4s;position:relative;overflow:hidden;
+}
+.stat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--gradient);transform:scaleX(0);
+  transition:transform .4s;
+}
+.stat-card:hover::before{transform:scaleX(1)}
+.stat-card:hover{
+  transform:translateY(-8px);border-color:var(--border-hover);
+  box-shadow:var(--shadow);
+}
+.stat-icon{font-size:2.5em;margin-bottom:10px;display:block}
+.stat-number{
+  font-size:2.5em;font-weight:800;
+  background:var(--gradient);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1;
+}
+.stat-label{color:var(--text-dim);font-size:.9em;margin-top:8px}
+/* ==================== FEATURE SEARCH ==================== */
+.feature-search{
+  max-width:500px;margin:0 auto 30px;
+  display:flex;align-items:center;
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:50px;padding:12px 25px;
+  transition:all .3s;
+}
+.feature-search:focus-within{
+  border-color:var(--primary);box-shadow:0 0 20px rgba(0,212,255,.2);
+}
+.feature-search input{
+  flex:1;background:none;border:none;outline:none;
+  color:var(--text);font-size:1em;font-family:inherit;
+}
+.feature-search input::placeholder{color:var(--text-dim)}
+.feature-search .icon{color:var(--primary);margin-right:10px}
+/* ==================== FEATURES ==================== */
+.feature-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:20px;
+}
+.feature-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:20px;padding:28px;cursor:pointer;
+  transition:all .4s;position:relative;overflow:hidden;
+}
+.feature-card::before{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(0,212,255,.15),transparent);
+  transition:left .6s;
+}
+.feature-card:hover::before{left:100%}
+.feature-card:hover{
+  transform:translateY(-8px);border-color:var(--border-hover);
+  box-shadow:var(--shadow);background:var(--bg-card-hover);
+}
+.feature-card.hidden{display:none}
+.feature-icon{
+  font-size:2.2em;margin-bottom:15px;display:inline-block;
+  transition:transform .3s;
+}
+.feature-card:hover .feature-icon{transform:scale(1.2) rotate(-10deg)}
+.feature-card h3{
+  color:var(--text-bright);font-size:1.15em;margin-bottom:8px;
+  font-weight:700;
+}
+.feature-card p{color:var(--text-dim);font-size:.9em;line-height:1.6}
+.feature-tag{
+  display:inline-block;margin-top:12px;padding:3px 12px;
+  background:rgba(0,212,255,.15);color:var(--primary);
+  border-radius:12px;font-size:.75em;font-weight:600;
+}
+/* ==================== TIMELINE ==================== */
+.timeline{
+  position:relative;max-width:800px;margin:0 auto;padding:20px 0;
+}
+.timeline::before{
+  content:'';position:absolute;left:50%;top:0;bottom:0;width:2px;
+  background:var(--gradient);transform:translateX(-50%);
+}
+.timeline-item{
+  display:flex;margin:40px 0;position:relative;
+  opacity:0;transform:translateY(30px);
+  transition:all .6s;
+}
+.timeline-item.visible{opacity:1;transform:translateY(0)}
+.timeline-item:nth-child(odd){flex-direction:row-reverse}
+.timeline-content{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:16px;padding:20px 25px;width:45%;
+  transition:all .3s;
+}
+.timeline-content:hover{
+  border-color:var(--border-hover);box-shadow:var(--shadow);
+}
+.timeline-content h4{color:var(--primary);margin-bottom:8px}
+.timeline-content p{color:var(--text-dim);font-size:.9em}
+.timeline-dot{
+  position:absolute;left:50%;top:25px;transform:translateX(-50%);
+  width:16px;height:16px;border-radius:50%;
+  background:var(--gradient);border:3px solid var(--bg-dark);
+  box-shadow:0 0 15px var(--primary);z-index:1;
+}
+/* ==================== CODE TABS ==================== */
+.tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;justify-content:center}
+.tab-btn{
+  background:var(--bg-card);border:1px solid var(--border);
+  color:var(--text-dim);padding:10px 22px;border-radius:50px;
+  cursor:pointer;font-size:.9em;font-family:inherit;
+  font-weight:500;transition:all .3s;
+}
+.tab-btn:hover{color:var(--text-bright);border-color:var(--primary)}
+.tab-btn.active{
+  background:var(--gradient);color:#fff;border-color:transparent;
+  box-shadow:0 8px 25px rgba(0,212,255,.3);
+}
+.tab-content{display:none}
+.tab-content.active{display:block;animation:fadeIn .5s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.code-block{
+  background:#0d1117;border:1px solid #30363d;border-radius:14px;
+  padding:50px 20px 20px;position:relative;overflow-x:auto;
+  max-height:520px;overflow-y:auto;
+}
+.code-block::before{
+  content:'● ● ●';position:absolute;top:14px;left:16px;
+  color:#ff5f56;font-size:.8em;letter-spacing:3px;
+}
+.code-block pre{
+  font-family:'Consolas','Monaco',monospace;font-size:.85em;
+  line-height:1.7;color:#c9d1d9;
+}
+.copy-btn{
+  position:absolute;top:10px;right:14px;
+  background:rgba(0,212,255,.15);border:1px solid var(--primary);
+  color:var(--primary);padding:5px 14px;border-radius:20px;
+  cursor:pointer;font-size:.78em;font-weight:600;
+  transition:all .3s;font-family:inherit;
+}
+.copy-btn:hover{background:var(--primary);color:#fff}
+.copy-btn.copied{background:#22c55e;border-color:#22c55e;color:#fff}
+.kw{color:#ff7b72}.str{color:#a5d6ff}.cm{color:#8b949e;font-style:italic}
+.fn{color:#d2a8ff}.num{color:#79c0ff}.dec{color:#ffa657}
+/* ==================== FAQ ==================== */
+.faq-list{max-width:800px;margin:0 auto}
+.faq-item{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:14px;margin-bottom:12px;overflow:hidden;
+  transition:all .3s;
+}
+.faq-item:hover{border-color:var(--border-hover)}
+.faq-question{
+  padding:20px 25px;cursor:pointer;display:flex;
+  justify-content:space-between;align-items:center;
+  color:var(--text-bright);font-weight:600;font-size:1em;
+}
+.faq-toggle{
+  font-size:1.5em;color:var(--primary);
+  transition:transform .3s;line-height:1;
+}
+.faq-item.active .faq-toggle{transform:rotate(45deg)}
+.faq-answer{
+  max-height:0;overflow:hidden;
+  transition:max-height .4s ease,padding .4s;
+  padding:0 25px;color:var(--text-dim);font-size:.92em;
+}
+.faq-item.active .faq-answer{max-height:500px;padding:0 25px 20px}
+/* ==================== CONTACT ==================== */
+.contact-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;margin-top:40px;
+}
+.contact-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:20px;padding:30px;text-align:center;
+  text-decoration:none;color:var(--text);
+  transition:all .4s;position:relative;overflow:hidden;
+}
+.contact-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:0;
+  background:var(--gradient);transition:height .4s;
+}
+.contact-card:hover{
+  transform:translateY(-8px);box-shadow:var(--shadow);
+}
+.contact-card .icon{font-size:2.5em;margin-bottom:15px;display:block}
+.contact-card h3{color:var(--text-bright);margin-bottom:8px;font-size:1.1em}
+.contact-card p{color:var(--text-dim);font-size:.88em;word-break:break-all}
+/* ==================== FLOATING BUTTONS ==================== */
+.floating-contact{
+  position:fixed;right:20px;bottom:90px;z-index:998;
+  display:flex;flex-direction:column;gap:12px;
+}
+.float-btn{
+  width:52px;height:52px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5em;text-decoration:none;color:#fff;
+  box-shadow:0 8px 25px rgba(0,0,0,.3);
+  transition:all .3s;position:relative;
+}
+.float-btn:hover{transform:scale(1.15) rotate(10deg);box-shadow:0 12px 35px rgba(0,0,0,.5)}
+.float-btn.zalo{background:linear-gradient(135deg,#0068ff,#0084ff)}
+.float-btn.tg{background:linear-gradient(135deg,#0088cc,#29a9eb)}
+.float-btn.fb{background:linear-gradient(135deg,#1877f2,#0d65d9)}
+.float-btn::before{
+  content:attr(data-tip);position:absolute;right:65px;top:50%;
+  transform:translateY(-50%);background:var(--bg-mid);
+  color:var(--text-bright);padding:6px 12px;border-radius:8px;
+  font-size:.75em;white-space:nowrap;opacity:0;pointer-events:none;
+  transition:opacity .3s;font-weight:600;border:1px solid var(--border);
+}
+.float-btn:hover::before{opacity:1}
+/* ==================== BACK TO TOP ==================== */
+#backTop{
+  position:fixed;right:20px;bottom:20px;z-index:998;
+  width:52px;height:52px;border-radius:50%;
+  background:var(--gradient);border:none;color:#fff;
+  font-size:1.3em;cursor:pointer;
+  box-shadow:0 8px 25px rgba(0,212,255,.4);
+  opacity:0;visibility:hidden;transform:translateY(20px);
+  transition:all .3s;
+}
+#backTop.show{opacity:1;visibility:visible;transform:translateY(0)}
+#backTop:hover{transform:translateY(-5px) scale(1.1)}
+/* ==================== MODAL ==================== */
+.modal{
+  position:fixed;inset:0;background:rgba(0,0,0,.8);
+  backdrop-filter:blur(5px);z-index:9999;
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.modal.active{display:flex;animation:fadeIn .3s}
+.modal-content{
+  background:var(--bg-mid);border:1px solid var(--border);
+  border-radius:20px;padding:35px;max-width:550px;width:100%;
+  position:relative;animation:slideUp .4s;
+}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-close{
+  position:absolute;top:15px;right:15px;
+  background:var(--bg-card);border:1px solid var(--border);
+  width:36px;height:36px;border-radius:50%;cursor:pointer;
+  color:var(--text);font-size:1.2em;transition:all .3s;
+  display:flex;align-items:center;justify-content:center;
+}
+.modal-close:hover{background:#ef4444;color:#fff;border-color:#ef4444;transform:rotate(90deg)}
+.modal-icon{font-size:3.5em;text-align:center;margin-bottom:15px}
+.modal h3{color:var(--text-bright);text-align:center;margin-bottom:10px;font-size:1.5em}
+.modal p{color:var(--text-dim);text-align:center;line-height:1.7}
+.modal-tags{margin-top:20px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+/* ==================== TOAST ==================== */
+#toast{
+  position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);
+  background:var(--gradient);color:#fff;padding:14px 28px;
+  border-radius:50px;font-weight:600;font-size:.9em;
+  box-shadow:0 10px 30px rgba(0,212,255,.4);z-index:9999;
+  transition:transform .4s;pointer-events:none;
+}
+#toast.show{transform:translateX(-50%) translateY(0)}
+/* ==================== FOOTER ==================== */
+footer{
+  text-align:center;padding:50px 20px 30px;
+  border-top:1px solid var(--border);margin-top:60px;
+}
+.footer-brand{
+  font-size:1.5em;font-weight:800;margin-bottom:12px;
+  background:var(--gradient);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text;
+}
+footer p{color:var(--text-dim);font-size:.88em;margin:6px 0}
+footer a{color:var(--primary);text-decoration:none;transition:color .3s}
+footer a:hover{color:var(--secondary)}
+/* ==================== SCROLLBAR ==================== */
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg-dark)}
+::-webkit-scrollbar-thumb{background:var(--gradient);border-radius:5px}
+/* ==================== RESPONSIVE ==================== */
+@media(max-width:768px){
+  .nav-links{
+    position:fixed;top:70px;right:-100%;width:250px;height:calc(100vh - 70px);
+    flex-direction:column;background:var(--bg-mid);
+    padding:30px;gap:20px;transition:right .3s;
+    border-left:1px solid var(--border);
+  }
+  .nav-links.active{right:0}
+  .hamburger{display:flex}
+  .hero h1{font-size:2.2em}
+  .hero-logo{font-size:3.5em}
+  .section{padding:50px 0}
+  .section-title{font-size:1.6em}
+  .feature-grid,.stats-grid{grid-template-columns:1fr}
+  .timeline::before{left:20px}
+  .timeline-item,.timeline-item:nth-child(odd){flex-direction:row}
+  .timeline-content{width:calc(100% - 50px);margin-left:50px}
+  .timeline-dot{left:20px}
+  .floating-contact{right:15px;bottom:85px}
+  .float-btn{width:46px;height:46px;font-size:1.3em}
+  .code-block{font-size:.75em}
+  .modal-content{padding:25px}
+}
+@media(max-width:480px){
+  .hero h1{font-size:1.8em}
+  .btn{padding:12px 24px;font-size:.9em}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- ============ HEADER ============ -->
-        <header>
-            <div class="logo">🤖</div>
-            <h1>Haa Hoang Danh Bot</h1>
-            <p class="subtitle">Bot Treo Zalo Đa Chức Năng - Hiệu Suất Cao - Ổn Định - Bảo Mật</p>
-            <span class="version-badge">📌 Phiên bản V12</span>
-        </header>
 
-        <!-- ============ ADMIN CARD ============ -->
-        <div class="admin-card">
-            <div class="admin-header">
-                <div class="admin-avatar">👨‍💻</div>
-                <div class="admin-info">
-                    <h2>Haa Hoang Danh Developer</h2>
-                    <p>Tác giả &amp; Nhà phát triển chính</p>
-                </div>
-            </div>
-            <div class="contact-grid">
-                <div class="contact-item">
-                    <span class="icon">📱</span>
-                    <span>SĐT: <strong>0393515434</strong></span>
-                </div>
-                <div class="contact-item">
-                    <span class="icon">💬</span>
-                    <span>Zalo: <a href="https://zalo.me/84393515434" target="_blank" rel="noopener">zalo.me/84393515434</a></span>
-                </div>
-                <div class="contact-item">
-                    <span class="icon">✈️</span>
-                    <span>Telegram: <a href="https://t.me/hdanhios" target="_blank" rel="noopener">t.me/hdanhios</a></span>
-                </div>
-                <div class="contact-item">
-                    <span class="icon">📘</span>
-                    <span>Facebook: <a href="https://www.facebook.com/share/18W8fuXm8X/" target="_blank" rel="noopener">Haa Hoang Danh</a></span>
-                </div>
-                <div class="contact-item">
-                    <span class="icon">📧</span>
-                    <span>Email: <strong>hdanhcrack@gmail.com</strong></span>
-                </div>
-                <div class="contact-item">
-                    <span class="icon">🕐</span>
-                    <span>Làm việc: 8:00 - 22:00 (Hàng ngày)</span>
-                </div>
-            </div>
-        </div>
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-spinner"></div>
+  <div class="loader-text">🤖 Đang khởi động Bot...</div>
+</div>
 
-        <!-- ============ STATS ============ -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number">50+</div>
-                <div class="stat-label">Lệnh Zalo Tools</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">12+</div>
-                <div class="stat-label">Chức năng chính</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">1000+</div>
-                <div class="stat-label">Dòng code</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">V12</div>
-                <div class="stat-label">Phiên bản</div>
-            </div>
-        </div>
+<!-- SCROLL PROGRESS -->
+<div id="progress-bar"></div>
 
-        <!-- ============ FEATURES ============ -->
-        <div class="section">
-            <h2 class="section-title">✨ Chức Năng Chính</h2>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🚀</div>
-                    <h3>Treo Ngôn</h3>
-                    <p>Tự động gửi tin nhắn liên tục vào nhóm Zalo với định dạng màu sắc và kích thước tùy chỉnh.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📍</div>
-                    <h3>Treo Map</h3>
-                    <p>Gửi vị trí địa lý liên tục vào nhóm, hỗ trợ tùy chỉnh tọa độ và nội dung.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🌈</div>
-                    <h3>Treo 5 Màu</h3>
-                    <p>Gửi tin nhắn với 5 màu sắc ngẫu nhiên, tạo hiệu ứng đa dạng và bắt mắt.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎬</div>
-                    <h3>Treo Video</h3>
-                    <p>Tự động gửi video từ danh sách URL vào nhóm với thumbnail và nội dung tùy chỉnh.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🏷</div>
-                    <h3>Nhây Tag</h3>
-                    <p>Tag tất cả thành viên trong nhóm với nội dung tùy chỉnh, hỗ trợ chọn thành viên cụ thể.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">👥</div>
-                    <h3>Nhây Bạn Bè</h3>
-                    <p>Gửi tin nhắn spam đến danh sách bạn bè được chọn với nội dung và delay tùy chỉnh.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔇</div>
-                    <h3>Mute Thành Viên</h3>
-                    <p>Tự động xóa tin nhắn của thành viên được chọn trong nhóm theo thời gian thực.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💀</div>
-                    <h3>Attack Acc</h3>
-                    <p>Gửi tin nhắn và hình ảnh đến tất cả các nhóm mà tài khoản tham gia.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎤</div>
-                    <h3>Voice ZL</h3>
-                    <p>Chuyển đổi văn bản thành voice và gửi vào nhóm Zalo chỉ định.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🛠</div>
-                    <h3>Task Tiện Ích</h3>
-                    <p>Đổi tên ACC, đổi tên Box, đổi Avatar ACC, đổi Avatar Box Zalo.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3>Zalo Tools</h3>
-                    <p>50+ lệnh quản lý nhóm, tin nhắn, tài khoản, bạn bè trên Zalo.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📋</div>
-                    <h3>Quản Lý Task</h3>
-                    <p>Xem, dừng, cập nhật cookie die, quản lý tất cả task đang chạy chuyên nghiệp.</p>
-                </div>
-            </div>
-        </div>
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#" class="nav-logo"><span>🤖</span> Haa Hoang Danh</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home">Trang chủ</a></li>
+    <li><a href="#features">Tính năng</a></li>
+    <li><a href="#tools">Zalo Tools</a></li>
+    <li><a href="#timeline">Lịch sử</a></li>
+    <li><a href="#code">Code</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">Liên hệ</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="theme-toggle" id="themeToggle" title="Đổi giao diện">🌙</button>
+    <button class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
 
-        <!-- ============ ZALO TOOLS COMMANDS ============ -->
-        <div class="section">
-            <h2 class="section-title">🎯 Zalo Tools - 50+ Lệnh</h2>
-            <div class="cmd-list">
-                <div class="cmd-item"><code>Group Info</code><span>Xem thông tin nhóm</span></div>
-                <div class="cmd-item"><code>Create Group</code><span>Tạo nhóm mới</span></div>
-                <div class="cmd-item"><code>Add Member</code><span>Thêm thành viên</span></div>
-                <div class="cmd-item"><code>Kick Member</code><span>Xoá thành viên</span></div>
-                <div class="cmd-item"><code>Leave Group</code><span>Rời nhóm</span></div>
-                <div class="cmd-item"><code>Dissolve Group</code><span>Giải tán nhóm</span></div>
-                <div class="cmd-item"><code>Change Name</code><span>Đổi tên nhóm</span></div>
-                <div class="cmd-item"><code>Change Avatar</code><span>Đổi avatar nhóm</span></div>
-                <div class="cmd-item"><code>Add Admin</code><span>Thêm admin nhóm</span></div>
-                <div class="cmd-item"><code>Remove Admin</code><span>Xoá admin nhóm</span></div>
-                <div class="cmd-item"><code>Lock/Unlock</code><span>Khoá/mở nhóm</span></div>
-                <div class="cmd-item"><code>Get Link</code><span>Lấy link nhóm</span></div>
-                <div class="cmd-item"><code>Join Link</code><span>Join nhóm qua link</span></div>
-                <div class="cmd-item"><code>Send Text</code><span>Gửi tin nhắn</span></div>
-                <div class="cmd-item"><code>Send Image</code><span>Gửi ảnh từ URL</span></div>
-                <div class="cmd-item"><code>Send File</code><span>Gửi file local</span></div>
-                <div class="cmd-item"><code>Undo Message</code><span>Thu hồi tin nhắn</span></div>
-                <div class="cmd-item"><code>Delete Message</code><span>Xoá tin nhắn</span></div>
-                <div class="cmd-item"><code>Recent Messages</code><span>Xem tin nhắn gần đây</span></div>
-                <div class="cmd-item"><code>React</code><span>Thả cảm xúc</span></div>
-                <div class="cmd-item"><code>Set Typing</code><span>Đang nhập...</span></div>
-                <div class="cmd-item"><code>Mark Read</code><span>Đánh dấu đã đọc</span></div>
-                <div class="cmd-item"><code>Account Info</code><span>Xem thông tin ACC</span></div>
-                <div class="cmd-item"><code>Change Bio</code><span>Đổi bio</span></div>
-                <div class="cmd-item"><code>Change Gender</code><span>Đổi giới tính</span></div>
-                <div class="cmd-item"><code>Change DOB</code><span>Đổi ngày sinh</span></div>
-                <div class="cmd-item"><code>All Friends</code><span>DS bạn bè</span></div>
-                <div class="cmd-item"><code>Find Phone</code><span>Tìm theo SĐT</span></div>
-                <div class="cmd-item"><code>Add Friend</code><span>Kết bạn</span></div>
-                <div class="cmd-item"><code>Remove Friend</code><span>Xoá bạn</span></div>
-                <div class="cmd-item"><code>Block User</code><span>Chặn</span></div>
-                <div class="cmd-item"><code>Unblock User</code><span>Bỏ chặn</span></div>
-                <div class="cmd-item"><code>User Info</code><span>Thông tin user</span></div>
-                <div class="cmd-item"><code>All Groups</code><span>DS tất cả nhóm</span></div>
-            </div>
-        </div>
+<!-- HERO -->
+<section class="hero" id="home">
+  <canvas id="particles"></canvas>
+  <div class="hero-content">
+    <div class="hero-logo">🤖</div>
+    <h1>Haa Hoang Danh Bot</h1>
+    <p class="typed-text"><span id="typed"></span><span class="cursor"></span></p>
+    <div class="hero-buttons">
+      <a href="#features" class="btn btn-primary">🚀 Khám phá ngay</a>
+      <a href="https://t.me/hdanhios" target="_blank" class="btn btn-outline">📞 Liên hệ Admin</a>
+    </div>
+  </div>
+</section>
 
-        <!-- ============ ARCHITECTURE ============ -->
-        <div class="section">
-            <h2 class="section-title">🏗️ Kiến Trúc Hệ Thống</h2>
-            <div class="arch-grid">
-                <div class="arch-card">
-                    <h3>📦 Modules chính</h3>
-                    <ul>
-                        <li>Telebot - Giao diện Telegram Bot</li>
-                        <li>ZaloAPI - Tương tác Zalo</li>
-                        <li>Multiprocessing - Chạy task song song</li>
-                        <li>Threading - Xử lý bất đồng bộ</li>
-                        <li>gTTS - Chuyển text thành voice</li>
-                        <li>BeautifulSoup - Tool Reg Mail</li>
-                    </ul>
-                </div>
-                <div class="arch-card">
-                    <h3>⚙️ Workers</h3>
-                    <ul>
-                        <li>worker_treongon - Treo ngôn</li>
-                        <li>worker_treomap - Treo map</li>
-                        <li>worker_treo5mau - Treo 5 màu</li>
-                        <li>worker_treovideo - Treo video</li>
-                        <li>worker_nhaytag - Nhây tag</li>
-                        <li>worker_nhaybb - Nhây bạn bè</li>
-                        <li>worker_mute - Mute thành viên</li>
-                        <li>worker_attack - Attack acc</li>
-                    </ul>
-                </div>
-                <div class="arch-card">
-                    <h3>🔐 Quản lý Admin</h3>
-                    <ul>
-                        <li>Master Admin: ID 8187174423</li>
-                        <li>Thêm admin: /addad</li>
-                        <li>Xoá admin: /dels</li>
-                        <li>DS admin: /listadmin</li>
-                        <li>Lưu trữ: cache/admins.json</li>
-                        <li>Phân quyền: Master / Admin</li>
-                    </ul>
-                </div>
-                <div class="arch-card">
-                    <h3>🛡️ Bảo mật &amp; Ổn định</h3>
-                    <ul>
-                        <li>Phát hiện cookie die tự động</li>
-                        <li>Cập nhật cookie không cần restart</li>
-                        <li>Error queue monitoring</li>
-                        <li>Task cleanup tự động</li>
-                        <li>Timeout &amp; retry logic</li>
-                        <li>Phân quyền chặt chẽ</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+<!-- STATS -->
+<section class="section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-icon">⚡</span>
+        <div class="stat-number" data-target="50">0</div>
+        <div class="stat-label">Lệnh Zalo Tools</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🎯</span>
+        <div class="stat-number" data-target="12">0</div>
+        <div class="stat-label">Chức năng chính</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">💻</span>
+        <div class="stat-number" data-target="1500">0</div>
+        <div class="stat-label">Dòng code</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🏆</span>
+        <div class="stat-number" data-target="12">0</div>
+        <div class="stat-label">Phiên bản V</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <!-- ============ CODE PREVIEW ============ -->
-        <div class="section">
-            <h2 class="section-title">💻 Mã Nguồn Tham Khảo</h2>
-            <div class="tabs">
-                <button class="tab-btn active" onclick="showTab(event, 'tab-config')">Cấu hình</button>
-                <button class="tab-btn" onclick="showTab(event, 'tab-worker')">Worker mẫu</button>
-                <button class="tab-btn" onclick="showTab(event, 'tab-zalo')">Zalo Tools</button>
-                <button class="tab-btn" onclick="showTab(event, 'tab-telegram')">Telegram Bot</button>
-            </div>
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="container">
+    <h2 class="section-title">✨ Chức Năng Chính</h2>
+    <p class="section-subtitle">Đa dạng, mạnh mẽ, ổn định — Đáp ứng mọi nhu cầu treo Zalo</p>
 
-            <div id="tab-config" class="tab-content active">
-                <div class="code-block">
-<pre><span class="comment"># ============================================================</span>
-<span class="comment"># ⚙️ CẤU HÌNH BOT</span>
-<span class="comment"># ============================================================</span>
-<span class="keyword">BOT_TOKEN</span>       = <span class="string">"8752023733:AAGIeEcVVSX-9dw03NeSRjglgUq_toZnQ6I"</span>
-<span class="keyword">MASTER_ADMIN_ID</span> = <span class="number">8187174423</span>
-<span class="keyword">API_KEY</span>         = <span class="string">"api_key"</span>
-<span class="keyword">SECRET_KEY</span>      = <span class="string">"secret_key"</span>
-<span class="keyword">FIXED_IP</span>        = <span class="string">"8.8.8.8"</span>
-
-<span class="comment"># ============================================================</span>
-<span class="comment"># 📞 THÔNG TIN LIÊN HỆ ADMIN</span>
-<span class="comment"># ============================================================</span>
-<span class="keyword">ADMIN_CONTACT</span> = {
-    <span class="string">"name"</span>:      <span class="string">"Haa Hoang Danh"</span>,
-    <span class="string">"phone"</span>:     <span class="string">"0393515434"</span>,
-    <span class="string">"zalo"</span>:      <span class="string">"https://zalo.me/84393515434"</span>,
-    <span class="string">"telegram"</span>:  <span class="string">"t.me/hdanhios"</span>,
-    <span class="string">"facebook"</span>:  <span class="string">"https://www.facebook.com/share/18W8fuXm8X/"</span>,
-    <span class="string">"email"</span>:     <span class="string">"hdanhcrack@gmail.com"</span>,
-    <span class="string">"working"</span>:   <span class="string">"8:00 - 22:00 (Hàng ngày)"</span>,
-}
-
-<span class="comment"># ============================================================</span>
-<span class="comment"># 📁 QUẢN LÝ ADMIN</span>
-<span class="comment"># ============================================================</span>
-<span class="keyword">def</span> <span class="function">load_admins</span>() -&gt; List[int]:
-    <span class="keyword">if</span> ADMIN_FILE.<span class="function">exists</span>():
-        <span class="keyword">try</span>:
-            <span class="keyword">return</span> json.<span class="function">loads</span>(ADMIN_FILE.<span class="function">read_text</span>(<span class="string">"utf-8"</span>))
-        <span class="keyword">except</span> Exception:
-            <span class="keyword">return</span> [MASTER_ADMIN_ID]
-    <span class="keyword">return</span> [MASTER_ADMIN_ID]
-
-<span class="keyword">def</span> <span class="function">save_admins</span>(admins: List[int]):
-    ADMIN_FILE.<span class="function">write_text</span>(json.<span class="function">dumps</span>(admins, indent=<span class="number">2</span>), <span class="string">"utf-8"</span>)
-
-<span class="keyword">def</span> <span class="function">is_admin</span>(uid: int) -&gt; bool:
-    <span class="keyword">return</span> uid == MASTER_ADMIN_ID <span class="keyword">or</span> uid <span class="keyword">in</span> <span class="function">load_admins</span>()</pre>
-                </div>
-            </div>
-
-            <div id="tab-worker" class="tab-content">
-                <div class="code-block">
-<pre><span class="comment"># ============================================================</span>
-<span class="comment"># ⚙️ WORKER TREO NGÔN</span>
-<span class="comment"># ============================================================</span>
-<span class="keyword">def</span> <span class="function">worker_treongon</span>(imei, cookies, group_id, message_text, delay, font_size, running_flag, error_queue):
-    devnull = <span class="function">open</span>(os.devnull, <span class="string">'w'</span>)
-    sys.stdout = devnull
-    sys.stderr = devnull
-    <span class="keyword">try</span>:
-        b = <span class="function">make_bot</span>(imei, cookies)
-        styles = [
-            <span class="function">MessageStyle</span>(offset=<span class="number">0</span>, length=<span class="function">len</span>(message_text), style=<span class="string">"bold"</span>, auto_format=<span class="keyword">False</span>),
-            <span class="function">MessageStyle</span>(offset=<span class="number">0</span>, length=<span class="function">len</span>(message_text), style=<span class="string">"color"</span>, color=<span class="string">"#db342e"</span>, auto_format=<span class="keyword">False</span>),
-            <span class="function">MessageStyle</span>(offset=<span class="number">0</span>, length=<span class="function">len</span>(message_text), style=<span class="string">"font"</span>, size=font_size, auto_format=<span class="keyword">False</span>)]
-        style = <span class="function">MultiMsgStyle</span>(styles)
-        <span class="keyword">while</span> running_flag.value:
-            <span class="keyword">try</span>:
-                b.<span class="function">setTyping</span>(group_id, ThreadType.GROUP)
-                time.<span class="function">sleep</span>(<span class="number">1</span>)
-                mention = <span class="function">Mention</span>(<span class="string">"-1"</span>, length=<span class="function">len</span>(message_text), offset=<span class="number">0</span>)
-                b.<span class="function">send</span>(<span class="function">Message</span>(text=message_text, mention=mention, style=style),
-                       thread_id=group_id, thread_type=ThreadType.GROUP)
-            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
-                err = <span class="function">str</span>(e)
-                <span class="keyword">if</span> <span class="string">"zpw_sek"</span> <span class="keyword">in</span> err <span class="keyword">or</span> <span class="string">"600"</span> <span class="keyword">in</span> err <span class="keyword">or</span> <span class="string">"cookie"</span> <span class="keyword">in</span> err.<span class="function">lower</span>():
-                    error_queue.<span class="function">put_nowait</span>(<span class="string">"cookie_die"</span>)
-                    running_flag.value = <span class="keyword">False</span>
-                    <span class="keyword">break</span>
-            time.<span class="function">sleep</span>(delay)
-    <span class="keyword">except</span>:
-        <span class="keyword">pass</span>
-
-<span class="comment"># ============================================================</span>
-<span class="comment"># ⚙️ WORKER NHAY TAG</span>
-<span class="comment"># ============================================================</span>
-<span class="keyword">def</span> <span class="function">worker_nhaytag</span>(imei, cookies, group_id, delay, running_flag, error_queue, user_ids=<span class="keyword">None</span>):
-    <span class="keyword">try</span>:
-        b = <span class="function">make_bot</span>(imei, cookies)
-        <span class="keyword">with</span> <span class="function">open</span>(<span class="string">"nhay.txt"</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:
-            lines = [l.<span class="function">strip</span>() <span class="keyword">for</span> l <span class="keyword">in</span> f <span class="keyword">if</span> l.<span class="function">strip</span>()]
-        line_index = <span class="number">0</span>
-        <span class="keyword">while</span> running_flag.value:
-            message_text = lines[line_index]
-            msg = <span class="string">"@All "</span> + message_text
-            mentions = [<span class="function">Mention</span>(uid=<span class="string">"-1"</span>, length=<span class="number">4</span>, offset=<span class="number">0</span>, auto_format=<span class="keyword">False</span>)]
-            b.<span class="function">send</span>(<span class="function">Message</span>(text=msg, mention=<span class="function">MultiMention</span>(mentions)),
-                   thread_id=group_id, thread_type=ThreadType.GROUP)
-            line_index = (line_index + <span class="number">1</span>) % <span class="function">len</span>(lines)
-            time.<span class="function">sleep</span>(delay)
-    <span class="keyword">except</span>:
-        <span class="keyword">pass</span></pre>
-                </div>
-            </div>
-
-            <div id="tab-zalo" class="tab-content">
-                <div class="code-block">
-<pre><span class="comment"># ============================================================</span>
-<span class="comment"># 🎯 ZALO TOOLS FUNCTIONS</span>
-<span class="comment"># ============================================================</span>
-
-<span class="keyword">def</span> <span class="function">zalo_group_info</span>(imei, cookies, group_id):
-    <span class="keyword">try</span>:
-        b = <span class="function">make_bot</span>(imei, cookies)
-        info = b.<span class="function">fetchGroupInfo</span>(group_id)
-        group = info.gridInfoMap.<span class="function">get</span>(group_id, {})
-        <span class="keyword">return</span> {
-            <span class="string">"success"</span>: <span class="keyword">True</span>,
-            <span class="string">"name"</span>: group.<span class="function">get</span>(<span class="string">"name"</span>, <span class="string">"Không rõ"</span>),
-            <span class="string">"member_count"</span>: <span class="function">len</span>(group.<span class="function">get</span>(<span class="string">"memVerList"</span>, [])),
-            <span class="string">"admin_ids"</span>: group.<span class="function">get</span>(<span class="string">"adminIds"</span>, []),
-        }
-    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
-        <span class="keyword">return</span> {<span class="string">"success"</span>: <span class="keyword">False</span>, <span class="string">"error"</span>: <span class="function">str</span>(e)}
-
-<span class="keyword">def</span> <span class="function">zalo_create_group</span>(imei, cookies, name, member_ids):
-    <span class="keyword">try</span>:
-        b = <span class="function">make_bot</span>(imei, cookies)
-        result = b.<span class="function">createGroup</span>(name=name, members=member_ids)
-        <span class="keyword">return</span> {<span class="string">"success"</span>: <span class="keyword">True</span>, <span class="string">"result"</span>: result}
-    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
-        <span class="keyword">return</span> {<span class="string">"success"</span>: <span class="keyword">False</span>, <span class="string">"error"</span>: <span class="function">str</span>(e)}
-
-<span class="keyword">def</span> <span class="function">zalo_add_member</span>(imei, cookies, group_id, member_ids):
-    <span class="keyword">try</span>:
-        b = <span class="function">make_bot</span>(imei, cookies)
-        b.<span class="function">addGroupMembers</span>(group_id, member_ids)
-        <span class="keyword">return</span> {<span class="string">"success"</span>: <span class="keyword">True</span>}
-    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
-        <span class="keyword">return</span> {<span class="string">"success"</span>: <span class="keyword">False</span>, <span class="string">"error"</span>: <span class="function">str</span>(e)}
-
-<span class="keyword">def</span> <span class="function">zalo_kick_member</span>(imei, cookies, group_id, member_ids):
-    <span class="keyword">try</span>:
-        b = <span class="function">make_bot</span>(imei, cookies)
-        b.<span class="function">removeGroupMembers</span>(group_id, member_ids)
-        <span class="keyword">return</span> {<span class="string">"success"</span>: <span class="keyword">True</span>}
-    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
-        <span class="keyword">return</span> {<span class="string">"success"</span>: <span class="keyword">False</span>, <span class="string">"error"</span>: <span class="function">str</span>(e)}
-
-<span class="keyword">def</span> <span class="function">zalo_send_text</span>(imei, cookies, thread_id, text, thread_type=<span class="string">"group"</span>):
-    <span class="keyword">try</span>:
-        b = <span class="function">make_bot</span>(imei, cookies)
-        tt = ThreadType.GROUP <span class="keyword">if</span> thread_type == <span class="string">"group"</span> <span class="keyword">else</span> ThreadType.USER
-        b.<span class="function">send</span>(<span class="function">Message</span>(text=text), thread_id=thread_id, thread_type=tt)
-        <span class="keyword">return</span> {<span class="string">"success"</span>: <span class="keyword">True</span>}
-    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
-        <span class="keyword">return</span> {<span class="string">"success"</span>: <span class="keyword">False</span>, <span class="string">"error"</span>: <span class="function">str</span>(e)}</pre>
-                </div>
-            </div>
-
-            <div id="tab-telegram" class="tab-content">
-                <div class="code-block">
-<pre><span class="comment"># ============================================================</span>
-<span class="comment"># 🤖 TELEGRAM BOT HANDLERS</span>
-<span class="comment"># ============================================================</span>
-
-<span class="decorator">@bot.message_handler</span>(commands=[<span class="string">"start"</span>, <span class="string">"menu"</span>])
-<span class="keyword">def</span> <span class="function">cmd_start</span>(msg):
-    uid = msg.from_user.id
-    <span class="function">reset_state</span>(uid)
-    <span class="keyword">if</span> <span class="keyword">not</span> <span class="function">is_admin</span>(uid):
-        bot.<span class="function">send_message</span>(
-            uid,
-            <span class="string">"❌ &lt;b&gt;Bạn không có quyền sử dụng bot này!&lt;/b&gt;\n\n"</span>
-            <span class="string">f"Vui lòng liên hệ Master Admin để được cấp quyền.\n"</span>
-            <span class="string">f"📞 Telegram: {ADMIN_CONTACT['telegram']}"</span>,
-            reply_markup=<span class="function">ReplyKeyboardMarkup</span>(resize_keyboard=<span class="keyword">True</span>).<span class="function">add</span>(
-                <span class="function">KeyboardButton</span>(<span class="string">"📞 Liên Hệ Admin"</span>))
-        )
-        <span class="keyword">return</span>
-    <span class="function">_show_main_menu</span>(uid, msg)
-
-<span class="comment"># ============================================================</span>
-<span class="comment"># 🔐 DECORATORS</span>
-<span class="comment"># ============================================================</span>
-
-<span class="keyword">def</span> <span class="function">auth</span>(func):
-    <span class="keyword">def</span> <span class="function">wrapper</span>(msg):
-        uid = msg.from_user.id
-        <span class="keyword">if</span> <span class="keyword">not</span> <span class="function">is_admin</span>(uid):
-            bot.<span class="function">reply_to</span>(msg, <span class="string">"❌ Bạn không có quyền dùng bot này!"</span>)
-            <span class="keyword">return</span>
-        <span class="keyword">return</span> <span class="function">func</span>(msg)
-    <span class="keyword">return</span> wrapper
-
-<span class="keyword">def</span> <span class="function">auth_cb</span>(func):
-    <span class="keyword">def</span> <span class="function">wrapper</span>(call):
-        uid = call.from_user.id
-        <span class="keyword">if</span> <span class="keyword">not</span> <span class="function">is_admin</span>(uid):
-            bot.<span class="function">answer_callback_query</span>(call.id, <span class="string">"❌ Không có quyền!"</span>, show_alert=<span class="keyword">True</span>)
-            <span class="keyword">return</span>
-        <span class="keyword">return</span> <span class="function">func</span>(call)
-    <span class="keyword">return</span> wrapper
-
-<span class="comment"># ============================================================</span>
-<span class="comment"># 🚀 MAIN ENTRY</span>
-<span class="comment"># ============================================================</span>
-<span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:
-    multiprocessing.<span class="function">freeze_support</span>()
-    <span class="function">setup_commands</span>()
-    <span class="function">start_error_monitor</span>()
-    <span class="function">print</span>(<span class="string">f"🤖 Bot Treo Zalo running | Master: {MASTER_ADMIN_ID}"</span>)
-    bot.<span class="function">infinity_polling</span>(timeout=<span class="number">60</span>, long_polling_timeout=<span class="number">30</span>)</pre>
-                </div>
-            </div>
-        </div>
-
-        <!-- ============ FOOTER ============ -->
-        <footer>
-            <p>🤖 <strong>Haa Hoang Danh Bot V12</strong> — Bot Treo Zalo Đa Chức Năng</p>
-            <p style="margin-top: 8px;">
-                Liên hệ:
-                <a href="https://t.me/hdanhios" target="_blank" rel="noopener">Telegram</a> ·
-                <a href="https://zalo.me/84393515434" target="_blank" rel="noopener">Zalo</a> ·
-                <a href="mailto:hdanhcrack@gmail.com">Email</a> ·
-                <a href="https://www.facebook.com/share/18W8fuXm8X/" target="_blank" rel="noopener">Facebook</a>
-            </p>
-            <p style="margin-top: 12px; font-size: 0.8em; color: #444;">
-                © 2025 Haa Hoang Danh Developer. All rights reserved.
-            </p>
-        </footer>
+    <div class="feature-search">
+      <span class="icon">🔍</span>
+      <input type="text" id="featureSearch" placeholder="Tìm kiếm chức năng...">
     </div>
 
-    <script>
-        // ============ TABS ============
-        function showTab(event, tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
+    <div class="feature-grid" id="featureGrid">
+      <div class="feature-card" data-name="treo ngôn spam">
+        <div class="feature-icon">🚀</div>
+        <h3>Treo Ngôn</h3>
+        <p>Tự động gửi tin nhắn liên tục vào nhóm Zalo với định dạng màu sắc và kích thước tùy chỉnh.</p>
+        <span class="feature-tag">Phổ biến</span>
+      </div>
+      <div class="feature-card" data-name="treo map vị trí location">
+        <div class="feature-icon">📍</div>
+        <h3>Treo Map</h3>
+        <p>Gửi vị trí địa lý liên tục vào nhóm, hỗ trợ tùy chỉnh tọa độ và nội dung.</p>
+        <span class="feature-tag">Định vị</span>
+      </div>
+      <div class="feature-card" data-name="treo 5 màu color rainbow">
+        <div class="feature-icon">🌈</div>
+        <h3>Treo 5 Màu</h3>
+        <p>Gửi tin nhắn với 5 màu sắc ngẫu nhiên, tạo hiệu ứng đa dạng và bắt mắt.</p>
+        <span class="feature-tag">Đẹp mắt</span>
+      </div>
+      <div class="feature-card" data-name="treo video clip">
+        <div class="feature-icon">🎬</div>
+        <h3>Treo Video</h3>
+        <p>Tự động gửi video từ danh sách URL vào nhóm với thumbnail và nội dung tùy chỉnh.</p>
+        <span class="feature-tag">Video</span>
+      </div>
+      <div class="feature-card" data-name="nhây tag mention all">
+        <div class="feature-icon">🏷</div>
+        <h3>Nhây Tag</h3>
+        <p>Tag tất cả thành viên trong nhóm với nội dung tùy chỉnh, hỗ trợ chọn thành viên cụ thể.</p>
+        <span class="feature-tag">Tag All</span>
+      </div>
+      <div class="feature-card" data-name="nhây bạn bè friend spam">
+        <div class="feature-icon">👥</div>
+        <h3>Nhây Bạn Bè</h3>
+        <p>Gửi tin nhắn spam đến danh sách bạn bè được chọn với nội dung và delay tùy chỉnh.</p>
+        <span class="feature-tag">Spam Friend</span>
+      </div>
+      <div class="feature-card" data-name="mute thành viên xoá tin nhắn">
+        <div class="feature-icon">🔇</div>
+        <h3>Mute Thành Viên</h3>
+        <p>Tự động xóa tin nhắn của thành viên được chọn trong nhóm theo thời gian thực.</p>
+        <span class="feature-tag">Auto Delete</span>
+      </div>
+      <div class="feature-card" data-name="attack acc tấn công">
+        <div class="feature-icon">💀</div>
+        <h3>Attack Acc</h3>
+        <p>Gửi tin nhắn và hình ảnh đến tất cả các nhóm mà tài khoản tham gia.</p>
+        <span class="feature-tag">Nâng cao</span>
+      </div>
+      <div class="feature-card" data-name="voice zl text to speech">
+        <div class="feature-icon">🎤</div>
+        <h3>Voice ZL</h3>
+        <p>Chuyển đổi văn bản thành voice và gửi vào nhóm Zalo chỉ định.</p>
+        <span class="feature-tag">TTS</span>
+      </div>
+      <div class="feature-card" data-name="task tiện ích đổi tên avatar">
+        <div class="feature-icon">🛠</div>
+        <h3>Task Tiện Ích</h3>
+        <p>Đổi tên ACC, đổi tên Box, đổi Avatar ACC, đổi Avatar Box Zalo.</p>
+        <span class="feature-tag">Utility</span>
+      </div>
+      <div class="feature-card" data-name="zalo tools 50 lệnh">
+        <div class="feature-icon">🎯</div>
+        <h3>Zalo Tools</h3>
+        <p>50+ lệnh quản lý nhóm, tin nhắn, tài khoản, bạn bè trên Zalo.</p>
+        <span class="feature-tag">50+ lệnh</span>
+      </div>
+      <div class="feature-card" data-name="quản lý task manager">
+        <div class="feature-icon">📋</div>
+        <h3>Quản Lý Task</h3>
+        <p>Xem, dừng, cập nhật cookie die, quản lý tất cả task đang chạy chuyên nghiệp.</p>
+        <span class="feature-tag">Manager</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ZALO TOOLS -->
+<section class="section" id="tools">
+  <div class="container">
+    <h2 class="section-title">🎯 Zalo Tools - 50+ Lệnh</h2>
+    <p class="section-subtitle">Bộ công cụ Zalo mạnh mẽ, đầy đủ tính năng</p>
+    <div class="feature-grid">
+      <div class="feature-card"><div class="feature-icon">📊</div><h3>Group Info</h3><p>Xem thông tin chi tiết nhóm: tên, thành viên, admin, avatar</p></div>
+      <div class="feature-card"><div class="feature-icon">➕</div><h3>Create Group</h3><p>Tạo nhóm mới với danh sách thành viên tùy chỉnh</p></div>
+      <div class="feature-card"><div class="feature-icon">👤</div><h3>Add / Kick Member</h3><p>Thêm hoặc xoá thành viên khỏi nhóm nhanh chóng</p></div>
+      <div class="feature-card"><div class="feature-icon">🚪</div><h3>Leave / Dissolve</h3><p>Rời nhóm hoặc giải tán nhóm (nếu là creator)</p></div>
+      <div class="feature-card"><div class="feature-icon">✏️</div><h3>Change Name</h3><p>Đổi tên nhóm và avatar nhóm tức thì</p></div>
+      <div class="feature-card"><div class="feature-icon">👑</div><h3>Add / Remove Admin</h3><p>Thêm hoặc xoá quyền admin của thành viên</p></div>
+      <div class="feature-card"><div class="feature-icon">🔒</div><h3>Lock / Unlock</h3><p>Khoá hoặc mở gửi tin nhắn / join nhóm</p></div>
+      <div class="feature-card"><div class="feature-icon">🔗</div><h3>Get / Join Link</h3><p>Lấy link nhóm hoặc join nhóm qua link</p></div>
+      <div class="feature-card"><div class="feature-icon">💬</div><h3>Send Text / Image</h3><p>Gửi tin nhắn văn bản, ảnh từ URL, file local</p></div>
+      <div class="feature-card"><div class="feature-icon">↩️</div><h3>Undo / Delete Msg</h3><p>Thu hồi hoặc xoá tin nhắn trong nhóm</p></div>
+      <div class="feature-card"><div class="feature-icon">❤️</div><h3>React Message</h3><p>Thả cảm xúc vào tin nhắn bất kỳ</p></div>
+      <div class="feature-card"><div class="feature-icon">⏰</div><h3>Typing / Mark Read</h3><p>Hiển thị đang nhập hoặc đánh dấu đã đọc</p></div>
+      <div class="feature-card"><div class="feature-icon">👤</div><h3>Account Info</h3><p>Xem thông tin tài khoản Zalo của bạn</p></div>
+      <div class="feature-card"><div class="feature-icon">📝</div><h3>Change Bio / Gender / DOB</h3><p>Đổi bio, giới tính, ngày sinh tài khoản</p></div>
+      <div class="feature-card"><div class="feature-icon">👥</div><h3>All Friends</h3><p>Lấy danh sách tất cả bạn bè của tài khoản</p></div>
+      <div class="feature-card"><div class="feature-icon">🔍</div><h3>Find by Phone</h3><p>Tìm người dùng Zalo qua số điện thoại</p></div>
+      <div class="feature-card"><div class="feature-icon">🤝</div><h3>Add / Remove Friend</h3><p>Gửi lời mời kết bạn hoặc xoá bạn bè</p></div>
+      <div class="feature-card"><div class="feature-icon">🚫</div><h3>Block / Unblock</h3><p>Chặn hoặc bỏ chặn người dùng Zalo</p></div>
+      <div class="feature-card"><div class="feature-icon">🔎</div><h3>User Info</h3><p>Xem thông tin chi tiết của người dùng khác</p></div>
+      <div class="feature-card"><div class="feature-icon">📚</div><h3>All Groups</h3><p>Liệt kê tất cả nhóm tài khoản đang tham gia</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="section" id="timeline">
+  <div class="container">
+    <h2 class="section-title">📅 Lịch Sử Phiên Bản</h2>
+    <p class="section-subtitle">Hành trình phát triển của Haa Hoang Danh Bot</p>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h4>🏆 V12 - Phiên bản mới nhất</h4>
+          <p>Bổ sung Voice ZL, Zalo Tools 50+ lệnh, quản lý task nâng cao, giao diện Telegram Bot hoàn toàn mới.</p>
+        </div>
+        <div class="timeline-dot"></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h4>🚀 V10 - Mở rộng Zalo Tools</h4>
+          <p>Thêm 30+ lệnh Zalo Tools, cải thiện hiệu suất, tối ưu multiprocessing.</p>
+        </div>
+        <div class="timeline-dot"></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h4>💀 V8 - Attack & Mute</h4>
+          <p>Ra mắt chức năng Attack Acc và Mute Thành Viên, hỗ trợ cookie die detection.</p>
+        </div>
+        <div class="timeline-dot"></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h4>🎬 V5 - Treo Video</h4>
+          <p>Thêm Treo Video với danh sách URL, nhây tag, nhây bạn bè, treo 5 màu.</p>
+        </div>
+        <div class="timeline-dot"></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-content">
+          <h4>🌟 V1 - Khởi đầu</h4>
+          <p>Phiên bản đầu tiên với Treo Ngôn và Treo Map cơ bản.</p>
+        </div>
+        <div class="timeline-dot"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CODE -->
+<section class="section" id="code">
+  <div class="container">
+    <h2 class="section-title">💻 Mã Nguồn Tham Khảo</h2>
+    <p class="section-subtitle">Xem trước các đoạn code chính của bot</p>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab(event,'tab1')">⚙️ Cấu hình</button>
+      <button class="tab-btn" onclick="showTab(event,'tab2')">🔧 Worker</button>
+      <button class="tab-btn" onclick="showTab(event,'tab3')">🎯 Zalo Tools</button>
+      <button class="tab-btn" onclick="showTab(event,'tab4')">🤖 Telegram</button>
+    </div>
+
+    <div id="tab1" class="tab-content active">
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm"># ============================================</span>
+<span class="cm"># ⚙️ CẤU HÌNH BOT</span>
+<span class="cm"># ============================================</span>
+<span class="kw">BOT_TOKEN</span>       = <span class="str">"8752023733:AAGIeEcVVSX-9dw03NeSRjglgUq_toZnQ6I"</span>
+<span class="kw">MASTER_ADMIN_ID</span> = <span class="num">8187174423</span>
+<span class="kw">API_KEY</span>         = <span class="str">"api_key"</span>
+<span class="kw">SECRET_KEY</span>      = <span class="str">"secret_key"</span>
+<span class="kw">FIXED_IP</span>        = <span class="str">"8.8.8.8"</span>
+
+<span class="cm"># Thông tin liên hệ Admin</span>
+<span class="kw">ADMIN_CONTACT</span> = {
+    <span class="str">"name"</span>:      <span class="str">"Haa Hoang Danh"</span>,
+    <span class="str">"phone"</span>:     <span class="str">"0393515434"</span>,
+    <span class="str">"zalo"</span>:      <span class="str">"https://zalo.me/84393515434"</span>,
+    <span class="str">"telegram"</span>:  <span class="str">"t.me/hdanhios"</span>,
+    <span class="str">"email"</span>:     <span class="str">"hdanhcrack@gmail.com"</span>,
+}</pre>
+      </div>
+    </div>
+
+    <div id="tab2" class="tab-content">
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm"># ============================================</span>
+<span class="cm"># 🔧 WORKER TREO NGÔN</span>
+<span class="cm"># ============================================</span>
+<span class="kw">def</span> <span class="fn">worker_treongon</span>(imei, cookies, group_id, message_text,
+                     delay, font_size, running_flag, error_queue):
+    devnull = <span class="fn">open</span>(os.devnull, <span class="str">'w'</span>)
+    sys.stdout = devnull
+    sys.stderr = devnull
+    <span class="kw">try</span>:
+        b = <span class="fn">make_bot</span>(imei, cookies)
+        styles = [
+            <span class="fn">MessageStyle</span>(offset=<span class="num">0</span>, length=<span class="fn">len</span>(message_text),
+                          style=<span class="str">"bold"</span>, auto_format=<span class="kw">False</span>),
+            <span class="fn">MessageStyle</span>(offset=<span class="num">0</span>, length=<span class="fn">len</span>(message_text),
+                          style=<span class="str">"color"</span>, color=<span class="str">"#db342e"</span>,
+                          auto_format=<span class="kw">False</span>),
+        ]
+        style = <span class="fn">MultiMsgStyle</span>(styles)
+        <span class="kw">while</span> running_flag.value:
+            <span class="kw">try</span>:
+                b.<span class="fn">setTyping</span>(group_id, ThreadType.GROUP)
+                time.<span class="fn">sleep</span>(<span class="num">1</span>)
+                mention = <span class="fn">Mention</span>(<span class="str">"-1"</span>, length=<span class="fn">len</span>(message_text),
+                                  offset=<span class="num">0</span>)
+                b.<span class="fn">send</span>(<span class="fn">Message</span>(text=message_text,
+                             mention=mention, style=style),
+                       thread_id=group_id,
+                       thread_type=ThreadType.GROUP)
+            <span class="kw">except</span> Exception <span class="kw">as</span> e:
+                <span class="kw">if</span> <span class="str">"zpw_sek"</span> <span class="kw">in</span> <span class="fn">str</span>(e):
+                    error_queue.<span class="fn">put_nowait</span>(<span class="str">"cookie_die"</span>)
+                    <span class="kw">break</span>
+            time.<span class="fn">sleep</span>(delay)
+    <span class="kw">except</span>:
+        <span class="kw">pass</span></pre>
+      </div>
+    </div>
+
+    <div id="tab3" class="tab-content">
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm"># ============================================</span>
+<span class="cm"># 🎯 ZALO TOOLS FUNCTIONS</span>
+<span class="cm"># ============================================</span>
+<span class="kw">def</span> <span class="fn">zalo_group_info</span>(imei, cookies, group_id):
+    <span class="kw">try</span>:
+        b = <span class="fn">make_bot</span>(imei, cookies)
+        info = b.<span class="fn">fetchGroupInfo</span>(group_id)
+        group = info.gridInfoMap.<span class="fn">get</span>(group_id, {})
+        <span class="kw">return</span> {
+            <span class="str">"success"</span>: <span class="kw">True</span>,
+            <span class="str">"name"</span>: group.<span class="fn">get</span>(<span class="str">"name"</span>, <span class="str">"Không rõ"</span>),
+            <span class="str">"member_count"</span>: <span class="fn">len</span>(group.<span class="fn">get</span>(<span class="str">"memVerList"</span>, [])),
+            <span class="str">"admin_ids"</span>: group.<span class="fn">get</span>(<span class="str">"adminIds"</span>, []),
         }
+    <span class="kw">except</span> Exception <span class="kw">as</span> e:
+        <span class="kw">return</span> {<span class="str">"success"</span>: <span class="kw">False</span>,
+                <span class="str">"error"</span>: <span class="fn">str</span>(e)}
 
-        // ============ SCROLL ANIMATION ============
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.1 });
+<span class="kw">def</span> <span class="fn">zalo_create_group</span>(imei, cookies, name, member_ids):
+    <span class="kw">try</span>:
+        b = <span class="fn">make_bot</span>(imei, cookies)
+        result = b.<span class="fn">createGroup</span>(name=name, members=member_ids)
+        <span class="kw">return</span> {<span class="str">"success"</span>: <span class="kw">True</span>, <span class="str">"result"</span>: result}
+    <span class="kw">except</span> Exception <span class="kw">as</span> e:
+        <span class="kw">return</span> {<span class="str">"success"</span>: <span class="kw">False</span>,
+                <span class="str">"error"</span>: <span class="fn">str</span>(e)}</pre>
+      </div>
+    </div>
 
-        document.querySelectorAll('.feature-card, .arch-card, .stat-card, .cmd-item').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(el);
-        });
+    <div id="tab4" class="tab-content">
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+<pre><span class="cm"># ============================================</span>
+<span class="cm"># 🤖 TELEGRAM BOT HANDLERS</span>
+<span class="cm"># ============================================</span>
+<span class="dec">@bot.message_handler</span>(commands=[<span class="str">"start"</span>, <span class="str">"menu"</span>])
+<span class="kw">def</span> <span class="fn">cmd_start</span>(msg):
+    uid = msg.from_user.id
+    <span class="fn">reset_state</span>(uid)
+    <span class="kw">if</span> <span class="kw">not</span> <span class="fn">is_admin</span>(uid):
+        bot.<span class="fn">send_message</span>(
+            uid,
+            <span class="str">"❌ &lt;b&gt;Bạn không có quyền!&lt;/b&gt;\n\n"</span>
+            <span class="str">f"📞 Telegram: {ADMIN_CONTACT['telegram']}"</span>,
+            reply_markup=<span class="fn">ReplyKeyboardMarkup</span>(
+                resize_keyboard=<span class="kw">True</span>)
+        )
+        <span class="kw">return</span>
+    <span class="fn">_show_main_menu</span>(uid, msg)
 
-        // ============ SMOOTH SCROLL ============
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) target.scrollIntoView({ behavior: 'smooth' });
-            });
-        });
+<span class="dec">@bot.callback_query_handler</span>(func=<span class="kw">lambda</span> c: <span class="kw">True</span>)
+<span class="fn">@auth_cb</span>
+<span class="kw">def</span> <span class="fn">handle_callback</span>(call):
+    uid = call.from_user.id
+    data = call.data
+    <span class="cm"># Xử lý callback...</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
 
-        // ============ CONSOLE MESSAGE ============
-        console.log('%c🤖 Haa Hoang Danh Bot V12', 'color: #00d4ff; font-size: 24px; font-weight: bold; text-shadow: 0 0 10px #00d4ff;');
-        console.log('%c📞 Liên hệ: t.me/hdanhios', 'color: #ff00ff; font-size: 14px;');
-    </script>
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="container">
+    <h2 class="section-title">❓ Câu Hỏi Thường Gặp</h2>
+    <p class="section-subtitle">Những thắc mắc phổ biến khi sử dụng bot</p>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>🤖 Bot này hỗ trợ những chức năng gì?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">Bot hỗ trợ Treo Ngôn, Treo Map, Treo 5 Màu, Treo Video, Nhây Tag, Nhây Bạn Bè, Mute Thành Viên, Attack Acc, Voice ZL, cùng 50+ lệnh Zalo Tools khác.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>🔑 Làm sao để được cấp quyền sử dụng?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">Bạn cần liên hệ Admin qua Telegram <strong>t.me/hdanhios</strong> hoặc Zalo <strong>0393515434</strong> để được cấp quyền.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>⚠️ Cookie die là gì? Có tự khôi phục không?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">Cookie die là khi tài khoản Zalo bị đăng xuất. Bot có cơ chế phát hiện và yêu cầu bạn cập nhật IMEI &amp; Cookie mới mà không cần restart.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>📱 Bot có hỗ trợ nhiều tài khoản cùng lúc không?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">Có! Bot sử dụng multiprocessing, hỗ trợ chạy nhiều task song song trên nhiều tài khoản Zalo khác nhau.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span>💰 Chi phí sử dụng bot như thế nào?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer">Vui lòng liên hệ Admin để biết chi tiết về bảng giá và các gói dịch vụ. Hotline: <strong>0393515434</strong>.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="container">
+    <h2 class="section-title">📞 Liên Hệ Admin</h2>
+    <p class="section-subtitle">Chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7</p>
+    <div class="contact-grid">
+      <a href="tel:0393515434" class="contact-card">
+        <span class="icon">📱</span>
+        <h3>Điện Thoại</h3>
+        <p>0393515434</p>
+      </a>
+      <a href="https://zalo.me/84393515434" target="_blank" class="contact-card">
+        <span class="icon">💬</span>
+        <h3>Zalo</h3>
+        <p>zalo.me/84393515434</p>
+      </a>
+      <a href="https://t.me/hdanhios" target="_blank" class="contact-card">
+        <span class="icon">✈️</span>
+        <h3>Telegram</h3>
+        <p>t.me/hdanhios</p>
+      </a>
+      <a href="https://www.facebook.com/share/18W8fuXm8X/" target="_blank" class="contact-card">
+        <span class="icon">📘</span>
+        <h3>Facebook</h3>
+        <p>Haa Hoang Danh</p>
+      </a>
+      <a href="mailto:hdanhcrack@gmail.com" class="contact-card">
+        <span class="icon">📧</span>
+        <h3>Email</h3>
+        <p>hdanhcrack@gmail.com</p>
+      </a>
+      <a href="https://github.com/hdanhcrack-dev" target="_blank" class="contact-card">
+        <span class="icon">🐙</span>
+        <h3>GitHub</h3>
+        <p>hdanhcrack-dev</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">🤖 Haa Hoang Danh Bot V12</div>
+  <p>Bot Treo Zalo Đa Chức Năng — Hiệu Suất Cao — Ổn Định — Bảo Mật</p>
+  <p style="margin-top:15px">
+    <a href="https://t.me/hdanhios" target="_blank">Telegram</a> ·
+    <a href="https://zalo.me/84393515434" target="_blank">Zalo</a> ·
+    <a href="mailto:hdanhcrack@gmail.com">Email</a> ·
+    <a href="https://www.facebook.com/share/18W8fuXm8X/" target="_blank">Facebook</a>
+  </p>
+  <p style="margin-top:20px;font-size:.8em;opacity:.6">
+    © 2026 Haa Hoang Danh Developer. All rights reserved.
+  </p>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<div class="floating-contact">
+  <a href="https://zalo.me/84393515434" target="_blank" class="float-btn zalo" data-tip="Chat Zalo">💬</a>
+  <a href="https://t.me/hdanhios" target="_blank" class="float-btn tg" data-tip="Chat Telegram">✈️</a>
+  <a href="https://www.facebook.com/share/18W8fuXm8X/" target="_blank" class="float-btn fb" data-tip="Facebook">📘</a>
+</div>
+
+<!-- BACK TO TOP -->
+<button id="backTop" title="Lên đầu trang">⬆</button>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-icon" id="modalIcon">🚀</div>
+    <h3 id="modalTitle">Tiêu đề</h3>
+    <p id="modalDesc">Mô tả chi tiết...</p>
+    <div class="modal-tags" id="modalTags"></div>
+  </div>
+</div>
+
+<script>
+/* ==================== LOADER ==================== */
+window.addEventListener('load',()=>{
+  setTimeout(()=>document.getElementById('loader').classList.add('hide'),800);
+});
+
+/* ==================== THEME TOGGLE ==================== */
+const themeToggle = document.getElementById('themeToggle');
+const savedTheme = localStorage.getItem('theme') || 'dark';
+document.documentElement.setAttribute('data-theme', savedTheme);
+themeToggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+
+themeToggle.addEventListener('click',()=>{
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  themeToggle.textContent = next === 'dark' ? '🌙' : '☀️';
+  localStorage.setItem('theme', next);
+  showToast(next === 'dark' ? '🌙 Đã bật Dark Mode' : '☀️ Đã bật Light Mode');
+});
+
+/* ==================== NAVBAR SCROLL ==================== */
+const navbar = document.getElementById('navbar');
+const progressBar = document.getElementById('progress-bar');
+const backTop = document.getElementById('backTop');
+
+window.addEventListener('scroll',()=>{
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const percent = (scrollTop / docHeight) * 100;
+  progressBar.style.width = percent + '%';
+
+  if (scrollTop > 50) navbar.classList.add('scrolled');
+  else navbar.classList.remove('scrolled');
+
+  if (scrollTop > 500) backTop.classList.add('show');
+  else backTop.classList.remove('show');
+});
+
+backTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+/* ==================== HAMBURGER ==================== */
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click',()=>{
+  hamburger.classList.toggle('active');
+  navLinks.classList.toggle('active');
+});
+navLinks.querySelectorAll('a').forEach(a=>{
+  a.addEventListener('click',()=>{
+    hamburger.classList.remove('active');
+    navLinks.classList.remove('active');
+  });
+});
+
+/* ==================== TYPING EFFECT ==================== */
+const typedEl = document.getElementById('typed');
+const phrases = [
+  '🚀 Bot Treo Zalo Đa Chức Năng',
+  '💀 Attack Acc Cực Mạnh',
+  '🎯 50+ Lệnh Zalo Tools',
+  '🎤 Voice ZL & Messenger',
+  '🌈 Treo Ngôn - Treo Map - Treo Video',
+  '📋 Quản Lý Task Chuyên Nghiệp',
+];
+let phraseIdx = 0, charIdx = 0, deleting = false;
+
+function type(){
+  const current = phrases[phraseIdx];
+  if (!deleting){
+    typedEl.textContent = current.substring(0, charIdx + 1);
+    charIdx++;
+    if (charIdx === current.length){
+      deleting = true;
+      setTimeout(type, 2000);
+      return;
+    }
+  } else {
+    typedEl.textContent = current.substring(0, charIdx - 1);
+    charIdx--;
+    if (charIdx === 0){
+      deleting = false;
+      phraseIdx = (phraseIdx + 1) % phrases.length;
+    }
+  }
+  setTimeout(type, deleting ? 40 : 80);
+}
+type();
+
+/* ==================== COUNTER ANIMATION ==================== */
+const counters = document.querySelectorAll('.stat-number');
+const counterObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if (entry.isIntersecting){
+      const el = entry.target;
+      const target = +el.getAttribute('data-target');
+      let current = 0;
+      const step = target / 60;
+      const update = ()=>{
+        current += step;
+        if (current < target){
+          el.textContent = Math.floor(current) + (target >= 100 ? '+' : '');
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = target + (target >= 100 ? '+' : '');
+        }
+      };
+      update();
+      counterObserver.unobserve(el);
+    }
+  });
+},{threshold:0.5});
+counters.forEach(c=>counterObserver.observe(c));
+
+/* ==================== FEATURE SEARCH ==================== */
+const searchInput = document.getElementById('featureSearch');
+const featureCards = document.querySelectorAll('#featureGrid .feature-card');
+searchInput.addEventListener('input',()=>{
+  const q = searchInput.value.toLowerCase().trim();
+  featureCards.forEach(card=>{
+    const name = card.getAttribute('data-name') || '';
+    const text = card.textContent.toLowerCase();
+    if (!q || name.includes(q) || text.includes(q)){
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+});
+
+/* ==================== FEATURE MODAL ==================== */
+featureCards.forEach(card=>{
+  card.addEventListener('click',()=>{
+    const icon = card.querySelector('.feature-icon').textContent;
+    const title = card.querySelector('h3').textContent;
+    const desc = card.querySelector('p').textContent;
+    const tag = card.querySelector('.feature-tag')?.textContent || '';
+    document.getElementById('modalIcon').textContent = icon;
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalDesc').textContent = desc;
+    document.getElementById('modalTags').innerHTML = tag ? `<span class="feature-tag">${tag}</span>` : '';
+    document.getElementById('modal').classList.add('active');
+  });
+});
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('active');
+}
+document.getElementById('modal').addEventListener('click',(e)=>{
+  if (e.target.id === 'modal') closeModal();
+});
+document.addEventListener('keydown',(e)=>{
+  if (e.key === 'Escape') closeModal();
+});
+
+/* ==================== TABS ==================== */
+function showTab(event, tabId){
+  document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  event.target.classList.add('active');
+}
+
+/* ==================== COPY CODE ==================== */
+function copyCode(btn){
+  const pre = btn.parentElement.querySelector('pre');
+  navigator.clipboard.writeText(pre.textContent).then(()=>{
+    btn.textContent = '✅ Đã copy';
+    btn.classList.add('copied');
+    showToast('📋 Đã copy code vào clipboard!');
+    setTimeout(()=>{
+      btn.textContent = '📋 Copy';
+      btn.classList.remove('copied');
+    },2000);
+  });
+}
+
+/* ==================== FAQ ==================== */
+function toggleFaq(el){
+  const item = el.parentElement;
+  const wasActive = item.classList.contains('active');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('active'));
+  if (!wasActive) item.classList.add('active');
+}
+
+/* ==================== TIMELINE OBSERVER ==================== */
+const timelineObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+},{threshold:0.2});
+document.querySelectorAll('.timeline-item').forEach(item=>timelineObserver.observe(item));
+
+/* ==================== TOAST ==================== */
+function showToast(msg){
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(()=>toast.classList.remove('show'),2500);
+}
+
+/* ==================== PARTICLES ==================== */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas(){
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener('resize',resizeCanvas);
+
+class Particle {
+  constructor(){
+    this.reset();
+  }
+  reset(){
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.5;
+    this.speedY = (Math.random() - 0.5) * 0.5;
+    this.opacity = Math.random() * 0.5 + 0.2;
+    this.color = Math.random() > 0.5 ? '0,212,255' : '255,0,255';
+  }
+  update(){
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${this.color},${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+const particleCount = window.innerWidth < 768 ? 30 : 60;
+for (let i = 0; i < particleCount; i++){
+  particles.push(new Particle());
+}
+
+function connectParticles(){
+  for (let i = 0; i < particles.length; i++){
+    for (let j = i + 1; j < particles.length; j++){
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120){
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(0,212,255,${0.15 * (1 - dist / 120)})`;
+        ctx.lineWidth = 0.5;
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animateParticles(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p=>{
+    p.update();
+    p.draw();
+  });
+  connectParticles();
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+/* ==================== CONSOLE MESSAGE ==================== */
+console.log('%c🤖 Haa Hoang Danh Bot V12','color:#00d4ff;font-size:24px;font-weight:bold;text-shadow:0 0 10px #00d4ff');
+console.log('%c📞 Liên hệ: t.me/hdanhios','color:#ff00ff;font-size:14px');
+console.log('%c⭐ GitHub: github.com/hdanhcrack-dev','color:#a5d6ff;font-size:14px');
+</script>
 </body>
 </html>
