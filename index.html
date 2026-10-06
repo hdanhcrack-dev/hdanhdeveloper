@@ -36,6 +36,27 @@ body{
   line-height:1.6;overflow-x:hidden;
   transition:background .4s,color .4s;
 }
+/* ==================== SNOWFALL ==================== */
+#snowfall{
+  position:fixed;inset:0;z-index:1;
+  pointer-events:none;overflow:hidden;
+}
+.snowflake{
+  position:absolute;top:-10px;color:#fff;
+  user-select:none;pointer-events:none;
+  animation:snowFall linear infinite;
+  text-shadow:0 0 6px rgba(255,255,255,.8);
+}
+[data-theme="light"] .snowflake{
+  color:#7ec8ff;
+  text-shadow:0 0 6px rgba(126,200,255,.8);
+}
+@keyframes snowFall{
+  0%{transform:translateY(-10px) translateX(0) rotate(0deg);opacity:0}
+  10%{opacity:1}
+  90%{opacity:1}
+  100%{transform:translateY(105vh) translateX(50px) rotate(360deg);opacity:0}
+}
 /* ==================== SCROLL PROGRESS ==================== */
 #progress-bar{
   position:fixed;top:0;left:0;height:3px;width:0%;
@@ -295,46 +316,6 @@ nav.scrolled{
   background:var(--gradient);border:3px solid var(--bg-dark);
   box-shadow:0 0 15px var(--primary);z-index:1;
 }
-/* ==================== CODE TABS ==================== */
-.tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;justify-content:center}
-.tab-btn{
-  background:var(--bg-card);border:1px solid var(--border);
-  color:var(--text-dim);padding:10px 22px;border-radius:50px;
-  cursor:pointer;font-size:.9em;font-family:inherit;
-  font-weight:500;transition:all .3s;
-}
-.tab-btn:hover{color:var(--text-bright);border-color:var(--primary)}
-.tab-btn.active{
-  background:var(--gradient);color:#fff;border-color:transparent;
-  box-shadow:0 8px 25px rgba(0,212,255,.3);
-}
-.tab-content{display:none}
-.tab-content.active{display:block;animation:fadeIn .5s}
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.code-block{
-  background:#0d1117;border:1px solid #30363d;border-radius:14px;
-  padding:50px 20px 20px;position:relative;overflow-x:auto;
-  max-height:520px;overflow-y:auto;
-}
-.code-block::before{
-  content:'● ● ●';position:absolute;top:14px;left:16px;
-  color:#ff5f56;font-size:.8em;letter-spacing:3px;
-}
-.code-block pre{
-  font-family:'Consolas','Monaco',monospace;font-size:.85em;
-  line-height:1.7;color:#c9d1d9;
-}
-.copy-btn{
-  position:absolute;top:10px;right:14px;
-  background:rgba(0,212,255,.15);border:1px solid var(--primary);
-  color:var(--primary);padding:5px 14px;border-radius:20px;
-  cursor:pointer;font-size:.78em;font-weight:600;
-  transition:all .3s;font-family:inherit;
-}
-.copy-btn:hover{background:var(--primary);color:#fff}
-.copy-btn.copied{background:#22c55e;border-color:#22c55e;color:#fff}
-.kw{color:#ff7b72}.str{color:#a5d6ff}.cm{color:#8b949e;font-style:italic}
-.fn{color:#d2a8ff}.num{color:#79c0ff}.dec{color:#ffa657}
 /* ==================== FAQ ==================== */
 .faq-list{max-width:800px;margin:0 auto}
 .faq-item{
@@ -488,7 +469,6 @@ footer a:hover{color:var(--secondary)}
   .timeline-dot{left:20px}
   .floating-contact{right:15px;bottom:85px}
   .float-btn{width:46px;height:46px;font-size:1.3em}
-  .code-block{font-size:.75em}
   .modal-content{padding:25px}
 }
 @media(max-width:480px){
@@ -505,6 +485,9 @@ footer a:hover{color:var(--secondary)}
   <div class="loader-text">🤖 Đang khởi động Bot...</div>
 </div>
 
+<!-- SNOWFALL -->
+<div id="snowfall"></div>
+
 <!-- SCROLL PROGRESS -->
 <div id="progress-bar"></div>
 
@@ -516,7 +499,6 @@ footer a:hover{color:var(--secondary)}
     <li><a href="#features">Tính năng</a></li>
     <li><a href="#tools">Zalo Tools</a></li>
     <li><a href="#timeline">Lịch sử</a></li>
-    <li><a href="#code">Code</a></li>
     <li><a href="#faq">FAQ</a></li>
     <li><a href="#contact">Liên hệ</a></li>
   </ul>
@@ -733,146 +715,6 @@ footer a:hover{color:var(--secondary)}
   </div>
 </section>
 
-<!-- CODE -->
-<section class="section" id="code">
-  <div class="container">
-    <h2 class="section-title">💻 Mã Nguồn Tham Khảo</h2>
-    <p class="section-subtitle">Xem trước các đoạn code chính của bot</p>
-    <div class="tabs">
-      <button class="tab-btn active" onclick="showTab(event,'tab1')">⚙️ Cấu hình</button>
-      <button class="tab-btn" onclick="showTab(event,'tab2')">🔧 Worker</button>
-      <button class="tab-btn" onclick="showTab(event,'tab3')">🎯 Zalo Tools</button>
-      <button class="tab-btn" onclick="showTab(event,'tab4')">🤖 Telegram</button>
-    </div>
-
-    <div id="tab1" class="tab-content active">
-      <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm"># ============================================</span>
-<span class="cm"># ⚙️ CẤU HÌNH BOT</span>
-<span class="cm"># ============================================</span>
-<span class="kw">BOT_TOKEN</span>       = <span class="str">"8752023733:AAGIeEcVVSX-9dw03NeSRjglgUq_toZnQ6I"</span>
-<span class="kw">MASTER_ADMIN_ID</span> = <span class="num">8187174423</span>
-<span class="kw">API_KEY</span>         = <span class="str">"api_key"</span>
-<span class="kw">SECRET_KEY</span>      = <span class="str">"secret_key"</span>
-<span class="kw">FIXED_IP</span>        = <span class="str">"8.8.8.8"</span>
-
-<span class="cm"># Thông tin liên hệ Admin</span>
-<span class="kw">ADMIN_CONTACT</span> = {
-    <span class="str">"name"</span>:      <span class="str">"Haa Hoang Danh"</span>,
-    <span class="str">"phone"</span>:     <span class="str">"0393515434"</span>,
-    <span class="str">"zalo"</span>:      <span class="str">"https://zalo.me/84393515434"</span>,
-    <span class="str">"telegram"</span>:  <span class="str">"t.me/hdanhios"</span>,
-    <span class="str">"email"</span>:     <span class="str">"hdanhcrack@gmail.com"</span>,
-}</pre>
-      </div>
-    </div>
-
-    <div id="tab2" class="tab-content">
-      <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm"># ============================================</span>
-<span class="cm"># 🔧 WORKER TREO NGÔN</span>
-<span class="cm"># ============================================</span>
-<span class="kw">def</span> <span class="fn">worker_treongon</span>(imei, cookies, group_id, message_text,
-                     delay, font_size, running_flag, error_queue):
-    devnull = <span class="fn">open</span>(os.devnull, <span class="str">'w'</span>)
-    sys.stdout = devnull
-    sys.stderr = devnull
-    <span class="kw">try</span>:
-        b = <span class="fn">make_bot</span>(imei, cookies)
-        styles = [
-            <span class="fn">MessageStyle</span>(offset=<span class="num">0</span>, length=<span class="fn">len</span>(message_text),
-                          style=<span class="str">"bold"</span>, auto_format=<span class="kw">False</span>),
-            <span class="fn">MessageStyle</span>(offset=<span class="num">0</span>, length=<span class="fn">len</span>(message_text),
-                          style=<span class="str">"color"</span>, color=<span class="str">"#db342e"</span>,
-                          auto_format=<span class="kw">False</span>),
-        ]
-        style = <span class="fn">MultiMsgStyle</span>(styles)
-        <span class="kw">while</span> running_flag.value:
-            <span class="kw">try</span>:
-                b.<span class="fn">setTyping</span>(group_id, ThreadType.GROUP)
-                time.<span class="fn">sleep</span>(<span class="num">1</span>)
-                mention = <span class="fn">Mention</span>(<span class="str">"-1"</span>, length=<span class="fn">len</span>(message_text),
-                                  offset=<span class="num">0</span>)
-                b.<span class="fn">send</span>(<span class="fn">Message</span>(text=message_text,
-                             mention=mention, style=style),
-                       thread_id=group_id,
-                       thread_type=ThreadType.GROUP)
-            <span class="kw">except</span> Exception <span class="kw">as</span> e:
-                <span class="kw">if</span> <span class="str">"zpw_sek"</span> <span class="kw">in</span> <span class="fn">str</span>(e):
-                    error_queue.<span class="fn">put_nowait</span>(<span class="str">"cookie_die"</span>)
-                    <span class="kw">break</span>
-            time.<span class="fn">sleep</span>(delay)
-    <span class="kw">except</span>:
-        <span class="kw">pass</span></pre>
-      </div>
-    </div>
-
-    <div id="tab3" class="tab-content">
-      <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm"># ============================================</span>
-<span class="cm"># 🎯 ZALO TOOLS FUNCTIONS</span>
-<span class="cm"># ============================================</span>
-<span class="kw">def</span> <span class="fn">zalo_group_info</span>(imei, cookies, group_id):
-    <span class="kw">try</span>:
-        b = <span class="fn">make_bot</span>(imei, cookies)
-        info = b.<span class="fn">fetchGroupInfo</span>(group_id)
-        group = info.gridInfoMap.<span class="fn">get</span>(group_id, {})
-        <span class="kw">return</span> {
-            <span class="str">"success"</span>: <span class="kw">True</span>,
-            <span class="str">"name"</span>: group.<span class="fn">get</span>(<span class="str">"name"</span>, <span class="str">"Không rõ"</span>),
-            <span class="str">"member_count"</span>: <span class="fn">len</span>(group.<span class="fn">get</span>(<span class="str">"memVerList"</span>, [])),
-            <span class="str">"admin_ids"</span>: group.<span class="fn">get</span>(<span class="str">"adminIds"</span>, []),
-        }
-    <span class="kw">except</span> Exception <span class="kw">as</span> e:
-        <span class="kw">return</span> {<span class="str">"success"</span>: <span class="kw">False</span>,
-                <span class="str">"error"</span>: <span class="fn">str</span>(e)}
-
-<span class="kw">def</span> <span class="fn">zalo_create_group</span>(imei, cookies, name, member_ids):
-    <span class="kw">try</span>:
-        b = <span class="fn">make_bot</span>(imei, cookies)
-        result = b.<span class="fn">createGroup</span>(name=name, members=member_ids)
-        <span class="kw">return</span> {<span class="str">"success"</span>: <span class="kw">True</span>, <span class="str">"result"</span>: result}
-    <span class="kw">except</span> Exception <span class="kw">as</span> e:
-        <span class="kw">return</span> {<span class="str">"success"</span>: <span class="kw">False</span>,
-                <span class="str">"error"</span>: <span class="fn">str</span>(e)}</pre>
-      </div>
-    </div>
-
-    <div id="tab4" class="tab-content">
-      <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
-<pre><span class="cm"># ============================================</span>
-<span class="cm"># 🤖 TELEGRAM BOT HANDLERS</span>
-<span class="cm"># ============================================</span>
-<span class="dec">@bot.message_handler</span>(commands=[<span class="str">"start"</span>, <span class="str">"menu"</span>])
-<span class="kw">def</span> <span class="fn">cmd_start</span>(msg):
-    uid = msg.from_user.id
-    <span class="fn">reset_state</span>(uid)
-    <span class="kw">if</span> <span class="kw">not</span> <span class="fn">is_admin</span>(uid):
-        bot.<span class="fn">send_message</span>(
-            uid,
-            <span class="str">"❌ &lt;b&gt;Bạn không có quyền!&lt;/b&gt;\n\n"</span>
-            <span class="str">f"📞 Telegram: {ADMIN_CONTACT['telegram']}"</span>,
-            reply_markup=<span class="fn">ReplyKeyboardMarkup</span>(
-                resize_keyboard=<span class="kw">True</span>)
-        )
-        <span class="kw">return</span>
-    <span class="fn">_show_main_menu</span>(uid, msg)
-
-<span class="dec">@bot.callback_query_handler</span>(func=<span class="kw">lambda</span> c: <span class="kw">True</span>)
-<span class="fn">@auth_cb</span>
-<span class="kw">def</span> <span class="fn">handle_callback</span>(call):
-    uid = call.from_user.id
-    data = call.data
-    <span class="cm"># Xử lý callback...</span></pre>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- FAQ -->
 <section class="section" id="faq">
   <div class="container">
@@ -1001,6 +843,280 @@ footer a:hover{color:var(--secondary)}
 /* ==================== LOADER ==================== */
 window.addEventListener('load',()=>{
   setTimeout(()=>document.getElementById('loader').classList.add('hide'),800);
+});
+
+/* ==================== THEME TOGGLE ==================== */
+const themeToggle = document.getElementById('themeToggle');
+const savedTheme = localStorage.getItem('theme') || 'dark';
+document.documentElement.setAttribute('data-theme', savedTheme);
+themeToggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+
+themeToggle.addEventListener('click',()=>{
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  themeToggle.textContent = next === 'dark' ? '🌙' : '☀️';
+  localStorage.setItem('theme', next);
+  showToast(next === 'dark' ? '🌙 Đã bật Dark Mode' : '☀️ Đã bật Light Mode');
+});
+
+/* ==================== NAVBAR SCROLL ==================== */
+const navbar = document.getElementById('navbar');
+const progressBar = document.getElementById('progress-bar');
+const backTop = document.getElementById('backTop');
+
+window.addEventListener('scroll',()=>{
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const percent = (scrollTop / docHeight) * 100;
+  progressBar.style.width = percent + '%';
+
+  if (scrollTop > 50) navbar.classList.add('scrolled');
+  else navbar.classList.remove('scrolled');
+
+  if (scrollTop > 500) backTop.classList.add('show');
+  else backTop.classList.remove('show');
+});
+
+backTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+/* ==================== HAMBURGER ==================== */
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click',()=>{
+  hamburger.classList.toggle('active');
+  navLinks.classList.toggle('active');
+});
+navLinks.querySelectorAll('a').forEach(a=>{
+  a.addEventListener('click',()=>{
+    hamburger.classList.remove('active');
+    navLinks.classList.remove('active');
+  });
+});
+
+/* ==================== TYPING EFFECT ==================== */
+const typedEl = document.getElementById('typed');
+const phrases = [
+  '🚀 Bot Treo Zalo Đa Chức Năng',
+  '💀 Attack Acc Cực Mạnh',
+  '🎯 50+ Lệnh Zalo Tools',
+  '🎤 Voice ZL & Messenger',
+  '🌈 Treo Ngôn - Treo Map - Treo Video',
+  '📋 Quản Lý Task Chuyên Nghiệp',
+];
+let phraseIdx = 0, charIdx = 0, deleting = false;
+
+function type(){
+  const current = phrases[phraseIdx];
+  if (!deleting){
+    typedEl.textContent = current.substring(0, charIdx + 1);
+    charIdx++;
+    if (charIdx === current.length){
+      deleting = true;
+      setTimeout(type, 2000);
+      return;
+    }
+  } else {
+    typedEl.textContent = current.substring(0, charIdx - 1);
+    charIdx--;
+    if (charIdx === 0){
+      deleting = false;
+      phraseIdx = (phraseIdx + 1) % phrases.length;
+    }
+  }
+  setTimeout(type, deleting ? 40 : 80);
+}
+type();
+
+/* ==================== COUNTER ANIMATION ==================== */
+const counters = document.querySelectorAll('.stat-number');
+const counterObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if (entry.isIntersecting){
+      const el = entry.target;
+      const target = +el.getAttribute('data-target');
+      let current = 0;
+      const step = target / 60;
+      const update = ()=>{
+        current += step;
+        if (current < target){
+          el.textContent = Math.floor(current) + (target >= 100 ? '+' : '');
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = target + (target >= 100 ? '+' : '');
+        }
+      };
+      update();
+      counterObserver.unobserve(el);
+    }
+  });
+},{threshold:0.5});
+counters.forEach(c=>counterObserver.observe(c));
+
+/* ==================== FEATURE SEARCH ==================== */
+const searchInput = document.getElementById('featureSearch');
+const featureCards = document.querySelectorAll('#featureGrid .feature-card');
+searchInput.addEventListener('input',()=>{
+  const q = searchInput.value.toLowerCase().trim();
+  featureCards.forEach(card=>{
+    const name = card.getAttribute('data-name') || '';
+    const text = card.textContent.toLowerCase();
+    if (!q || name.includes(q) || text.includes(q)){
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+});
+
+/* ==================== FEATURE MODAL ==================== */
+featureCards.forEach(card=>{
+  card.addEventListener('click',()=>{
+    const icon = card.querySelector('.feature-icon').textContent;
+    const title = card.querySelector('h3').textContent;
+    const desc = card.querySelector('p').textContent;
+    const tag = card.querySelector('.feature-tag')?.textContent || '';
+    document.getElementById('modalIcon').textContent = icon;
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalDesc').textContent = desc;
+    document.getElementById('modalTags').innerHTML = tag ? `<span class="feature-tag">${tag}</span>` : '';
+    document.getElementById('modal').classList.add('active');
+  });
+});
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('active');
+}
+document.getElementById('modal').addEventListener('click',(e)=>{
+  if (e.target.id === 'modal') closeModal();
+});
+document.addEventListener('keydown',(e)=>{
+  if (e.key === 'Escape') closeModal();
+});
+
+/* ==================== FAQ ==================== */
+function toggleFaq(el){
+  const item = el.parentElement;
+  const wasActive = item.classList.contains('active');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('active'));
+  if (!wasActive) item.classList.add('active');
+}
+
+/* ==================== TIMELINE OBSERVER ==================== */
+const timelineObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+},{threshold:0.2});
+document.querySelectorAll('.timeline-item').forEach(item=>timelineObserver.observe(item));
+
+/* ==================== TOAST ==================== */
+function showToast(msg){
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(()=>toast.classList.remove('show'),2500);
+}
+
+/* ==================== PARTICLES ==================== */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas(){
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener('resize',resizeCanvas);
+
+class Particle {
+  constructor(){
+    this.reset();
+  }
+  reset(){
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.5;
+    this.speedY = (Math.random() - 0.5) * 0.5;
+    this.opacity = Math.random() * 0.5 + 0.2;
+    this.color = Math.random() > 0.5 ? '0,212,255' : '255,0,255';
+  }
+  update(){
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${this.color},${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+const particleCount = window.innerWidth < 768 ? 30 : 60;
+for (let i = 0; i < particleCount; i++){
+  particles.push(new Particle());
+}
+
+function connectParticles(){
+  for (let i = 0; i < particles.length; i++){
+    for (let j = i + 1; j < particles.length; j++){
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120){
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(0,212,255,${0.15 * (1 - dist / 120)})`;
+        ctx.lineWidth = 0.5;
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animateParticles(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p=>{
+    p.update();
+    p.draw();
+  });
+  connectParticles();
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+/* ==================== SNOWFALL ==================== */
+(function(){
+  const snowfall = document.getElementById('snowfall');
+  const snowChars = ['❄','❅','❆','•','*','✻','✽'];
+  const snowCount = window.innerWidth < 768 ? 30 : 60;
+  for (let i = 0; i < snowCount; i++){
+    const flake = document.createElement('div');
+    flake.className = 'snowflake';
+    flake.textContent = snowChars[Math.floor(Math.random() * snowChars.length)];
+    flake.style.left = Math.random() * 100 + '%';
+    flake.style.fontSize = (Math.random() * 16 + 8) + 'px';
+    flake.style.opacity = Math.random() * 0.6 + 0.3;
+    flake.style.animationDuration = (Math.random() * 8 + 6) + 's';
+    flake.style.animationDelay = (Math.random() * 10) + 's';
+    snowfall.appendChild(flake);
+  }
+})();
+
+/* ==================== CONSOLE MESSAGE ==================== */
+console.log('%c🤖 Haa Hoang Danh Bot V12','color:#00d4ff;font-size:24px;font-weight:bold;text-shadow:0 0 10px #00d4ff');
+console.log('%c📞 Liên hệ: t.me/hdanhios','color:#ff00ff;font-size:14px');
+console.log('%c⭐ GitHub: github.com/hdanhcrack-dev','color:#a5d6ff;font-size:14px');
+</script>
+</body>
+</html>List.add('hide'),800);
 });
 
 /* ==================== THEME TOGGLE ==================== */
